@@ -13,11 +13,12 @@
 ActiveRecord::Schema.define(version: 2022_01_04_062432) do
 
   create_table "brunches", force: :cascade do |t|
-    t.integer "company_id", null: false
+    t.integer "company_id"
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["company_id", "name"], name: "index_brunches_on_company_id_and_name", unique: true
+    t.index ["company_id"], name: "index_brunches_on_company_id"
   end
 
   create_table "companies", force: :cascade do |t|
