@@ -2,8 +2,8 @@
 
 bar:
   name: bar
-  company: foo
+  company: boo
 
 baz:
   company_id: baz
-  name: foo
+  name: boo
