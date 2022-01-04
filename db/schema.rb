@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_04_062432) do
+ActiveRecord::Schema.define(version: 2022_01_04_115727) do
 
   create_table "brunches", force: :cascade do |t|
     t.integer "company_id"
@@ -26,6 +26,20 @@ ActiveRecord::Schema.define(version: 2022_01_04_062432) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_companies_on_name", unique: true
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.string "password_digest"
+    t.boolean "admin"
+    t.boolean "master"
+    t.boolean "activated"
+    t.datetime "activated_at"
+    t.string "activation_digest"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   add_foreign_key "brunches", "companies"
