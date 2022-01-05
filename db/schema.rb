@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_04_115727) do
+ActiveRecord::Schema.define(version: 2022_01_05_013024) do
 
   create_table "brunches", force: :cascade do |t|
     t.integer "company_id"
@@ -28,6 +28,18 @@ ActiveRecord::Schema.define(version: 2022_01_04_115727) do
     t.index ["name"], name: "index_companies_on_name", unique: true
   end
 
+  create_table "relationships", force: :cascade do |t|
+    t.integer "brunch_id"
+    t.integer "user_id"
+    t.boolean "admin", default: false
+    t.boolean "master", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["brunch_id"], name: "index_relationships_on_brunch_id"
+    t.index ["user_id", "brunch_id"], name: "index_relationships_on_user_id_and_brunch_id", unique: true
+    t.index ["user_id"], name: "index_relationships_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "last_name", null: false
@@ -42,4 +54,6 @@ ActiveRecord::Schema.define(version: 2022_01_04_115727) do
   end
 
   add_foreign_key "brunches", "companies"
+  add_foreign_key "relationships", "brunches"
+  add_foreign_key "relationships", "users"
 end
