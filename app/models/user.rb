@@ -8,16 +8,16 @@ class User < ApplicationRecord
   # バリデーション
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   has_secure_password
-  validates :first_name,  presence: { message: "「名」を入力してください。" }, 
-                          length: { maximum: 50, message: "「名」が長すぎます。" }
-  validates :last_name,   presence: { message: "「姓」を入力してください。" }, 
-                          length: { maximum: 50, message: "「姓」が長すぎます。" }
-  validates :email,       presence: { message: "メールアドレスを入力してください。" }, 
-                          length: { maximum: 255, message: "メールアドレスが長すぎます" },
-                          format: { with: VALID_EMAIL_REGEX, message: "メールアドレスの形式が正しくありません。" },
-                          uniqueness: { case_sensitive: false, message: "そのメールアドレスは既に登録されています。" }
-  validates :password,    presence: { message: "パスワードを入力してください。" }, 
-                          length: { minimum: 6, message: "パスワードは6文字以上入力してください。" }, 
+  validates :first_name,  presence: true, 
+                          length: { maximum: 50 }
+  validates :last_name,   presence: true, 
+                          length: { maximum: 50 }
+  validates :email,       presence: true, 
+                          length: { maximum: 255 },
+                          format: { with: VALID_EMAIL_REGEX },
+                          uniqueness: { case_sensitive: false }
+  validates :password,    presence: true, 
+                          length: { minimum: 6 }, 
                           allow_nil: true
   
   

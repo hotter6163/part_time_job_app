@@ -3,6 +3,6 @@ class Company < ApplicationRecord
   has_many :branches, dependent: :destroy
   
   # バリデーション
-  validates :name,    presence: { message: '企業名を入力してください。' },
-                      length: { maximum: 137, message: '企業名が長すぎます。' }
+  validates :name,    presence: true,
+                      length: { maximum: 137 }
 end

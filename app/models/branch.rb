@@ -4,7 +4,7 @@ class Branch < ApplicationRecord
   has_many :relationships, dependent: :destroy
   
   # バリデーション
-  validates :name,    presence: { message: '支社名を入力してください。' },
-                      length: { maximum: 137, message: '支社名が長すぎます。' },
-                      uniqueness: { scope: :company_id, message: 'その支店名は既に登録されています。' }
+  validates :name,    presence: true,
+                      length: { maximum: 137 },
+                      uniqueness: { scope: :company_id }
 end
