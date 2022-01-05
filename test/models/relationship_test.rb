@@ -3,8 +3,8 @@ require "test_helper"
 class RelationshipTest < ActiveSupport::TestCase
   def setup
     @user = users(:user_have_no_relationship)
-    @brunch = brunches(:brunch_have_no_relationship)
-    @relationship = Relationship.new(user_id: @user.id, brunch_id: @brunch.id)
+    @branch = branches(:branch_have_no_relationship)
+    @relationship = Relationship.new(user_id: @user.id, branch_id: @branch.id)
   end
   
   test "should be valid" do
@@ -18,8 +18,8 @@ class RelationshipTest < ActiveSupport::TestCase
   end
   
   # ブランチIDが空欄ではない
-  test "brunch_id should be present" do
-    @relationship.brunch_id = nil
+  test "branch_id should be present" do
+    @relationship.branch_id = nil
     assert_not @relationship.valid?
   end
   
@@ -32,10 +32,10 @@ class RelationshipTest < ActiveSupport::TestCase
   end
   
   # ブランチが削除された時にrelationshipも削除される
-  test "should destroy relationship when brunch destroy" do
+  test "should destroy relationship when branch destroy" do
     @relationship.save
     assert_difference "Relationship.count", -1 do
-      @brunch.destroy
+      @branch.destroy
     end
   end
 end

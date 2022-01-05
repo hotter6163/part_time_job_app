@@ -1,6 +1,6 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-company_have_no_brunch:
-  name: company_have_no_brunch
+company_have_no_branch:
+  name: company_have_no_branch
   
 company1:
   name: company1

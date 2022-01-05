@@ -12,13 +12,13 @@
 
 ActiveRecord::Schema.define(version: 2022_01_05_013024) do
 
-  create_table "brunches", force: :cascade do |t|
+  create_table "branches", force: :cascade do |t|
     t.integer "company_id"
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["company_id", "name"], name: "index_brunches_on_company_id_and_name", unique: true
-    t.index ["company_id"], name: "index_brunches_on_company_id"
+    t.index ["company_id", "name"], name: "index_branches_on_company_id_and_name", unique: true
+    t.index ["company_id"], name: "index_branches_on_company_id"
   end
 
   create_table "companies", force: :cascade do |t|
@@ -29,14 +29,14 @@ ActiveRecord::Schema.define(version: 2022_01_05_013024) do
   end
 
   create_table "relationships", force: :cascade do |t|
-    t.integer "brunch_id"
+    t.integer "branch_id"
     t.integer "user_id"
     t.boolean "admin", default: false
     t.boolean "master", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["brunch_id"], name: "index_relationships_on_brunch_id"
-    t.index ["user_id", "brunch_id"], name: "index_relationships_on_user_id_and_brunch_id", unique: true
+    t.index ["branch_id"], name: "index_relationships_on_branch_id"
+    t.index ["user_id", "branch_id"], name: "index_relationships_on_user_id_and_branch_id", unique: true
     t.index ["user_id"], name: "index_relationships_on_user_id"
   end
 
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2022_01_05_013024) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
-  add_foreign_key "brunches", "companies"
-  add_foreign_key "relationships", "brunches"
+  add_foreign_key "branches", "companies"
+  add_foreign_key "relationships", "branches"
   add_foreign_key "relationships", "users"
 end

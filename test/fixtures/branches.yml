@@ -1,16 +1,16 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-brunch_have_no_relationship:
-  name: brunch_have_no_relationship
+branch_have_no_relationship:
+  name: branch_have_no_relationship
   company: company1
 
-brunch1:
-  name: brunch1
+branch1:
+  name: branch1
   company: company1
 
-brunch2:
-  name: brunch2
+branch2:
+  name: branch2
   company: company1
 
-brunch3:
-  name: brunch3
+branch3:
+  name: branch3
   company: company1
