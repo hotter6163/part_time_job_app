@@ -1,6 +1,7 @@
 class Brunch < ApplicationRecord
   # モデルの関係性
   belongs_to :company
+  has_many :relationships, dependent: :destroy
   
   # バリデーション
   validates :name,    presence: { message: '支社名を入力してください。' },

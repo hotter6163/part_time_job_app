@@ -2,7 +2,7 @@ require "test_helper"
 
 class BrunchTest < ActiveSupport::TestCase
   def setup 
-    @company = companies(:foo)
+    @company = companies(:company_have_no_brunch)
     @brunch = @company.brunches.build(name: 'sample')
   end
   
@@ -24,7 +24,7 @@ class BrunchTest < ActiveSupport::TestCase
   
   # 別の会社の同じ支社名を登録できる
   test "should be valid when another company and same brunch" do
-    another_company = companies(:boo)
+    another_company = companies(:company1)
     another_brunch = another_company.brunches.build(name: @brunch.name)
     another_brunch.save
     assert @brunch.valid?

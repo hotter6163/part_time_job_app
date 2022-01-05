@@ -1,7 +1,11 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-foo:
-  name: foo
+company_have_no_brunch:
+  name: company_have_no_brunch
   
-boo:
-  name: boo
+company1:
+  name: company1
+  
+company2:
+  name: company2
+  
 
