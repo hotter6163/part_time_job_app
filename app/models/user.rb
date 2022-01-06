@@ -6,11 +6,11 @@ class User < ApplicationRecord
   has_many :relationships, dependent: :destroy
   
   # 独自のカラムのバリデーション
-  validates :first_name,  presence: { message: "「名」を入力してください。" }, 
-                          length: { maximum: 50, message: "「名」が長すぎます。" }
-  validates :last_name,   presence: { message: "「姓」を入力してください。" }, 
-                          length: { maximum: 50, message: "「姓」が長すぎます。" }
-  
+  validates :first_name,  presence: true, 
+                          length: { maximum: 50 }
+  validates :last_name,   presence: true, 
+                          length: { maximum: 50 }
+                          
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
