@@ -76,4 +76,7 @@ Rails.application.configure do
   
   # Cloud9 への接続を許可する
   config.hosts.clear
+  
+  # deviseの使用
+  config.action_mailer.default_url_options = { host: 'https://adc2d950eb46400a93bd79736ce70936.vfs.cloud9.ap-northeast-1.amazonaws.com/', port: 3000 }
 end
