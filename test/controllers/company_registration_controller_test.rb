@@ -14,36 +14,45 @@ class CompanyRegistrationControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input[type="submit"][name="commit"]'
   end
   
-  # test "should redirect create when company_name is blank" do
-  #   post company_registration_index_path,
-  #     params:  { company:  {  name: "",
-  #                             branch: { name: "branch" },
-  #                             master: { user: "existing",
-  #                                       email: "hotta-nagoya-6163@au.com" }
-  #                           }
-  #               }
-  #   render 'company_registration/new'
-  # end
+  # 既存のユーザーを選択、企業名が正しくない
+  test "should redirect create when company_name is blank" do
+    assert_no_difference ['Company.count', 'Branch.count'] do
+      post company_registration_index_path,
+        params:  { company:  {  name: "",
+                                branch: { name: "branch" },
+                                master: { user: "existing",
+                                          email: "hotta-nagoya-6163@au.com" }
+                              }
+                  }
+    end
+    assert_template 'company_registration/new'
+  end
   
-  # test "should redirect create when branch_name is blank" do
-  #   post company_registration_index_path,
-  #     params:  { company:  {  name: "company",
-  #                             branch: { name: "" },
-  #                             master: { user: "existing",
-  #                                       email: "hotta-nagoya-6163@au.com" }
-  #                           }
-  #               }
-  #   render 'company_registration/new'
-  # end
+  # 既存のユーザーを選択、支店名が正しくない
+  test "should redirect create when branch_name is blank" do
+    assert_no_difference ['Company.count', 'Branch.count'] do
+      post company_registration_index_path,
+        params:  { company:  {  name: "company",
+                                branch: { name: "" },
+                                master: { user: "existing",
+                                          email: "hotta-nagoya-6163@au.com" }
+                              }
+                  }
+    end
+    assert_template 'company_registration/new'
+  end
   
-  # test "should redirect create when existing user don't find" do
-  #   post company_registration_index_path,
-  #     params:  { company:  {  name: "company",
-  #                             branch: { name: "branch" },
-  #                             master: { user: "existing",
-  #                                       email: "hogehoge@au.com" }
-  #                           }
-  #               }
-  #   render 'company_registration/new'
-  # end
+  # 既存のユーザーを選択、ユーザーが見つからない
+  test "should redirect create when existing user don't find" do
+    assert_no_difference ['Company.count', 'Branch.count'] do
+      post company_registration_index_path,
+        params:  { company:  {  name: "company",
+                                branch: { name: "branch" },
+                                master: { user: "existing",
+                                          email: "hogehoge@au.com" }
+                              }
+                  }
+    end
+    assert_template 'company_registration/new'
+  end
 end
