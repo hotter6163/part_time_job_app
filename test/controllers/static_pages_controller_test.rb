@@ -5,6 +5,6 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
     get root_url
     assert_response :success
     assert_select 'a[href=?]', new_user_registration_path
-    assert_select 'a[href=?]', new_company_path
+    assert_select 'a[href=?]', new_company_registration_path
   end
 end

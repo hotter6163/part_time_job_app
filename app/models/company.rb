@@ -4,5 +4,6 @@ class Company < ApplicationRecord
   
   # バリデーション
   validates :name,    presence: true,
-                      length: { maximum: 137 }
+                      length: { maximum: 137 },
+                      uniqueness: true
 end
