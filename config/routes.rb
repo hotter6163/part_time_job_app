@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   resources :company_registration, only: [:new, :create] do 
     collection do
       post :create_branch
-      post :create_user_select
+      post :user_select
     end
   end
   devise_for :users, controllers: { 

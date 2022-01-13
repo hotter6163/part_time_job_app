@@ -1,5 +1,7 @@
 <h1>企業情報を登録する</h1>
 
+<h2>企業情報を入力してください</h2>
+
 <%= form_with model: @company, url: company_registration_index_path, local: true do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   
@@ -8,49 +10,7 @@
     <%= f.text_field :name, class: 'form-control' %>
   </div>
   
-  <%= f.fields_for @branch do |branch_form| %>
-    <div class="field">
-      <%= branch_form.label :name, "支店名" %>
-      <%= branch_form.text_field :name, class: 'form-control' %>
-    </div>
-  <% end %>
-  
-  <%= f.fields_for :master do |user_form| %>
-    <div class="form-group">
-      <div class="radio">
-        <%= user_form.radio_button :user, :new, checked: true, class: 'js-check', onclick: 'formSwitch()' %>
-        <%= user_form.label :user, '新規のユーザーを管理者として登録する', value: :new %>
-      </div>
-      <div class="radio">
-        <%= user_form.radio_button :user, :existing, class: 'js-check', onclick: 'formSwitch()' %>
-        <%= user_form.label :user, '既存のユーザーを管理者として登録する', value: :existing %>
-      </div>
-      <div id="email-form">
-        <%= user_form.label :email %>
-        <%= user_form.email_field :email, class: 'form-control' %> 
-      </div>
-    </div>
-  <% end %>
-  
   <dev>
-    <%= f.submit "企業を登録する", class: "btn btn-primary" %>
+    <%= f.submit "支店情報を入力する", class: "btn btn-primary" %>
   </dev>
 <% end %>
-
-<script>
-  var emailBox = document.getElementById('email-form');
-  emailBox.style.display = "none";
-  
-  function formSwitch() {
-    check = document.getElementsByClassName('js-check')
-    if (check[0].checked) {
-      emailBox.style.display = "none";
-    } 
-    else if (check[1].checked) {
-      emailBox.style.display = "block";
-    } 
-    else {
-      emailBox.style.display = "none";
-    }
-  }
-</script>

@@ -1,0 +1,21 @@
+<h1>企業情報を登録する</h1>
+
+<h2>管理者にするユーザーをどうするか選択してください</h2>
+
+<%= form_with url: user_select_company_registration_index_path, method: :post, local: true do |f| %>
+  
+  <div class="form-group">
+    <div class="radio">
+      <%= f.radio_button :user_select, :new, checked: true %>
+      <%= f.label :user_select, '新規のユーザーを管理者として登録する', value: :new %>
+    </div>
+    <div class="radio">
+      <%= f.radio_button :user_select, :existing %>
+      <%= f.label :user_select, '既存のユーザーを管理者として登録する', value: :existing %>
+    </div>
+  </div>
+  
+  <dev>
+    <%= f.submit "管理者の情報を入力する", class: "btn btn-primary" %>
+  </dev>
+<% end %>
