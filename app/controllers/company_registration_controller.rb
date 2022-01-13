@@ -1,19 +1,19 @@
 class CompanyRegistrationController < ApplicationController
   def new
     @company = Company.new
-    @branch = Branch.new
   end
   
   def create
     @company = Company.find_by(company_params) || Company.new(company_params)
-    @branch = @company.branches.build(branch_params)
-    @user = User.find_by(user_email)
-    if @user && @company.valud? && @branch.valid?
-      
-    else
-      render 'company_registration/new'
+    unless company.valid?
+      render 'company_registration/new' and return
     end
+    session[:company_registration] = { company: company_params }
+    @branch = Branch.new
+    render 'company_registration/new_branch'
   end
+  
+    
   
   private
     def company_params
@@ -21,7 +21,7 @@ class CompanyRegistrationController < ApplicationController
     end
     
     def branch_params
-      params.require(:company).require(:branch).permit(:name)
+      params.require(:branch).permit(:name)
     end
     
     def user_email
