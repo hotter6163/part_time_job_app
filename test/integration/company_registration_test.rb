@@ -39,6 +39,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     assert_difference ['Company.count', 'Branch.count'], 1 do
       post search_user_path, params: { email: user.email }
     end
+    assert_nil session[:company_registration]
     assert_redirected_to new_user_session_path
   end
 end

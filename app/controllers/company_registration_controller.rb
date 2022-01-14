@@ -21,7 +21,7 @@ class CompanyRegistrationController < ApplicationController
   
   # post input_branch
   def create_branch
-    @company = Company.find_by(session[:company_registration][:company]) || Company.new(session[:company_registration][:company])
+    @company = Company.find_by(session[:company_registration]["company"]) || Company.new(session[:company_registration]["company"])
     @branch = @company.branches.build(branch_params)
     unless @branch.valid?
       render 'company_registration/input_branch' and return
@@ -47,8 +47,19 @@ class CompanyRegistrationController < ApplicationController
   end
   
   def search_user
-    unless user = User.find_by(user_email)  
-      render "company_registration/input_user_email"
+    unless user = User.find_by(user_email)
+      flash[:danger] = "入力されたEメールは登録されていません。"
+      render "company_registration/input_user_email" and return
+    end
+    company = Company.find_by(session[:company_registration]["company"]) || Company.create(session[:company_registration]["company"])
+    branch = company.branches.create(session[:company_registration]["branch"])
+    session[:company_registration] = nil
+    if user_signed_in?
+      flash[:success] = "企業情報が登録されました。マイページから企業ページにアクセスしてください。"
+      redirect_to root_url
+    else
+      flash[:success] = "企業情報が登録されました。マイページから企業ページにアクセスしてください。"
+      redirect_to new_user_session_path
     end
   end
   
