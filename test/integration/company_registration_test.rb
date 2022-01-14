@@ -56,8 +56,8 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_registration_path
     follow_redirect!
     
-    assert_difference ['Company.count', 'Branch.count', 'User.count'], 1 do
-      post new_user_registration_path, params: { user: {  last_name: "example",
+    assert_difference ['User.count', 'Company.count', 'Branch.count'], 1 do
+      post user_registration_path, params: { user: {  last_name: "example",
                                                           first_name: "test",
                                                           email: "test@example.com",
                                                           password: "password",

@@ -56,9 +56,7 @@ class CompanyRegistrationController < ApplicationController
       flash[:danger] = "入力されたEメールは登録されていません。"
       render "company_registration/input_user_email" and return
     end
-    company = Company.find_by(session[:company_registration]["company"]) || Company.create(session[:company_registration]["company"])
-    branch = company.branches.create(session[:company_registration]["branch"])
-    session[:company_registration] = nil
+    company_registration
     if user_signed_in?
       flash[:success] = "企業情報が登録されました。マイページから企業ページにアクセスしてください。"
       redirect_to root_url
