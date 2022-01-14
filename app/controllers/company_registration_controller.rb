@@ -34,6 +34,22 @@ class CompanyRegistrationController < ApplicationController
   end
   
   def selecter
+    if params[:user_select] == "new"
+      
+    elsif params[:user_select] == "existing"
+      redirect_to input_user_email_path
+    else
+      render 'company_registration/input_user_email'
+    end
+  end
+  
+  def input_user_email
+  end
+  
+  def search_user
+    unless user = User.find_by(user_email)  
+      render "company_registration/input_user_email"
+    end
   end
   
   private
@@ -46,6 +62,6 @@ class CompanyRegistrationController < ApplicationController
     end
     
     def user_email
-      params.require(:company).require(:master).permit(:email)
+      params.permit(:email)
     end
 end

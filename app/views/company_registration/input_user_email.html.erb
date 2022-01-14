@@ -1,0 +1,15 @@
+<h1>既存のユーザーを登録する</h1>
+
+<h2>登録されているユーザーのメールアドレスを入力してください</h2>
+
+<%= form_with url: search_user_path, local: true do |f| %>
+  
+  <div class="field">
+    <%= f.label :email, "Eメール" %>
+    <%= f.email_field :email, class: 'form-control' %>
+  </div>
+  
+  <dev>
+    <%= f.submit "管理者の情報を入力する", class: "btn btn-primary" %>
+  </dev>
+<% end %>

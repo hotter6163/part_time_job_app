@@ -28,4 +28,13 @@ class CompanyRegistrationControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input[type="radio"][name=?][value="existing"]', 'user_select'
     assert_select 'input[type="submit"][name="commit"]'
   end
+  
+  test "should get input_user_email" do
+    get input_user_email_path
+    assert_response :success
+    assert_template 'company_registration/input_user_email'
+    assert_select 'form[method="post"][action=?]', search_user_path
+    assert_select 'input[name="email"]'
+    assert_select 'input[type="submit"][name="commit"]'
+  end
 end

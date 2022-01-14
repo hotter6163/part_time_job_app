@@ -26,6 +26,19 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     follow_redirect!
     
     # 既存のユーザーを選択
+    post selecter_path, params: { user_select: "existing" }
+    assert_redirected_to input_user_email_path
+    follow_redirect!
     
+    # 登録されていないEメールを送信
+    post search_user_path, params: { email: "invalid@example.com" }
+    assert_template "company_registration/input_user_email"
+    
+    # 登録されているEメールを送信
+    user = users(:user1)
+    assert_difference ['Company.count', 'Branch.count'], 1 do
+      post search_user_path, params: { email: user.email }
+    end
+    assert_redirected_to new_user_session_path
   end
 end
