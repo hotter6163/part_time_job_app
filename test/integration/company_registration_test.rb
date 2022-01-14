@@ -1,6 +1,11 @@
 require "test_helper"
 
 class CompanyRegistrationTest < ActionDispatch::IntegrationTest
+  def setup
+    @company_name = "company"
+    @branch_name = "branch"
+  end
+  
   test "company_registration with existing user" do
     get input_company_path
     
@@ -9,9 +14,8 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     assert_template 'company_registration/input_company'
     
     # 適切な会社名を送信
-    company_name = "company"
-    post create_company_path, params: { company: { name: company_name } }
-    assert_equal company_name, session[:company_registration][:company][:name]
+    post create_company_path, params: { company: { name: @company_name } }
+    assert_equal @company_name, session[:company_registration][:company][:name]
     assert_redirected_to input_branch_path
     follow_redirect!
   
@@ -19,9 +23,8 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     post input_branch_path, params: { branch: { name: "" } }
     
     # 適切な支店名を送信
-    branch_name = 'branch'
-    post create_branch_path, params: { branch: { name: branch_name } }
-    assert_equal branch_name, session[:company_registration][:branch][:name]
+    post create_branch_path, params: { branch: { name: @branch_name } }
+    assert_equal @branch_name, session[:company_registration][:branch][:name]
     assert_redirected_to select_user_path
     follow_redirect!
     
@@ -41,5 +44,25 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     end
     assert_nil session[:company_registration]
     assert_redirected_to new_user_session_path
+  end
+  
+  test "company_registration with new user" do
+    get input_company_path
+    post create_company_path, params: { company: { name: @company_name } }
+    post create_branch_path, params: { branch: { name: @branch_name } }
+    
+    # 新規のユーザーを選択
+    post selecter_path, params: { user_select: "new" }
+    assert_redirected_to new_user_registration_path
+    follow_redirect!
+    
+    assert_difference ['Company.count', 'Branch.count', 'User.count'], 1 do
+      post new_user_registration_path, params: { user: {  last_name: "example",
+                                                          first_name: "test",
+                                                          email: "test@example.com",
+                                                          password: "password",
+                                                          password_confirmation: "password" } }
+    end
+    assert_nil session[:company_registration]
   end
 end

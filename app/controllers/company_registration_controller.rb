@@ -4,7 +4,7 @@ class CompanyRegistrationController < ApplicationController
     @company = Company.new
   end
   
-  # post input_company
+  # post create_company
   def create_company
     @company = Company.find_by(company_params) || Company.new(company_params)
     unless @company.valid?
@@ -19,7 +19,7 @@ class CompanyRegistrationController < ApplicationController
     @branch = Branch.new
   end
   
-  # post input_branch
+  # post create_branch
   def create_branch
     @company = Company.find_by(session[:company_registration]["company"]) || Company.new(session[:company_registration]["company"])
     @branch = @company.branches.build(branch_params)
@@ -30,12 +30,14 @@ class CompanyRegistrationController < ApplicationController
     redirect_to select_user_path
   end
   
+  # get select_user
   def select_user
   end
   
+  # post selecter
   def selecter
     if params[:user_select] == "new"
-      
+      redirect_to new_user_registration_path
     elsif params[:user_select] == "existing"
       redirect_to input_user_email_path
     else
@@ -43,9 +45,12 @@ class CompanyRegistrationController < ApplicationController
     end
   end
   
+  # get input_user_email
   def input_user_email
   end
   
+  # post search_user
+  # 既存のユーザーが見つからば、企業情報をと登録
   def search_user
     unless user = User.find_by(user_email)
       flash[:danger] = "入力されたEメールは登録されていません。"
