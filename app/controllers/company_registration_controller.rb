@@ -1,4 +1,7 @@
 class CompanyRegistrationController < ApplicationController
+  before_action :have_company_name, only: [:input_branch, :create_branch, :select_user, :selecter]
+  before_action :have_branch_name, only: [:select_user, :selecter]
+  
   # get input_company
   def input_company
     @company = Company.new
@@ -41,7 +44,7 @@ class CompanyRegistrationController < ApplicationController
     elsif params[:user_select] == "existing"
       redirect_to new_user_session_path
     else
-      render 'company_registration/input_user_email'
+      render 'company_registration/select_user'
     end
   end
   
@@ -54,7 +57,11 @@ class CompanyRegistrationController < ApplicationController
       params.require(:branch).permit(:name)
     end
     
-    def user_email
-      params.permit(:email)
+    def have_company_name
+      redirect_to input_company_path unless have_name_in_session?(:company)
+    end
+    
+    def have_branch_name
+      redirect_to input_branch_path unless have_name_in_session?(:branch)
     end
 end
