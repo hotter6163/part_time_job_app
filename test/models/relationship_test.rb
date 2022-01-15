@@ -23,6 +23,13 @@ class RelationshipTest < ActiveSupport::TestCase
     assert_not @relationship.valid?
   end
   
+  # ユーザーidとブランチidの組み合わせの一意性
+  test "should not valid when same user_id adn branch_id" do
+    another_relationship = @relationship.dup
+    another_relationship.save
+    assert_not @relationship.valid?
+  end
+  
   # ユーザーが削除された時にrelationshipも削除される
   test "should destroy relationship when user destroy" do
     @relationship.save
@@ -37,5 +44,13 @@ class RelationshipTest < ActiveSupport::TestCase
     assert_difference "Relationship.count", -1 do
       @branch.destroy
     end
+  end
+  
+  test "Relationship.exist_master?" do
+    branch = branches(:branch_have_no_relationship)
+    assert_not Relationship.exist_master?(branch)
+    user = users(:user_have_no_relationship)
+    branch.relationships.create(user: user, master: 1, admin: 1)
+    assert Relationship.exist_master?(branch)
   end
 end

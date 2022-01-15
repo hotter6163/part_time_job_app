@@ -22,4 +22,9 @@ end
 
 class ActionDispatch::IntegrationTest
   include Warden::Test::Helpers
+  
+  def sign_in(user, password: 'password')
+    post user_session_path, params: { user: { email: user.email,
+                                              password: password } }
+  end
 end
