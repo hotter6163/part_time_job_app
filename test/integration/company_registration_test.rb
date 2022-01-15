@@ -34,7 +34,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     follow_redirect!
     
     # 誤ったログイン情報を送信
-    assert_no_difference ['Company.count', 'Branch.count'] do
+    assert_no_difference ['Company.count', 'Branch.count', 'Relationship.count'] do
       post user_session_path, params: { user: { email: 'wrong@example.com',
                                                 password: 'password' } }
     end
@@ -42,7 +42,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     
     # 正しいログイン情報を送信
     user = users(:user1)
-    assert_difference ['Company.count', 'Branch.count'], 1 do
+    assert_difference ['Company.count', 'Branch.count', 'Relationship.count'], 1 do
       post user_session_path, params: { user: { email: user.email,
                                                 password: 'password' } }
     end
@@ -60,7 +60,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     follow_redirect!
     
     # ユーザーの情報に誤りがある
-    assert_no_difference ['User.count', 'Company.count', 'Branch.count'] do
+    assert_no_difference ['User.count', 'Company.count', 'Branch.count', 'Relationship.count'] do
       post user_registration_path, params: { user: {  last_name: "  ",
                                                       first_name: "  ",
                                                       email: "test@example",
@@ -70,7 +70,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     assert !!session[:company_registration]
     
     # 正しいユーザー情報を送信
-    assert_difference ['User.count', 'Company.count', 'Branch.count'], 1 do
+    assert_difference ['User.count', 'Company.count', 'Branch.count', 'Relationship.count'], 1 do
       post user_registration_path, params: { user: {  last_name: "example",
                                                           first_name: "test",
                                                           email: "test@example.com",
