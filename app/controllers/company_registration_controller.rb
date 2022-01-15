@@ -39,30 +39,9 @@ class CompanyRegistrationController < ApplicationController
     if params[:user_select] == "new"
       redirect_to new_user_registration_path
     elsif params[:user_select] == "existing"
-      redirect_to input_user_email_path
+      redirect_to new_user_session_path
     else
       render 'company_registration/input_user_email'
-    end
-  end
-  
-  # get input_user_email
-  def input_user_email
-  end
-  
-  # post search_user
-  # 既存のユーザーが見つからば、企業情報をと登録
-  def search_user
-    unless user = User.find_by(user_email)
-      flash[:danger] = "入力されたEメールは登録されていません。"
-      render "company_registration/input_user_email" and return
-    end
-    company_registration
-    if user_signed_in?
-      flash[:success] = "企業情報が登録されました。マイページから企業ページにアクセスしてください。"
-      redirect_to root_url
-    else
-      flash[:success] = "企業情報が登録されました。マイページから企業ページにアクセスしてください。"
-      redirect_to new_user_session_path
     end
   end
   

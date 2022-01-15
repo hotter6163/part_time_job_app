@@ -2,8 +2,8 @@ require "test_helper"
 
 class CompanyRegistrationTest < ActionDispatch::IntegrationTest
   def setup
-    @company_name = "company"
-    @branch_name = "branch"
+    @company_name = "test_company"
+    @branch_name = "test_branch"
   end
   
   test "company_registration with existing user" do
@@ -30,20 +30,23 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     
     # 既存のユーザーを選択
     post selecter_path, params: { user_select: "existing" }
-    assert_redirected_to input_user_email_path
+    assert_redirected_to new_user_session_path
     follow_redirect!
     
-    # 登録されていないEメールを送信
-    post search_user_path, params: { email: "invalid@example.com" }
-    assert_template "company_registration/input_user_email"
+    # 誤ったログイン情報を送信
+    assert_no_difference ['Company.count', 'Branch.count'] do
+      post user_session_path, params: { user: { email: 'wrong@example.com',
+                                                password: 'password' } }
+    end
+    assert !!session[:company_registration]
     
-    # 登録されているEメールを送信
+    # 正しいログイン情報を送信
     user = users(:user1)
     assert_difference ['Company.count', 'Branch.count'], 1 do
-      post search_user_path, params: { email: user.email }
+      post user_session_path, params: { user: { email: user.email,
+                                                password: 'password' } }
     end
     assert_nil session[:company_registration]
-    assert_redirected_to new_user_session_path
   end
   
   test "company_registration with new user" do
@@ -56,6 +59,17 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     assert_redirected_to new_user_registration_path
     follow_redirect!
     
+    # ユーザーの情報に誤りがある
+    assert_no_difference ['User.count', 'Company.count', 'Branch.count'] do
+      post user_registration_path, params: { user: {  last_name: "  ",
+                                                      first_name: "  ",
+                                                      email: "test@example",
+                                                      password: "password",
+                                                      password_confirmation: "pass" } }
+    end
+    assert !!session[:company_registration]
+    
+    # 正しいユーザー情報を送信
     assert_difference ['User.count', 'Company.count', 'Branch.count'], 1 do
       post user_registration_path, params: { user: {  last_name: "example",
                                                           first_name: "test",
