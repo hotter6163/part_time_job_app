@@ -19,7 +19,24 @@ class User < ApplicationRecord
   devise  :database_authenticatable, :registerable,
           :recoverable, :rememberable, :validatable,
           :timeoutable
-          
+  
+  def full_name
+    "#{last_name} #{first_name}"
+  end
+  
+  def branches
+    sql = " select  companies.name as company_name,
+                    branches.id as branch_id,
+                    branches.name as branch_name,
+                    relationships.master,
+                    relationships.admin
+            from ( select id from users where id = #{id} ) as user
+            inner join relationships on user.id = relationships.user_id
+            inner join branches on relationships.branch_id = branches.id
+            inner join companies on branches.company_id = companies.id"
+    ActiveRecord::Base.connection.select_all(sql)
+  end
+   
   private
     def downcase_email
       self.email = email.downcase

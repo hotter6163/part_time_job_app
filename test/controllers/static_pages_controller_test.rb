@@ -13,15 +13,8 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
   test "should get home with login" do
     user = users(:user)
     sign_in(user)
-    sql = " select  relationships.master, 
-                    relationships.admin, 
-                    branches.name as branch_name,
-                    branches.id as branch_id
-            from  users 
-                  inner join relationships on users.id = relationships.user_id 
-                  inner join branches on relationships.branch_id = branches.id 
-            where user_id = #{user.id}"
-    branches = ActiveRecord::Base.connection.select_all(sql)
+    get root_url
+    branches = user.branches
     branches.each do |branch|
       assert_match branch["branch_name"], response.body
       if branch["admin"] == 1
