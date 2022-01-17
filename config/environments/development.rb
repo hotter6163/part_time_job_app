@@ -35,6 +35,10 @@ Rails.application.configure do
 
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
+  
+  # メールのプレビュー設定
+  host = 'adc2d950eb46400a93bd79736ce70936.vfs.cloud9.ap-northeast-1.amazonaws.com/' # ここをコピペすると失敗します。自分の環境のホストに変えてください。
+  config.action_mailer.default_url_options = { host: host, protocol: 'https' }
 
   config.action_mailer.perform_caching = false
 
