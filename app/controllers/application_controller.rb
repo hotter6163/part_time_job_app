@@ -24,23 +24,6 @@ class ApplicationController < ActionController::Base
       company = Company.find_by(session[:company_registration]["company"]) || Company.create(session[:company_registration]["company"])
       branch = company.branches.create(session[:company_registration]["branch"])
       session[:company_registration] = nil
-      save_relationship(branch, master: true)
-    end
-    
-    def save_relationship(branch_id, master: false)
-      unless branch = Branch.find_by(id: branch_id)
-        return
-      end
-      @relationship = new_relationship(branch, master)
-      @relationship.save if @relationship.valid?
-    end
-    
-    def new_relationship(branch, master)
-      result = branch.relationships.build(user: current_user)
-      if master && !Relationship.exist_master?(branch)
-        result.master = true
-        result.admin = true
-      end
-      result
+      Relationship.create(user: current_user, branch: branch, master: true, admin: true)
     end
 end

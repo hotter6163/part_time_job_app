@@ -2,10 +2,13 @@ class RelationshipsController < ApplicationController
   before_action :authenticate_user!
   
   def create
-    if request[:master] == "1"
-      save_relationship request[:branch_id], master: true
+    unless branch = Branch.find_by(id: request[:branch_id])
+      return
+    end
+    if params[:master] == "1"
+      @relationship = Relationship.create(user: current_user, branch: branch, master: true, admin: true)
     else
-      save_relationship request[:branch_id]
+      @relationship = Relationship.create(user: current_user, branch: branch)
     end
   end
 end
