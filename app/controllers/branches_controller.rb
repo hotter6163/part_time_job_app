@@ -9,6 +9,7 @@ class BranchesController < ApplicationController
   end
   
   def send_email
+    
   end
   
   private
