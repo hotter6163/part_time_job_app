@@ -1,8 +1,12 @@
-master_relationship_for_branch1:
+master_relationship_for_branch:
   branch: branch
   user: user
   master: true
   admin: true
+
+employee_relationship_for_user:
+  branch: branch1
+  user: user
   
 <% User.all[0..9].each_with_index do |user, i| %>
 employee_relationship_<%= i %>:

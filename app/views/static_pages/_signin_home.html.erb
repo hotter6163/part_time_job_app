@@ -1,0 +1,15 @@
+<table>
+  <tr>
+    <th>企業</th>
+    <th></th>
+  </tr>
+  <% @branches.each do |branch| %>
+    <tr>
+      <td><%= branch["branch_name"] %></td>
+      <td><%= link_to "シフトを提出する", "#" %></td>
+      <% if branch["admin"] == 1 %>
+        <td><%= link_to  "企業ページへ", branch_path(branch["branch_id"]) %></td>
+      <% end %>
+    </tr>
+  <% end %>
+</table>

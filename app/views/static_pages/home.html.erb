@@ -1,19 +1,10 @@
 <% if user_signed_in? %>
-  
+  <%= render 'static_pages/signin_home' %>
 <% else %>
-  <div class="center jumbotron">
-    <h1 class="page-title"><アルバイト管理システム>へ<br>ようこそ！！</h1>
-    
-    <h2>初めて利用する方は、
-    管理者を登録してください。</h2>
-    
-    <h2>既にアカウントをお持ちの方は、
-    右上からログインしてください。</h2>
-    
-    <%= link_to "企業を登録する", input_company_path, class: "btn btn-lg btn-primary" %>
-    <%= link_to "ユーザーを登録する", new_user_registration_path, class: "btn btn-lg btn-primary" %>
-  </div>
+  <%= render 'static_pages/signout_home' %>
 <% end %>
+
+
 
 
 

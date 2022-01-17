@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :branches, only: [:show]
   
   # 企業登録のためのルーティング
   get   'company_registration/input_branch',      to: 'company_registration#input_branch',      as: :input_branch
