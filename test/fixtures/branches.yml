@@ -3,6 +3,10 @@ branch_have_no_relationship:
   name: branch_have_no_relationship
   company: company1
 
+branch:
+  name: branch
+  company: company
+
 branch1:
   name: branch1
   company: company1

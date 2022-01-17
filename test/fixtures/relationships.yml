@@ -1,11 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
-# This model initially had no columns defined. If you add columns to the
-# model remove the '{}' from the fixture names and add the columns immediately
-# below each fixture, per the syntax in the comments below
-#
-one: {}
-# column: value
-#
-two: {}
-# column: value
+master_relationship_for_branch1:
+  branch: branch
+  user: user
+  master: true
+  admin: true
+  
+<% User.all[0..9].each_with_index do |user, i| %>
+employee_relationship_<%= i %>:
+  branch: branch
+  user: <%= user %>
+<% end %>

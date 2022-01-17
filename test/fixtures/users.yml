@@ -3,10 +3,23 @@ user_have_no_relationship:
   last_name: no_relationship
   email: user_have_no_relationship@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
-  
+
+user:
+  first_name: user
+  last_name: sample
+  email: user@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+
 user1:
   first_name: user
   last_name: <%= 1.to_s %>
   email: user1@example.com
   encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
 
+<% 30.times do |i| %>
+user_<%= i %>:
+  first_name: <%= i %>
+  last_name: user
+  email: user_<%= i %>@example.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'password') %>
+<% end %>
