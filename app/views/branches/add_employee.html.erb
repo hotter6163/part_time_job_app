@@ -1,0 +1,10 @@
+<h1><%= @branch.company_name %></h1>
+
+<h2>追加する従業員のメールアドレスを入力してください</h2>
+
+<%= form_with url: send_email_branch_path(@branch), local: true do |f| %>
+  <%= f.label :email %>
+  <%= f.email_field :email, class: 'form-control' %>
+  
+  <%= f.submit "従業員を登録する", class: "btn btn-primary" %>
+<% end %>

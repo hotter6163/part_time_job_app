@@ -1,9 +1,8 @@
 class ApplicationController < ActionController::Base
-  require 'uri'
-  require 'net/http'
-  
   before_action :configure_permitted_parameters, if: :devise_controller?
 
+  include BranchesHelper
+  
   private
     # 新規登録時のストロングパラメータに「last_name, first_name」を追加
     def configure_permitted_parameters
