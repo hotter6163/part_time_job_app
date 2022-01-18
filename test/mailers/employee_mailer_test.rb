@@ -1,20 +1,25 @@
 require "test_helper"
 
 class EmployeeMailerTest < ActionMailer::TestCase
+  def setup
+    @branch = branches(:branch)
+    @user = users(:user_have_no_relationship)
+  end
+  
   test "add_new_user" do
-    mail = EmployeeMailer.add_new_user
-    assert_equal "Add new user", mail.subject
-    assert_equal ["to@example.org"], mail.to
-    assert_equal ["from@example.com"], mail.from
-    assert_match "Hi", mail.body.encoded
+    new_user_email = "new_user@example.com"
+    mail = EmployeeMailer.add_new_user(@branch, new_user_email)
+    assert_equal "#{@branch.company_name}から従業員登録の申請", mail.subject
+    assert_equal [new_user_email], mail.to
+    assert_equal ["noreply@example.com"], mail.from
+    assert_match "branch_id=#{@branch.id}", mail.body.encoded
   end
 
   test "add_existing_user" do
-    mail = EmployeeMailer.add_existing_user
-    assert_equal "Add existing user", mail.subject
-    assert_equal ["to@example.org"], mail.to
-    assert_equal ["from@example.com"], mail.from
-    assert_match "Hi", mail.body.encoded
+    mail = EmployeeMailer.add_existing_user(@branch, @user)
+    assert_equal "#{@branch.company_name}から従業員登録の申請", mail.subject
+    assert_equal [@user.email], mail.to
+    assert_equal ["noreply@example.com"], mail.from
+    assert_match "branch_id=#{@branch.id}", mail.body.encoded
   end
-
 end

@@ -34,4 +34,18 @@ class BranchesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input[name="email"]'
     assert_select 'input[type="submit"][name="commit"]'
   end
+  
+  # send_emailに不適切なメールアドレスが送信されたらリダイレクト
+  test "should redirect send_email when send invalid email" do 
+    invalid_addresses = %w[user@example,com user_at_foo.org user.name@example.
+                           foo@bar_baz.com foo@bar+baz.com]
+    invalid_addresses.each do |invalid_address|
+      assert_no_difference 'ActionMailer::Base.deliveries.size' do
+        post send_email_branch_path(@admin_branch), params: { email: invalid_address }
+      end
+      assert_template 'branches/add_employee'
+      assert_nil flash[:success]
+      assert !!flash[:denger]
+    end
+  end
 end

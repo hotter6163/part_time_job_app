@@ -37,8 +37,17 @@ class User < ApplicationRecord
     ActiveRecord::Base.connection.select_all(sql)
   end
    
+  # 特異メソッド
+  class << self
+    def valid_email?(email)
+      VALID_EMAIL_REGEX.match?(email)
+    end
+  end
+  
+  # プライベートメソッド  
   private
     def downcase_email
       self.email = email.downcase
     end
+  
 end

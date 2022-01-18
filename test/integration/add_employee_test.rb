@@ -14,6 +14,7 @@ class AddEmployeeTest < ActionDispatch::IntegrationTest
     get add_employee_branch_path(@branch)
     post send_email_branch_path(@branch), params: { email: 'new_user@example.com' }
     assert_equal 1, ActionMailer::Base.deliveries.size
+    assert !!flash[:success]
   end
   
   # ユーザー登録済みの従業員を登録
@@ -21,5 +22,6 @@ class AddEmployeeTest < ActionDispatch::IntegrationTest
     get add_employee_branch_path(@branch)
     post send_email_branch_path(@branch), params: { email: @employee.email }
     assert_equal 1, ActionMailer::Base.deliveries.size
+    assert !!flash[:success]
   end
 end

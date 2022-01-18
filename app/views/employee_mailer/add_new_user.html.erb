@@ -1,5 +1,3 @@
-<h1>Employee#add_new_user</h1>
+<h1><%= @branch.company_name %>への従業員登録を行ってください</h1>
 
-<p>
-  <%= @greeting %>, find me in app/views/employee_mailer/add_new_user.html.erb
-</p>
+<%= link_to "従業員登録を行う", new_user_registration_url(branch_id: @branch.id) %> 
