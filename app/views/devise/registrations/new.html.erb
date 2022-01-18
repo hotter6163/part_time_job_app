@@ -30,7 +30,11 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
   </div>
-
+  
+  <% if !!params[:branch_id] %>
+    <%= hidden_field_tag :branch_id, params[:branch_id].to_s %>
+  <% end %>
+  
   <div class="actions">
     <%= f.submit "Sign up", class: "btn btn-primary" %>
   </div>

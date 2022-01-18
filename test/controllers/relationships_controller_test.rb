@@ -1,8 +1,6 @@
 require "test_helper"
 
 class RelationshipsControllerTest < ActionDispatch::IntegrationTest
-  MAX_NUM = 100000
-  
   def setup
     @user = users(:user_have_no_relationship)
     @branch = branches(:branch_have_no_relationship)
@@ -55,17 +53,4 @@ class RelationshipsControllerTest < ActionDispatch::IntegrationTest
     assert_not relationship.master
     assert_not relationship.admin
   end
-  
-  private
-    def invalid_id
-      relationship_ids = Relationship.all.map(&:id)
-      result = 0
-      (0..MAX_NUM).reverse_each do |i|
-        result = i
-        if !relationship_ids.include?(result)
-          break
-        end
-      end
-      result
-    end
 end

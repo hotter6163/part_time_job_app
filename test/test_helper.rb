@@ -22,9 +22,23 @@ end
 
 class ActionDispatch::IntegrationTest
   include Warden::Test::Helpers
+  MAX_NUM = 100000
   
   def sign_in(user, password: 'password')
     post user_session_path, params: { user: { email: user.email,
                                               password: password } }
   end
+  
+  def invalid_id
+    relationship_ids = Relationship.all.map(&:id)
+    result = 0
+    (0..MAX_NUM).reverse_each do |i|
+      result = i
+      if !relationship_ids.include?(result)
+        break
+      end
+    end
+    result
+  end
+    
 end

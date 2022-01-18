@@ -21,6 +21,7 @@ class BranchesController < ApplicationController
       @branch.send_email_to_new_user(params[:email])
       flash[:success] = "新規のユーザー（#{params[:email]}）に従業員登録用のメールを送信しました。"
     end
+    render "branches/send_email"
   end
   
   private

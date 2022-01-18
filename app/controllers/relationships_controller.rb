@@ -1,11 +1,12 @@
 class RelationshipsController < ApplicationController
   before_action :authenticate_user!
+  brfore_action :find_branch, only: [:new]
   
   def new
   end
   
   def create
-    unless branch = Branch.find_by(id: request[:branch_id])
+    unless branch = Branch.find_by(id: params[:branch_id])
       return
     end
     if params[:master] == "1"

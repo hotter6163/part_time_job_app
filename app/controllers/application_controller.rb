@@ -25,4 +25,19 @@ class ApplicationController < ActionController::Base
       session[:company_registration] = nil
       Relationship.create(user: current_user, branch: branch, master: true, admin: true)
     end
+    
+    def create_relationship(branch_id)
+      if branch = Branch.find_by(id: branch_id)
+        @relationship = branch.relationships.create(user: current_user)
+      end
+    end
+    
+    def find_branch
+      if params[:branch_id]
+        unless Branch.find_by(id: params[:branch_id])
+          flash[:denger] = "支店IDが無効です"
+          redirect_to root_url 
+        end
+      end
+    end
 end
