@@ -42,11 +42,15 @@ class AddEmployeeTest < ActionDispatch::IntegrationTest
     assert_equal 1, ActionMailer::Base.deliveries.size
     assert !!flash[:success]
     assert_template "branches/send_email"
+    logout
     
+    new_employee = users(:user_have_no_relationship)
+    login_as(new_employee)
     get new_relationship_path(branch_id: @branch.id)
     assert_template "relationships/new"
     assert_select 'form[action=?]', relationships_path
     assert_select 'input[name=branch_id][type=hidden][value=?]', @branch.id.to_s
+    assert_select 'input[type="submit"][name="commit"]'
     
     assert_difference 'Relationship.count' do
       post relationships_path, params: { branch_id: @branch.id }

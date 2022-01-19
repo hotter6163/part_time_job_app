@@ -1,8 +1,9 @@
 class RelationshipsController < ApplicationController
   before_action :authenticate_user!
-  brfore_action :find_branch, only: [:new]
+  before_action :find_branch, only: [:new]
   
   def new
+    @branch = Branch.find_by(id: params[:branch_id])
   end
   
   def create

@@ -32,7 +32,7 @@
   </div>
   
   <% if !!params[:branch_id] %>
-    <%= hidden_field_tag :branch_id, params[:branch_id].to_s %>
+    <%= hidden_field_tag :branch_id, params[:branch_id] %>
   <% end %>
   
   <div class="actions">

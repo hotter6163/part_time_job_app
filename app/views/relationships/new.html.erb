@@ -1,0 +1,7 @@
+<h1><%= @branch.company_name %></h1>
+
+<%= form_with url: relationships_path, local: true do |f| %>
+  <%= hidden_field_tag :branch_id, params[:branch_id] %>
+  
+  <%= f.submit "#{@branch.company_name}へ従業員登録する", class: "btn btn-primary" %>
+<% end %>
