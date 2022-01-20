@@ -2,12 +2,17 @@ class BranchesController < ApplicationController
   before_action :authenticate_user!
   before_action :admin_user
   
+  # get branch_path(branch)
   def show
   end
   
+  # get add_employee_branch_path(branch)
+  # 追加する従業員のメールアドレスを入力
   def add_employee
   end
   
+  # post send_email_branch_path(branch)
+  # メールアドレスに対して従業員登録用のURLを送信
   def send_email
     unless User.valid_email?(params[:email])
       flash[:denger] = "正しいメースアドレスを入力してください。"
@@ -25,6 +30,7 @@ class BranchesController < ApplicationController
   end
   
   private
+    # ログインしているユーザーが管理者権限を持っているか確認
     def admin_user
       @branch = Branch.find_by(id: params[:id])
       unless admin_user?(user: current_user, branch: @branch)

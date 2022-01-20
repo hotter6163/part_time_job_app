@@ -2,10 +2,14 @@ class RelationshipsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_branch, only: [:new]
   
+  # get new_relationship_path
+  # 従業員登録するかの確認
   def new
     @branch = Branch.find_by(id: params[:branch_id])
   end
   
+  # post relationships_path
+  # 従業員の登録
   def create
     unless branch = Branch.find_by(id: params[:branch_id])
       return
