@@ -6,7 +6,7 @@ class UserTest < ActiveSupport::TestCase
                      password: "foobar", password_confirmation: "foobar")
   end
   
-  # 正しい場合、保存できるか
+  # バリデーションのテスト
   test "should be valid" do
     assert @user.valid?
   end
@@ -41,11 +41,13 @@ class UserTest < ActiveSupport::TestCase
     assert_not @user.valid?
   end
   
+  # メールアドレスが長すぎないか
   test "email should not be too long" do
     @user.email = "a" * 244 + "@example.com"
     assert_not @user.valid?
   end
 
+  # 正しい形式のメールアドレスが通る
   test "email validation should accept valid addresses" do
     valid_addresses = %w[user@sample.com USER@foo.COM A_US-ER@foo.bar.org
                          first.last@foo.jp alice+bob@baz.cn]
@@ -55,6 +57,7 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  # 不適切なメールアドレスが通らない
   test "email validation should reject invalid addresses" do
     invalid_addresses = %w[user@example,com user_at_foo.org user.name@example.
                            foo@bar_baz.com foo@bar+baz.com]
@@ -62,5 +65,11 @@ class UserTest < ActiveSupport::TestCase
       @user.email = invalid_address
       assert_not @user.valid?, "#{invalid_address.inspect} should be invalid"
     end
+  end
+  
+  # ----------------------------------------------
+  # メソッドのテスト
+  test "full_name" do
+    assert_equal "#{last_name} #{first_name}", @user.full_name
   end
 end

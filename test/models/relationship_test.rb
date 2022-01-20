@@ -7,6 +7,7 @@ class RelationshipTest < ActiveSupport::TestCase
     @relationship = Relationship.new(user_id: @user.id, branch_id: @branch.id)
   end
   
+  #バリデーションのテスト
   test "should be valid" do
     assert @relationship.valid?
   end
@@ -46,6 +47,8 @@ class RelationshipTest < ActiveSupport::TestCase
     end
   end
   
+  # ----------------------------------------------
+  # メソッドのテスト
   test "Relationship.exist_master?" do
     branch = branches(:branch_have_no_relationship)
     assert_not Relationship.exist_master?(branch)

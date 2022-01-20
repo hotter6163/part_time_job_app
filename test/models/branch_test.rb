@@ -5,7 +5,8 @@ class BranchTest < ActiveSupport::TestCase
     @company = companies(:company_have_no_branch)
     @branch = @company.branches.build(name: 'sample')
   end
-  
+
+  # バリデーションのテスト
   test "should be valid" do
     assert @branch.valid?
   end
@@ -50,5 +51,11 @@ class BranchTest < ActiveSupport::TestCase
     assert_difference 'Branch.count', -1 do
       @company.destroy
     end
+  end
+  
+  # ----------------------------------------------
+  # メソッドのテスト
+  test "company_name" do
+    assert_equal "#{@company.name} #{@branch.name}", @branch.company_name
   end
 end
