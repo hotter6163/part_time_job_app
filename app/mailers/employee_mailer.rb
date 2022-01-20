@@ -16,7 +16,7 @@ class EmployeeMailer < ApplicationMailer
   #
   #   en.employee_mailer.add_existing_user.subject
   #
-  既存ユーザーの従業員を登録するためのメールを送信
+  # 既存ユーザーの従業員を登録するためのメールを送信
   def add_existing_user(branch, user)
     @branch = branch
     @user = user
