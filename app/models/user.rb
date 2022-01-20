@@ -20,10 +20,12 @@ class User < ApplicationRecord
           :recoverable, :rememberable, :validatable,
           :timeoutable
   
+  # ユーザーのフルネームを返す
   def full_name
     "#{last_name} #{first_name}"
   end
   
+  # ユーザーが所属している企業一覧を返す
   def branches
     sql = " select  companies.name as company_name,
                     branches.id as branch_id,
@@ -39,6 +41,7 @@ class User < ApplicationRecord
    
   # 特異メソッド
   class << self
+    # メールアドレスの形式が正しいかの判定
     def valid_email?(email)
       VALID_EMAIL_REGEX.match?(email)
     end
@@ -46,6 +49,7 @@ class User < ApplicationRecord
   
   # プライベートメソッド  
   private
+    # メールアドレスの小文字化
     def downcase_email
       self.email = email.downcase
     end

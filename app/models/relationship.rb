@@ -10,6 +10,7 @@ class Relationship < ApplicationRecord
   
   # 特異メソッド
   class << self
+    # マスターユーザーが存在するかどうかの確認
     def exist_master?(branch)
       !!self.find_by(branch_id: branch.id, master: 1)
     end
