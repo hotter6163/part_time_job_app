@@ -11,9 +11,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    if save_new_user(sign_up_params)
-      create_relationship(params[:branch_id]) if !!params[:branch_id]
+    resource = create_new_user(sign_up_params)
+    yield resource if block_given?
+    if resource.persisted?
+      set_flash_message! :notice, :signed_up
+      sign_up(resource_name, resource)
       respond_with resource, location: after_sign_up_path_for(resource)
+      
+      company_registration if registrate_company?
+      create_relationship(params[:branch_id]) if !!params[:branch_id]
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+      respond_with resource
     end
   end
 
