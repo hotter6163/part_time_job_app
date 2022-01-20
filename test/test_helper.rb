@@ -18,6 +18,18 @@ class ActiveSupport::TestCase
   def is_logged_in?(body)
     body.include?(destroy_user_session_path)
   end
+  
+  def new_user_registration_path(hash={})
+    result = "/users/sign_up"
+    hash.each_with_index { |row, index| result += ( index == 0 ? "?#{row[0]}=#{row[1]}" : "=#{row[0]}=#{row[1]}") }
+    result
+  end
+  
+  def new_relationship_path(hash={})
+    result = "/relationships/new"
+    hash.each_with_index { |row, index| result += ( index == 0 ? "?#{row[0]}=#{row[1]}" : "=#{row[0]}=#{row[1]}") }
+    result
+  end
 end
 
 class ActionDispatch::IntegrationTest
