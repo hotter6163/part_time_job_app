@@ -70,6 +70,6 @@ class UserTest < ActiveSupport::TestCase
   # ----------------------------------------------
   # メソッドのテスト
   test "full_name" do
-    assert_equal "#{last_name} #{first_name}", @user.full_name
+    assert_equal "#{@user.last_name} #{@user.first_name}", @user.full_name
   end
 end
