@@ -10,13 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_06_110927) do
+ActiveRecord::Schema.define(version: 2022_01_22_053524) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "display_day", default: 1
+    t.time "start_of_business_hours"
+    t.time "end_of_business_hours"
+    t.integer "period_tuye", default: 0
     t.index ["company_id", "name"], name: "index_branches_on_company_id_and_name", unique: true
     t.index ["company_id"], name: "index_branches_on_company_id"
   end

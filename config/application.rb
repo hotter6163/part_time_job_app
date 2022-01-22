@@ -13,6 +13,9 @@ module PartTimeJobApp
     
     # 日本語対応
     config.i18n.default_locale = :ja
+    
+    # タイムゾーンの設定
+    config.time_zone = 'Tokyo'
 
     # Configuration for the application, engines, and railties goes here.
     #

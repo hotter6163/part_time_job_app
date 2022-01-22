@@ -7,6 +7,7 @@ class Branch < ApplicationRecord
   validates :name,    presence: true,
                       length: { maximum: 137 },
                       uniqueness: { scope: :company_id }
+  validates_associated :company
                       
   # 企業名＋支店名を返す
   def company_name
