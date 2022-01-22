@@ -2,10 +2,12 @@
 branch_have_no_relationship:
   name: branch_have_no_relationship
   company: company1
+  display_day: 0
 
 branch:
   name: branch
   company: company
+  display_day: 0
 
 branch1:
   name: branch1

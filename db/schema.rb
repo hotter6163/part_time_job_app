@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_22_053524) do
+ActiveRecord::Schema.define(version: 2022_01_22_070057) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -30,6 +30,18 @@ ActiveRecord::Schema.define(version: 2022_01_22_053524) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_companies_on_name", unique: true
+  end
+
+  create_table "periods", force: :cascade do |t|
+    t.integer "branch_id"
+    t.date "deadline"
+    t.date "start"
+    t.date "end"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["branch_id", "deadline"], name: "index_periods_on_branch_id_and_deadline", unique: true
+    t.index ["branch_id", "start"], name: "index_periods_on_branch_id_and_start", unique: true
+    t.index ["branch_id"], name: "index_periods_on_branch_id"
   end
 
   create_table "relationships", force: :cascade do |t|
@@ -64,6 +76,7 @@ ActiveRecord::Schema.define(version: 2022_01_22_053524) do
   end
 
   add_foreign_key "branches", "companies"
+  add_foreign_key "periods", "branches"
   add_foreign_key "relationships", "branches"
   add_foreign_key "relationships", "users"
 end
