@@ -4,6 +4,7 @@ class User < ApplicationRecord
   
   # モデルの関係性
   has_many :relationships, dependent: :destroy
+  has_many :shift_submissions, dependent: :destroy
   
   # 独自のカラムのバリデーション
   validates :first_name,  presence: true, 

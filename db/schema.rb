@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_23_012917) do
+ActiveRecord::Schema.define(version: 2022_01_23_013606) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -76,6 +76,16 @@ ActiveRecord::Schema.define(version: 2022_01_23_012917) do
     t.index ["user_id"], name: "index_relationships_on_user_id"
   end
 
+  create_table "shift_submissions", force: :cascade do |t|
+    t.integer "period_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["period_id", "user_id"], name: "index_shift_submissions_on_period_id_and_user_id", unique: true
+    t.index ["period_id"], name: "index_shift_submissions_on_period_id"
+    t.index ["user_id"], name: "index_shift_submissions_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "first_name", null: false
     t.string "last_name", null: false
@@ -114,6 +124,8 @@ ActiveRecord::Schema.define(version: 2022_01_23_012917) do
   add_foreign_key "periods", "branches"
   add_foreign_key "relationships", "branches"
   add_foreign_key "relationships", "users"
+  add_foreign_key "shift_submissions", "periods"
+  add_foreign_key "shift_submissions", "users"
   add_foreign_key "weeklies", "branches"
   add_foreign_key "weeklies", "periods"
 end
