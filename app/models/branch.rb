@@ -4,6 +4,7 @@ class Branch < ApplicationRecord
   has_many :relationships, dependent: :destroy
   has_many :periods, dependent: :destroy
   has_one :weekly, dependent: :destroy
+  has_one :monthly, dependent: :destroy
   
   # バリデーション
   validates :name,    presence: true,

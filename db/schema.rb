@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_23_013606) do
+ActiveRecord::Schema.define(version: 2022_01_23_014832) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -76,6 +76,17 @@ ActiveRecord::Schema.define(version: 2022_01_23_013606) do
     t.index ["user_id"], name: "index_relationships_on_user_id"
   end
 
+  create_table "shift_requests", force: :cascade do |t|
+    t.integer "shift_submission_id", null: false
+    t.integer "date"
+    t.time "start_time"
+    t.time "end_time"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["shift_submission_id", "date"], name: "index_shift_requests_on_shift_submission_id_and_date", unique: true
+    t.index ["shift_submission_id"], name: "index_shift_requests_on_shift_submission_id"
+  end
+
   create_table "shift_submissions", force: :cascade do |t|
     t.integer "period_id", null: false
     t.integer "user_id", null: false
@@ -124,6 +135,7 @@ ActiveRecord::Schema.define(version: 2022_01_23_013606) do
   add_foreign_key "periods", "branches"
   add_foreign_key "relationships", "branches"
   add_foreign_key "relationships", "users"
+  add_foreign_key "shift_requests", "shift_submissions"
   add_foreign_key "shift_submissions", "periods"
   add_foreign_key "shift_submissions", "users"
   add_foreign_key "weeklies", "branches"
