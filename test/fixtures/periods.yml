@@ -3,11 +3,11 @@
 one:
   branch: branch
   deadline: 2022-01-22
-  start: 2022-01-22
-  end: 2022-01-22
+  start_date: 2022-01-22
+  end_date: 2022-01-22
 
 two:
   branch: branch
   deadline: 2022-01-25
-  start: 2022-01-25
-  end: 2022-01-28
+  start_date: 2022-01-25
+  end_date: 2022-01-28

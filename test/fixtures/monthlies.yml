@@ -2,10 +2,8 @@
 
 one:
   branch: branch
-  period: one
-  type: 1
+  period_num: 1
 
 two:
   branch: branch
-  period: two
-  type: 2
+  period_num: 2

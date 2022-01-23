@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_23_014832) do
+ActiveRecord::Schema.define(version: 2022_01_23_032311) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 2022_01_23_014832) do
   create_table "monthlies", force: :cascade do |t|
     t.integer "branch_id", null: false
     t.integer "period_id"
-    t.integer "type", default: 1
+    t.integer "period_num", default: 1
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["branch_id"], name: "index_monthlies_on_branch_id"
@@ -55,12 +55,12 @@ ActiveRecord::Schema.define(version: 2022_01_23_014832) do
   create_table "periods", force: :cascade do |t|
     t.integer "branch_id"
     t.date "deadline"
-    t.date "start"
-    t.date "end"
+    t.date "start_date"
+    t.date "end_date"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["branch_id", "deadline"], name: "index_periods_on_branch_id_and_deadline", unique: true
-    t.index ["branch_id", "start"], name: "index_periods_on_branch_id_and_start", unique: true
+    t.index ["branch_id", "start_date"], name: "index_periods_on_branch_id_and_start_date", unique: true
     t.index ["branch_id"], name: "index_periods_on_branch_id"
   end
 
