@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_23_001223) do
+ActiveRecord::Schema.define(version: 2022_01_23_011114) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -20,7 +20,7 @@ ActiveRecord::Schema.define(version: 2022_01_23_001223) do
     t.integer "display_day", default: 1
     t.time "start_of_business_hours"
     t.time "end_of_business_hours"
-    t.integer "period_tuye", default: 0
+    t.integer "period_type", default: 0
     t.index ["company_id", "name"], name: "index_branches_on_company_id_and_name", unique: true
     t.index ["company_id"], name: "index_branches_on_company_id"
   end
@@ -30,6 +30,16 @@ ActiveRecord::Schema.define(version: 2022_01_23_001223) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_companies_on_name", unique: true
+  end
+
+  create_table "monthlies", force: :cascade do |t|
+    t.integer "branch_id", null: false
+    t.integer "period_id"
+    t.integer "type", default: 1
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["branch_id"], name: "index_monthlies_on_branch_id"
+    t.index ["period_id"], name: "index_monthlies_on_period_id"
   end
 
   create_table "periods", force: :cascade do |t|
@@ -88,6 +98,8 @@ ActiveRecord::Schema.define(version: 2022_01_23_001223) do
   end
 
   add_foreign_key "branches", "companies"
+  add_foreign_key "monthlies", "branches"
+  add_foreign_key "monthlies", "periods"
   add_foreign_key "periods", "branches"
   add_foreign_key "relationships", "branches"
   add_foreign_key "relationships", "users"
