@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  monthly: one
+  start_day: 1
+  end_day: 1
+  deadline_day: 1
+
+two:
+  monthly: two
+  start_day: 1
+  end_day: 1
+  deadline_day: 1
