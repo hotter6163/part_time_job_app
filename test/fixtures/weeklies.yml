@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  branch: branch
+  start_day: 1
+  deadline_day: 1
+  period: one
+  num_of_weeks: 1
+
+two:
+  branch: branch1
+  start_day: 1
+  deadline_day: 1
+  period: two
+  num_of_weeks: 1

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_22_070057) do
+ActiveRecord::Schema.define(version: 2022_01_23_001223) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -75,8 +75,22 @@ ActiveRecord::Schema.define(version: 2022_01_22_070057) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "weeklies", force: :cascade do |t|
+    t.integer "branch_id"
+    t.integer "start_day"
+    t.integer "deadline_day"
+    t.integer "period_id"
+    t.integer "num_of_weeks"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["branch_id"], name: "index_weeklies_on_branch_id"
+    t.index ["period_id"], name: "index_weeklies_on_period_id"
+  end
+
   add_foreign_key "branches", "companies"
   add_foreign_key "periods", "branches"
   add_foreign_key "relationships", "branches"
   add_foreign_key "relationships", "users"
+  add_foreign_key "weeklies", "branches"
+  add_foreign_key "weeklies", "periods"
 end
