@@ -59,17 +59,45 @@ class BranchTest < ActiveSupport::TestCase
     end
   end
   
+  # period_typeは0か1のみ
+  test "period_type should be 0 or 1" do
+    (-2..3).to_a.each do |i|
+      @branch.period_type = i
+      if (0..1).to_a.include?(i)
+        assert @branch.valid?
+      else
+        assert_not @branch.valid?
+      end
+    end
+  end
+  
+  # display_dayの値は、0～6（曜日出力用）のみ
+  test "display_day inclusion (0..6)" do
+    (-3..8).to_a.each do |i|
+      @branch.display_day = i
+      if (0..6).to_a.include?(i)
+        assert @branch.valid?
+      else
+        assert_not @branch.valid?
+      end
+    end
+  end
+        
+  
+  # 支店情報をまとめてセーブでき、支店情報を削除することで、まとめて削除できる
   test "should destroy has_one or has_many models when branch destroy" do
     weekly = @branch.build_weekly(start_day: 1, deadline_day: 7, num_of_weeks: 2)
     monthly = @branch.build_monthly(period_num: 1)
+    monthly_period = monthly.build_monthly_period(start_day: 1, end_day: 30, deadline_day: 15)
     period = @branch.periods.build(deadline: '2022-01-02', start_date: '2022-01-10', end_date: '2022-01-10')
-    assert_difference ['Weekly.count', 'Monthly.count'], 1 do
+    assert_difference ['Weekly.count', 'Monthly.count', 'MonthlyPeriod.count'], 1 do
       @branch.save
     end
     assert weekly.persisted?
     assert monthly.persisted?
+    assert monthly_period.persisted?
     period.save
-    assert_difference ['Weekly.count', 'Monthly.count', 'Period.count'], -1 do
+    assert_difference ['Weekly.count', 'Monthly.count', 'Period.count', 'MonthlyPeriod.count'], -1 do
       @branch.destroy
     end
   end

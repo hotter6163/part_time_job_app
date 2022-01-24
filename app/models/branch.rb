@@ -7,11 +7,13 @@ class Branch < ApplicationRecord
   has_one :monthly, dependent: :destroy
   
   # バリデーション
+  validates_associated :company
   validates :name,    presence: true,
                       length: { maximum: 137 },
                       uniqueness: { scope: :company_id }
-  validates_associated :company
-                      
+  validates :display_day, inclusion: { in: (0..6).to_a }
+  validates :period_type, inclusion: { in: [0, 1] } # 0なら週次、1なら月次設定
+  
   # 企業名＋支店名を返す
   def company_name
     "#{company.name} #{name}"

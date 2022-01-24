@@ -4,7 +4,7 @@ one:
   branch: branch
   deadline: 2022-01-22
   start_date: 2022-01-22
-  end_date: 2022-01-22
+  end_date: 2022-01-23
 
 two:
   branch: branch
