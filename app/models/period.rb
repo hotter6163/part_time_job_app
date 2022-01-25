@@ -5,4 +5,5 @@ class Period < ApplicationRecord
   
   # バリデーション
   validates :deadline, uniqueness: { scope: :branch_id }
+  validates :start_date, uniqueness: { scope: :branch_id }
 end

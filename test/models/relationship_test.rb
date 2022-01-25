@@ -42,6 +42,7 @@ class RelationshipTest < ActiveSupport::TestCase
   # ブランチが削除された時にrelationshipも削除される
   test "should destroy relationship when branch destroy" do
     @relationship.save
+    byebug
     assert_difference "Relationship.count", -1 do
       @branch.destroy
     end

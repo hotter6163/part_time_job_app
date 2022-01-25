@@ -1,9 +1,9 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  branch: branch
+  branch: branch1
   period_num: 1
 
 two:
-  branch: branch
+  branch: branch_have_no_relationship
   period_num: 2

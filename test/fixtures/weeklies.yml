@@ -3,11 +3,7 @@
 one:
   branch: branch
   start_day: 1
-  deadline_day: 1
-  num_of_weeks: 1
+  deadline_day: 7
+  num_of_weeks: 2
 
-two:
-  branch: branch1
-  start_day: 1
-  deadline_day: 1
-  num_of_weeks: 1
+

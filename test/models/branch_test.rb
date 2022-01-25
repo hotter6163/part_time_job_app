@@ -31,7 +31,7 @@ class BranchTest < ActiveSupport::TestCase
   
   # 別の会社の同じ支社名を登録できる
   test "should be valid when another company and same branch" do
-    another_company = companies(:company1)
+    another_company = companies(:company)
     another_branch = another_company.branches.build(name: @branch.name)
     another_branch.save
     assert @branch.valid?

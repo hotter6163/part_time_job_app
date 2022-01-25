@@ -3,11 +3,17 @@
 one:
   monthly: one
   start_day: 1
-  end_day: 1
-  deadline_day: 1
+  end_day: 30
+  deadline_day: 15
 
 two:
   monthly: two
   start_day: 1
-  end_day: 1
-  deadline_day: 1
+  end_day: 15
+  deadline_day: 20
+
+three:
+  monthly: two
+  start_day: 16
+  end_day: 30
+  deadline_day: 5

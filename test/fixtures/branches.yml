@@ -1,22 +1,25 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 branch_have_no_relationship:
   name: branch_have_no_relationship
-  company: company1
+  company: company
   display_day: 0
+  start_of_business_hours: 10:00
+  end_of_business_hours: 24:00
+  period_type: 1
 
 branch:
   name: branch
   company: company
   display_day: 0
+  start_of_business_hours: 08:30
+  end_of_business_hours: 21:00
+  period_type: 0
 
 branch1:
   name: branch1
-  company: company1
+  company: company
+  display_day: 1
+  start_of_business_hours: 6:00
+  end_of_business_hours: 23:00
+  period_type: 1
 
-branch2:
-  name: branch2
-  company: company1
-
-branch3:
-  name: branch3
-  company: company1
