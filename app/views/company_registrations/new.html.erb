@@ -47,7 +47,7 @@
         <%= branch_form.label '半月ごと' %>
       </div>
       <div class="radio">
-        <%= branch_form.radio_button :period_type, 'one_week', class: 'form-control js-check', onclick: 'displayForm()' %>
+        <%= branch_form.radio_button :period_type, 'one_month', class: 'form-control js-check', onclick: 'displayForm()' %>
         <%= branch_form.label '1ヵ月ごと' %>
       </div>
     </div>
@@ -133,7 +133,7 @@
   
   <div id="one-month-form">
     1ヵ月
-    <%= fields_for :harf_month do |monthly_form| %>
+    <%= fields_for :one_month do |monthly_form| %>
       <div>
         <%= monthly_form.label :start_day, "シフト開始日" %>
         <%= monthly_form.select :start_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
@@ -149,6 +149,7 @@
     <% end %>
   </div>
   
+  <!--マスターユーザー-->
   <div>
     <h3>マスターユーザーの選択</h3>
     <%= fields_for :user do |user_form| %>

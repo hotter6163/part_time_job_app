@@ -7,6 +7,10 @@ class CompanyRegistrationsController < ApplicationController
     @monthly_period = @monthly.monthly_periods.build
   end
   
+  def create
+    byebug
+  end
+  
   private
     # 企業情報のストロングパラメータ
     def company_params
