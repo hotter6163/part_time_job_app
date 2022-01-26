@@ -1,6 +1,6 @@
 module ApplicationHelper
   include BranchesHelper
-  include CompanyRegistrationHelper
+  include CompanyRegistrationsHelper
   include RelationshipsHelper
   include StaticPagesHelper
   

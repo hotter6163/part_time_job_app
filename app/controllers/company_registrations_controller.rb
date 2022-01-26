@@ -1,4 +1,4 @@
-class CompanyRegistrationController < ApplicationController
+class CompanyRegistrationsController < ApplicationController
   def new
     @company = Company.new
     @branch = @company.branches.build

@@ -1,4 +1,4 @@
-module CompanyRegistrationHelper
+module CompanyRegistrationsHelper
   # sessionに企業登録の情報があるかどうか
   def have_name_in_session?(syn)
     !session[:company_registration].nil? && 
