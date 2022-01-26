@@ -4,6 +4,36 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @company_name = "test_company"
     @branch_name = "test_branch"
+    @company_registration_params = 
+        { company: {  name: 'new_company' },
+          branch: { name: 'new_brnach',
+                    start_of_business_hours: '08:30',
+                    end_of_business_hours: '21:00',
+                    period_type: 'two_weeks'
+                  },
+          one_week: { start_day: 1,
+                      start_date: '2022-01-31',
+                      deadline: 7
+                    },
+          two_weeks: {  start_day: 1,
+                        start_date: '2022-02-07',
+                        deadline: 7
+                      },
+          harf_month: { one: {  start_day: 1,
+                                end_day: 15,
+                                deadline: 20
+                              },
+                        twe: {  start_day: 16,
+                                end_day: 30,
+                                deadline: 5
+                              }
+                      },
+          one_month: {  start_day: 1,
+                        end_day: 30,
+                        deadline_day: 15
+                      },
+          user: { user_select: 'new'}
+        }
   end
   
   test "should get new" do 
@@ -47,5 +77,9 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'select[name=?]', 'one_month[start_day]'
     assert_select 'select[name=?]', 'one_month[end_day]'
     assert_select 'select[name=?]', 'one_month[deadline_day]'
+    
+    # マスターユーザー
+    assert_select 'input[type=radio][name=?][value=?]', 'user[user_select]', 'new'
+    assert_select 'input[type=radio][name=?][value=?]', 'user[user_select]', 'exist'
   end
 end
