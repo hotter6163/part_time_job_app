@@ -27,8 +27,16 @@ ja:
         updated_at: 更新日
         first_name: 名前
         last_name: 苗字
+      company:
+        name: 企業名
+      branch:
+        name: 店舗名
+        start_of_business_hours: 就業開始時間
+        end_of_business_hours: 就業終了時間
     models:
       user: ユーザー
+      company: 企業
+      branch: 店舗
   devise:
     confirmations:
       confirmed: メールアドレスが確認できました。

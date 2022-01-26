@@ -1,17 +1,212 @@
-<h1>企業登録</h1>
-<h2>企業情報を入力してください</h2>
+<h1 id="test">店舗情報登録</h1>
+<h2>店舗情報を入力してください</h2>
 
-<%= form_with(url: company_registration_path, local: true) do |f| %>
+<%= form_with(url: company_registrations_path, local: true) do |f| %>
   <%= render 'shared/error_messages', object: @company %>
   <%= render 'shared/error_messages', object: @branch %>
   <%= render 'shared/error_messages', object: @weekly %>
   <%= render 'shared/error_messages', object: @monthly %>
   <%= render 'shared/error_messages', object: @monthly_period %>
   
-  <%= field_for @company do |company_form| %>
-    <%= company_form.label :name %>
-    <%= company_form.text_field :name, class: 'form-control' %>
+  <!--企業情報-->
+  <%= fields_for @company do |company_form| %>
+    <div class="field">
+      <%= company_form.label :name %>
+      <%= company_form.text_field :name, class: 'form-control' %>
+    </div>
   <% end %>
   
-  <%= f.submit "Create my account", class: "btn btn-primary" %>
+  <!--店舗情報-->
+  <%= fields_for @branch do |branch_form| %>
+    <div class="field">
+      <%= branch_form.label :name %>
+      <%= branch_form.text_field :name, class: 'form-control' %>
+    </div>
+    <div class="field">
+      <%= branch_form.label :start_of_business_hours %>
+      <%= branch_form.time_field :start_of_business_hours, class: 'form-control' %>
+    </div>
+    
+    <div class="field">
+      <%= branch_form.label :end_of_business_hours %>
+      <%= branch_form.time_field :end_of_business_hours, class: 'form-control' %>
+    </div>
+    
+    <div class="field">
+      <h3>シフト提出期間</h3>
+      <div class="radio">
+        <%= branch_form.radio_button :period_type, 'one_week', class: 'form-control js-check', onclick: 'displayForm()', checked: true %>
+        <%= branch_form.label '1週間ごと' %>
+      </div>
+      <div class="radio">
+        <%= branch_form.radio_button :period_type, 'two_weeks', class: 'form-control js-check', onclick: 'displayForm()' %>
+        <%= branch_form.label '2週間ごと' %>
+      </div>
+      <div class="radio">
+        <%= branch_form.radio_button :period_type, 'harf_month', class: 'form-control js-check', onclick: 'displayForm()' %>
+        <%= branch_form.label '半月ごと' %>
+      </div>
+      <div class="radio">
+        <%= branch_form.radio_button :period_type, 'one_week', class: 'form-control js-check', onclick: 'displayForm()' %>
+        <%= branch_form.label '1ヵ月ごと' %>
+      </div>
+    </div>
+  <% end %>
+  
+  <!--monthly or weekly情報-->
+  <h3>シフト提出期間詳細</h3>
+  <div id="one-week-form">
+    1週間
+    <%= fields_for :one_week do |weekly_form| %>
+      <div>
+        <%= weekly_form.label :start_day, "シフト開始曜日" %>
+        <%= weekly_form.select :start_day, day_pull_down, include_blank: "シフト開始の曜日を選択して下さい", class: 'form-control' %>
+      </div>
+      <div>
+        <%= weekly_form.label :start_date, "このアプリを使って集めるシフトの開始日" %>
+        <%= weekly_form.date_field :start_date, class: 'form-control' %>
+      </div>
+      <div>
+        <%= weekly_form.label :deadline, "締め切り日（シフト開始曜日の何日前か）" %>
+        <%= weekly_form.number_field :deadline, in: 1..30, class: 'form-control' %> 
+      </div>
+    <% end %>
+  </div>
+  
+  <div id="two-weeks-form">
+    2週間
+    <%= fields_for :two_weeks do |weekly_form| %>
+      <div>
+        <%= weekly_form.label :start_day, "シフト開始曜日" %>
+        <%= weekly_form.select :start_day, day_pull_down, include_blank: "シフト開始の曜日を選択して下さい", class: 'form-control' %>
+      </div>
+      <div>
+        <%= weekly_form.label :start_date, "このアプリを使って集めるシフトの開始日" %>
+        <%= weekly_form.date_field :start_date, class: 'form-control' %>
+      </div>
+      <div>
+        <%= weekly_form.label :deadline, "締め切り日（シフト開始曜日の何日前か）" %>
+        <%= weekly_form.number_field :deadline, in: 1..30, class: 'form-control' %> 
+      </div>
+    <% end %>
+  </div>
+  
+  <div id="harf-month-form">
+    半月
+    <%= fields_for :harf_month do |monthly_form| %>
+      <div>
+        期間1
+        <%= monthly_form.fields_for :one do |one| %>
+          <div>
+            <%= one.label :start_day, "シフト開始日" %>
+            <%= one.select :start_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+          </div>
+          <div>
+            <%= one.label :end_day, "シフト終了日" %>
+            <%= one.select :end_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+          </div>
+          <div>
+            <%= one.label :deadline_day, "シフト締切日" %>
+            <%= one.select :deadline_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+          </div>
+        <% end %>
+      </div>
+      <div>
+        期間2
+        <%= monthly_form.fields_for :two do |two| %>
+          <div>
+            <%= two.label :start_day, "シフト開始日" %>
+            <%= two.select :start_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+          </div>
+          <div>
+            <%= two.label :end_day, "シフト終了日" %>
+            <%= two.select :end_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+          </div>
+          <div>
+            <%= two.label :deadline_day, "シフト締切日" %>
+            <%= two.select :deadline_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+  
+  <div id="one-month-form">
+    1ヵ月
+    <%= fields_for :harf_month do |monthly_form| %>
+      <div>
+        <%= monthly_form.label :start_day, "シフト開始日" %>
+        <%= monthly_form.select :start_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+      </div>
+      <div>
+        <%= monthly_form.label :end_day, "シフト終了日" %>
+        <%= monthly_form.select :end_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+      </div>
+      <div>
+        <%= monthly_form.label :deadline_day, "シフト締切日" %>
+        <%= monthly_form.select :deadline_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+      </div>
+    <% end %>
+  </div>
+  
+  <div>
+    <h3>マスターユーザーの選択</h3>
+    <%= fields_for :user do |user_form| %>
+      <div class="radio">
+        <%= user_form.radio_button :user_select, 'new', class: 'form-control', checked: true %>
+        <%= user_form.label :user_select, '新規のユーザーをマスターにする' %>
+      </div>
+      <div class="radio">
+        <%= user_form.radio_button :user_select, 'exist', class: 'form-control' %>
+        <%= user_form.label :user_select, '既存のユーザーをマスターにする' %>
+      </div>
+    <% end %>
+  </div>
+  
+  <%= f.submit "店舗情報を登録する", class: "btn btn-primary" %>
 <% end %>
+
+<script>
+  var oneWeekForm = document.getElementById('one-week-form');
+  var twoWeeksForm = document.getElementById('two-weeks-form');
+  var harfMonthForm = document.getElementById('harf-month-form');
+  var oneMonthForm = document.getElementById('one-month-form');
+  oneWeekForm.style.display = "block";
+  twoWeeksForm.style.display = "none";
+  harfMonthForm.style.display = "none";
+  oneMonthForm.style.display = "none";
+  
+  function displayForm() {
+    check = document.getElementsByClassName('js-check');
+    if (check[0].checked) {
+      oneWeekForm.style.display = "block";
+      twoWeeksForm.style.display = "none";
+      harfMonthForm.style.display = "none";
+      oneMonthForm.style.display = "none";
+    }
+    else if (check[1].checked) {
+      oneWeekForm.style.display = "none";
+      twoWeeksForm.style.display = "block";
+      harfMonthForm.style.display = "none";
+      oneMonthForm.style.display = "none";
+    }
+    else if (check[2].checked) {
+      oneWeekForm.style.display = "none";
+      twoWeeksForm.style.display = "none";
+      harfMonthForm.style.display = "block";
+      oneMonthForm.style.display = "none";
+    }
+    else if (check[3].checked) {
+      oneWeekForm.style.display = "none";
+      twoWeeksForm.style.display = "none";
+      harfMonthForm.style.display = "none";
+      oneMonthForm.style.display = "block";
+    }
+    else {
+      oneWeekForm.style.display = "none";
+      twoWeeksForm.style.display = "none";
+      harfMonthForm.style.display = "none";
+      oneMonthForm.style.display = "none";
+    }
+  }
+</script>
