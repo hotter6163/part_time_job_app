@@ -1,57 +1,10 @@
 class CompanyRegistrationController < ApplicationController
-  before_action :have_company_name, except: [:input_company, :create_company]
-  before_action :have_branch_name, except: [:input_company, :create_company, :input_branch, :create_branch]
-  
-  # get input_company
-  # 企業情報の入力
-  def input_company
+  def new
     @company = Company.new
-  end
-  
-  # post create_company
-  # 企業情報の確認
-  def create_company
-    @company = Company.find_by(company_params) || Company.new(company_params)
-    unless @company.valid?
-      render 'company_registration/input_company' and return
-    end
-    session[:company_registration] = { company: company_params }
-    redirect_to input_branch_path
-  end
-  
-  # get input_branch
-  # 支店情報の入力
-  def input_branch
-    @branch = Branch.new
-  end
-  
-  # post create_branch
-  # 支店情報の確認
-  def create_branch
-    @company = Company.find_by(session[:company_registration]["company"]) || Company.new(session[:company_registration]["company"])
-    @branch = @company.branches.build(branch_params)
-    unless @branch.valid?
-      render 'company_registration/input_branch' and return
-    end
-    session[:company_registration][:branch] = branch_params
-    redirect_to select_user_path
-  end
-  
-  # get select_user
-  # マスターユーザーの選択
-  def select_user
-  end
-  
-  # post selecter
-  # マスターユーザーの選択によってページを飛ばす
-  def selecter
-    if params[:user_select] == "new"
-      redirect_to new_user_registration_path
-    elsif params[:user_select] == "existing"
-      redirect_to new_user_session_path
-    else
-      render 'company_registration/select_user'
-    end
+    @branch = @company.branches.build
+    @weekly = @branch.build_weekly
+    @monthly = @branch.build_monthly
+    @monthly_period = @monthly.monthly_periods.build
   end
   
   private

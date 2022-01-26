@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # 企業登録のためのルーティング
-  resources :company_registration, only: [:new, :create]
+  resources :company_registrations, only: [:new, :create]
   
   resources :branches, only: [:show] do
     member do

@@ -1,0 +1,17 @@
+<h1>企業登録</h1>
+<h2>企業情報を入力してください</h2>
+
+<%= form_with(url: company_registration_path, local: true) do |f| %>
+  <%= render 'shared/error_messages', object: @company %>
+  <%= render 'shared/error_messages', object: @branch %>
+  <%= render 'shared/error_messages', object: @weekly %>
+  <%= render 'shared/error_messages', object: @monthly %>
+  <%= render 'shared/error_messages', object: @monthly_period %>
+  
+  <%= field_for @company do |company_form| %>
+    <%= company_form.label :name %>
+    <%= company_form.text_field :name, class: 'form-control' %>
+  <% end %>
+  
+  <%= f.submit "Create my account", class: "btn btn-primary" %>
+<% end %>
