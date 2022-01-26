@@ -11,7 +11,7 @@ class MonthlyTest < ActiveSupport::TestCase
       period_type: 0
       )
     @monthly = @branch.build_monthly(period_num: 1)
-    @monthly_period = @monthly.build_monthly_period(start_day: 1, end_day: 30, deadline_day: 15)
+    @monthly_period = @monthly.monthly_periods.build(start_day: 1, end_day: 30, deadline_day: 15)
   end
   
   test 'monthly and monthly_period should be valid' do 

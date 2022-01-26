@@ -88,7 +88,7 @@ class BranchTest < ActiveSupport::TestCase
   test "should destroy has_one or has_many models when branch destroy" do
     weekly = @branch.build_weekly(start_day: 1, deadline_day: 7, num_of_weeks: 2)
     monthly = @branch.build_monthly(period_num: 1)
-    monthly_period = monthly.build_monthly_period(start_day: 1, end_day: 30, deadline_day: 15)
+    monthly_period = monthly.monthly_periods.build(start_day: 1, end_day: 30, deadline_day: 15)
     period = @branch.periods.build(deadline: '2022-01-02', start_date: '2022-01-10', end_date: '2022-01-10')
     assert_difference ['Weekly.count', 'Monthly.count', 'MonthlyPeriod.count'], 1 do
       @branch.save

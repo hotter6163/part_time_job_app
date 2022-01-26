@@ -1,7 +1,7 @@
 class Monthly < ApplicationRecord
   # モデルの関係性
   belongs_to :branch
-  has_many :monthly_period, dependent: :destroy
+  has_many :monthly_periods, dependent: :destroy
   
   # バリデーション
   validates_associated :branch
