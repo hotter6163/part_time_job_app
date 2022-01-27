@@ -9,4 +9,13 @@ class SessionControllerTest < ActionDispatch::IntegrationTest
     end
     assert_equal 302, response.status
   end
+  
+  test "get new_user_session" do 
+    get new_user_session_path
+    assert_response :success
+    assert_select 'form[action=?]', user_session_path
+    assert_select 'input[type=email][name=?]', 'user[email]'
+    assert_select 'input[type=password][name=?]', 'user[password]'
+    assert_select 'input[type="submit"][name="commit"]'
+  end
 end

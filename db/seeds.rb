@@ -32,14 +32,14 @@ branch = company.branches.create!(
   display_day: 0,
   start_of_business_hours: '8:30',
   end_of_business_hours: '21:00',
-  period_tuye: 0
+  period_type: 0
 )
 other_branch = company.branches.create!(
   name: '栗東支店',
   display_day: 1,
   start_of_business_hours: '9:00',
   end_of_business_hours: '24:00',
-  period_tuye: 1
+  period_type: 1
 )
 
 # relationship

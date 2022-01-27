@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   include ApplicationHelper
+  include Devise::Controllers::SignInOut
   
   private
     # 新規登録時のストロングパラメータに「last_name, first_name」を追加

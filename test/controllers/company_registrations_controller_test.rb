@@ -188,6 +188,13 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
     get new_user_path
     assert_response :success
     assert_template 'company_registrations/new_user'
+    assert_select 'form[action=?]', company_registrations_path
+    assert_select 'input[type=text][name=?]', 'user[last_name]'
+    assert_select 'input[type=text][name=?]', 'user[first_name]'
+    assert_select 'input[type=email][name=?]', 'user[email]'
+    assert_select 'input[type=password][name=?]', 'user[password]'
+    assert_select 'input[type=password][name=?]', 'user[password_confirmation]'
+    assert_select 'input[type="submit"][name="commit"]'
   end
   
   # get exist_user
@@ -196,5 +203,9 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
     get exist_user_path
     assert_response :success
     assert_template 'company_registrations/exist_user'
+    assert_select 'form[action=?]', company_registrations_path
+    assert_select 'input[type=email][name=?]', 'user[email]'
+    assert_select 'input[type=password][name=?]', 'user[password]'
+    assert_select 'input[type="submit"][name="commit"]'
   end
 end

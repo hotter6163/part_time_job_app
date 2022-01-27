@@ -1,0 +1,10 @@
+<h2>マスターユーザーの登録</h2>
+<h3>ログイン情報を入力してください</h3>
+
+<%= form_with(url: company_registrations_path, scope: :user, local: true) do |f| %>
+  <%= render 'shared/new_sessions_form', form: f %>
+  
+  <div class="actions">
+    <%= f.submit "登録する", class: "btn btn-primary" %>
+  </div>
+<% end %>
