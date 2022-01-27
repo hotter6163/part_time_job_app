@@ -82,4 +82,17 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input[type=radio][name=?][value=?]', 'user[user_select]', 'new'
     assert_select 'input[type=radio][name=?][value=?]', 'user[user_select]', 'exist'
   end
+  
+  # createに正しい値が送信され、マスターが新規の時
+  # test "post valid params and user_select is new" do 
+  #   @company_registration_params[:user][:user_select] = "new"
+  #   post company_registrations_path, params: @company_registration_params
+  #   assert_redirected_to new_user_registration_path
+  # end
+  
+  # createに正しい値が送信され、マスターが既存の時
+  test "post valid params and user_select is exist" do
+    
+  end
+  
 end
