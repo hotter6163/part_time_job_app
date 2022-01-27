@@ -13,6 +13,11 @@ class RegistrationUserControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_template 'devise/registrations/new'
     assert_nil response.body.match(/name=\"branch_id\"/)
+    assert_select 'input[type=text][name=?]', 'user[last_name]'
+    assert_select 'input[type=text][name=?]', 'user[first_name]'
+    assert_select 'input[type=email][name=?]', 'user[email]'
+    assert_select 'input[type=password][name=?]', 'user[password]'
+    assert_select 'input[type=password][name=?]', 'user[password_confirmation]'
   end
   
   # branch_id付きget new

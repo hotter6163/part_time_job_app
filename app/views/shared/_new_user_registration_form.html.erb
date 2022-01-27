@@ -1,0 +1,29 @@
+<%= render "devise/shared/error_messages", resource: resource %>
+  
+<div class="field">
+  <%= form.label :last_name %><br />
+  <%= form.text_field :last_name, autofocus: true, autocomplete: "family-name", class: 'form-control' %>
+</div>
+
+<div class="field">
+  <%= form.label :first_name %><br />
+  <%= form.text_field :first_name, autocomplete: "given-name", class: 'form-control' %>
+</div>
+
+<div class="field">
+  <%= form.label :email %><br />
+  <%= form.email_field :email, autocomplete: "email", class: 'form-control' %>
+</div>
+
+<div class="field">
+  <%= form.label :password %>
+  <% if @minimum_password_length %>
+  <em>(最低<%= @minimum_password_length %>文字入力してください)</em>
+  <% end %><br />
+  <%= form.password_field :password, autocomplete: "new-password", class: 'form-control' %>
+</div>
+
+<div class="field">
+  <%= form.label :password_confirmation %><br />
+  <%= form.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
+</div>
