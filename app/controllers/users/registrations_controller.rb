@@ -5,9 +5,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_account_update_params, only: [:update]
   before_action :find_branch, only: [:new]
   
-  def new
-    super
-  end
+  # GET /resource/new
+  # def new
+  #   super
+  # end
 
   # POST /resource
   def create
@@ -18,7 +19,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       sign_up(resource_name, resource)
       respond_with resource, location: after_sign_up_path_for(resource)
       
-      company_registration if registrate_company?
       create_relationship(params[:branch_id]) if !!params[:branch_id]
     else
       clean_up_passwords resource

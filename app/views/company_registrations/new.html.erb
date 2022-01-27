@@ -1,12 +1,9 @@
 <h1 id="test">店舗情報登録</h1>
 <h2>店舗情報を入力してください</h2>
 
-<%= form_with(url: company_registrations_path, local: true) do |f| %>
+<%= form_with(url: check_company_registration_path, local: true) do |f| %>
   <%= render 'shared/error_messages', object: @company %>
   <%= render 'shared/error_messages', object: @branch %>
-  <%= render 'shared/error_messages', object: @weekly %>
-  <%= render 'shared/error_messages', object: @monthly %>
-  <%= render 'shared/error_messages', object: @monthly_period %>
   
   <!--企業情報-->
   <%= fields_for @company do |company_form| %>
@@ -67,8 +64,8 @@
         <%= weekly_form.date_field :start_date, class: 'form-control' %>
       </div>
       <div>
-        <%= weekly_form.label :deadline, "締め切り日（シフト開始曜日の何日前か）" %>
-        <%= weekly_form.number_field :deadline, in: 1..30, class: 'form-control' %> 
+        <%= weekly_form.label :deadline_day, "締め切り日（シフト開始曜日の何日前か）" %>
+        <%= weekly_form.number_field :deadline_day, in: 1..30, class: 'form-control' %> 
       </div>
     <% end %>
   </div>
@@ -85,8 +82,8 @@
         <%= weekly_form.date_field :start_date, class: 'form-control' %>
       </div>
       <div>
-        <%= weekly_form.label :deadline, "締め切り日（シフト開始曜日の何日前か）" %>
-        <%= weekly_form.number_field :deadline, in: 1..30, class: 'form-control' %> 
+        <%= weekly_form.label :deadline_day, "締め切り日（シフト開始曜日の何日前か）" %>
+        <%= weekly_form.number_field :deadline_day, in: 1..30, class: 'form-control' %> 
       </div>
     <% end %>
   </div>

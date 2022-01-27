@@ -1,6 +1,8 @@
 <h2>ユーザー登録</h2>
 
 <%= form_with(model: resource, url: user_registration_path, scope: :user, local: true) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+  
   <%= render "shared/new_user_registration_form", form: f %>
   
   <% if !!params[:branch_id] %>
