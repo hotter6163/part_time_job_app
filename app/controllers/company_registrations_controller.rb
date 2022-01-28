@@ -1,5 +1,7 @@
 class CompanyRegistrationsController < ApplicationController
   before_action :have_company_registration_session, only: [:new_user, :exist_user, :create]
+  before_action :new_user_filter, only: [:new_user]
+  before_action :exist_user_filter, only: [:exist_user]
   
   def new
     @company = Company.new
@@ -45,6 +47,11 @@ class CompanyRegistrationsController < ApplicationController
   end
   
   def create
+    if session[:user] == "new"
+      
+    elsif session[:user] == "exist"
+      
+    end
   end
   
   private
@@ -110,9 +117,22 @@ class CompanyRegistrationsController < ApplicationController
       params.require(:one_month).permit(:start_day, :end_day, :deadline_day)
     end
     
+    
     # before_action
     def have_company_registration_session
       unless !!session[:company_registration]
+        redirect_to new_company_registration_path
+      end
+    end
+    
+    def new_user_filter
+      unless session[:user] == "new"
+        redirect_to new_company_registration_path
+      end
+    end
+    
+    def exist_user_filter
+      unless session[:user] == "exist"
         redirect_to new_company_registration_path
       end
     end

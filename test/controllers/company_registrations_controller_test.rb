@@ -34,6 +34,17 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
                       },
           user: { user_select: 'new'}
         }
+    @new_user_params = {
+      user: {
+        first_name: "test",
+        last_name: "test",
+        email: "test@test.com",
+        password: "password",
+        password_confirmation: "password"
+      }
+    }
+    user = users(:user)
+    @exist_user_params = { user: { email: user.email, password: "password" } }
   end
   
   test "should get new" do 
@@ -166,24 +177,44 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
     monthly = assigns(:monthly)
     assert !!monthly
     assert_nil weekly
+    byebug
   end
   
-  # before_actionフィルターのテスト
+  # before_action :have_company_registration_sessionのテスト
   # get new_user
   test "should redirect new_user when not session[:company_registration]" do
     get new_user_path
     assert_redirected_to new_company_registration_path
   end
   
-  # before_actionフィルターのテスト
+  # before_action :have_company_registration_sessionのテスト
   # get exist_user
   test "should redirect exist_user when not session[:company_registration]" do
     get exist_user_path
     assert_redirected_to new_company_registration_path
   end
   
+  # before_action :new_user_filterのテスト
+  # get new_user
+  test "should redirect new_user when session[:user] is not 'new'" do
+    @company_registration_params[:user][:user_select] = "exist"
+    post check_company_registration_path, params: @company_registration_params
+    get new_user_path
+    assert_redirected_to new_company_registration_path
+  end
+  
+  # before_action :exist_user_filterのテスト
+  # get exist_user
+  test "should redirect new_user when session[:user] is not 'exist'" do
+    @company_registration_params[:user][:user_select] = "new"
+    post check_company_registration_path, params: @company_registration_params
+    get exist_user_path
+    assert_redirected_to new_company_registration_path
+  end
+  
   # get new_user 
   test "get new_user when have session[:company_registration]" do 
+    @company_registration_params[:user][:user_select] = "new"
     post check_company_registration_path, params: @company_registration_params
     get new_user_path
     assert_response :success
@@ -199,6 +230,7 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
   
   # get exist_user
   test "get exist_user when have session[:company_registration]" do 
+    @company_registration_params[:user][:user_select] = "exist"
     post check_company_registration_path, params: @company_registration_params
     get exist_user_path
     assert_response :success

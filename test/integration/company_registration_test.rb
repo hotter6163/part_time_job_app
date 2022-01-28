@@ -6,5 +6,10 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     @branch_name = "test_branch"
   end
   
+  test "test" do 
+    user = users(:user)
+    sign_in user
+    byebug
+  end
   
 end
