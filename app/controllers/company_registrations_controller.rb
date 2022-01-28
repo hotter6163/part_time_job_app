@@ -23,7 +23,7 @@ class CompanyRegistrationsController < ApplicationController
         render "company_registrations/new" and return
       end
     else # 未テスト
-      render "company_registrations/new" 
+      render "company_registrations/new" and return
     end
     
     if params["user"]["user_select"] == "new"
@@ -47,10 +47,44 @@ class CompanyRegistrationsController < ApplicationController
   end
   
   def create
+    # 新規ユーザーの場合はユーザーを登録、既存ユーザーの場合はパスワードを確認
     if session[:user] == "new"
-      
+      @user = User.new(new_user_params)
+      unless @user.valid? 
+        render 'company_registrations/new_user' and return
+      end
     elsif session[:user] == "exist"
-      
+      @user = User.find_by(email: params[:user][:email].downcase)
+      unless @user && @user.valid_password?(params[:user][:password])
+        flash.now[:denger] = "メールアドレスかパスワードが間違っています。"
+        render 'company_registrations/exist_user' and return
+      end
+    else # 未テスト
+      redirect_to new_company_registration_path and return
+    end
+    
+    # 企業情報登録
+    @company = Company.find_by(session[:company_registration]["company"]) || Company.new(session[:company_registration]["company"])
+    @branch = @company.branches.build(session[:company_registration]["branch"])
+    if !!session[:company_registration]["weekly"]
+      @weekly = @branch.build_weekly(session[:company_registration]["weekly"])
+    elsif !!session[:company_registration]["monthly"]
+      @monthly = @branch.build_monthly(session[:company_registration]["monthly"])
+      @monthly_periods = session[:company_registration]["monthly_periods"].map { |monthly_period| @monthly.monthly_periods.build(monthly_period) }
+    else # 未テスト
+      redirect_to new_company_registration_path and return
+    end
+    
+    if @company.valid?
+      @company.save
+      @user.save
+      sign_in(:user, @user)
+      @relationship = current_user.relationships.create(branch: @branch, master: true, admin: true)
+      session[:company_registration] = nil
+      session[:user] = nil
+      redirect_to branch_path(@branch)
+    else # 未テスト
+      redirect_to new_company_registration_path
     end
   end
   
@@ -117,6 +151,9 @@ class CompanyRegistrationsController < ApplicationController
       params.require(:one_month).permit(:start_day, :end_day, :deadline_day)
     end
     
+    def new_user_params
+      params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
+    end
     
     # before_action
     def have_company_registration_session

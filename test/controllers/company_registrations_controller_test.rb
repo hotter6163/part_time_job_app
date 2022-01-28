@@ -2,8 +2,6 @@ require "test_helper"
 
 class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @company_name = "test_company"
-    @branch_name = "test_branch"
     @company_registration_params = 
         { company: {  name: 'new_company' },
           branch: { name: 'new_brnach',
@@ -177,7 +175,6 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
     monthly = assigns(:monthly)
     assert !!monthly
     assert_nil weekly
-    byebug
   end
   
   # before_action :have_company_registration_sessionのテスト

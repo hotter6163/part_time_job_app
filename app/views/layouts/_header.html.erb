@@ -3,7 +3,6 @@
     <%= link_to '<アルバイト管理システム>', root_url, id: 'logo' %>
     <nav>
       <ul class="nav navbar-nav navbar-right">
-        <li><%= link_to 'コンタクト', '#' %></li>
         <% if user_signed_in? %>
           <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
         <% else %>
