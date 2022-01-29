@@ -31,6 +31,4 @@ class WeeklyTest < ActiveSupport::TestCase
       end
     end
   end
-  
-  # make_periodsのテスト
 end

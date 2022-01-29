@@ -78,6 +78,7 @@ class CompanyRegistrationsController < ApplicationController
       @user.save
       sign_in(:user, @user)
       current_user.relationships.create(branch: @branch, master: true, admin: true)
+      @branch.create_periods(session[:start_date].to_date)
       delete_sessions(:company_registration, :user, :start_date)
       redirect_to branch_path(@branch)
     else # 未テスト

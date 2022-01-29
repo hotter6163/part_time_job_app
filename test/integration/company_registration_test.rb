@@ -78,16 +78,24 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
                       ->{ Monthly.count } => 0,
                       ->{ MonthlyPeriod.count } => 0,
                       ->{ User.count } => 1,
+                      ->{ Period.count } => 6,
                       ->{ Relationship.count } => 1 do
       post company_registrations_path, params: @new_user_params
     end
     relationship = Relationship.last
     assert relationship.master?
     assert relationship.admin?
+    
+    branch = assigns(:branch)
+    periods = branch.periods.all
+    assert_equal start_date.to_date, periods[0].start_date
+    periods.each { |period| assert_equal @company_registration_params[:one_week][:start_day], period.start_date.wday }
+    branch.subtype.reload
+    assert_equal periods[-1].id, branch.subtype.period_id
+    
     assert_nil session[:company_registration]
     assert_nil session[:user]
     assert_nil session[:start_date]
-    branch = assigns(:branch)
     assert_redirected_to branch_path(branch)
   end
   
@@ -124,12 +132,20 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
                       ->{ Monthly.count } => 0,
                       ->{ MonthlyPeriod.count } => 0,
                       ->{ User.count } => 0,
+                      ->{ Period.count } => 4,
                       ->{ Relationship.count } => 1 do
       post company_registrations_path, params: @exist_user_params
     end
     relationship = Relationship.last
     assert relationship.master?
     assert relationship.admin?
+    
+    branch = assigns(:branch)
+    periods = branch.periods.all
+    assert_equal start_date.to_date, periods[0].start_date
+    periods.each { |period| assert_equal @company_registration_params[:one_week][:start_day], period.start_date.wday }
+    branch.subtype.reload
+    assert_equal periods[-1].id, branch.subtype.period_id
   end
   
   # 企業：新規
@@ -150,12 +166,19 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
                       ->{ Monthly.count } => 1,
                       ->{ MonthlyPeriod.count } => 2,
                       ->{ User.count } => 1,
+                      ->{ Period.count } => 4,
                       ->{ Relationship.count } => 1 do
       post company_registrations_path, params: @new_user_params
     end
     relationship = Relationship.last
     assert relationship.master?
     assert relationship.admin?
+    
+    branch = assigns(:branch)
+    periods = branch.periods.all
+    assert_equal start_date.to_date, periods[0].start_date
+    branch.subtype.reload
+    assert_equal periods[-1].id, branch.subtype.period_id
   end
   
   # 企業：既存
@@ -176,11 +199,18 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
                       ->{ Monthly.count } => 1,
                       ->{ MonthlyPeriod.count } => 1,
                       ->{ User.count } => 0,
+                      ->{ Period.count } => 2,
                       ->{ Relationship.count } => 1 do
       post company_registrations_path, params: @exist_user_params
     end
     relationship = Relationship.last
     assert relationship.master?
     assert relationship.admin?
+    
+    branch = assigns(:branch)
+    periods = branch.periods.all
+    assert_equal start_date.to_date, periods[0].start_date
+    branch.subtype.reload
+    assert_equal periods[-1].id, branch.subtype.period_id
   end
 end

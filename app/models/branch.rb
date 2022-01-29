@@ -28,4 +28,32 @@ class Branch < ApplicationRecord
   def send_email_to_new_user(email)
     EmployeeMailer.add_new_user(self, email).deliver_now
   end
+  
+  def subtype
+    period_type == 0 ? weekly : monthly
+  end
+  
+  def periods_num_before_deadline
+    periods.where('deadline >= ?', Time.zone.now.to_s).count
+  end
+  
+  def maximum_periods_num
+    if subtype.class == Weekly
+      if subtype.num_of_weeks == 1
+        6
+      elsif subtype.num_of_weeks == 2
+        4
+      end
+    elsif subtype.class == Monthly
+      if subtype.period_num == 1
+        2
+      elsif subtype.period_num == 2
+        4
+      end
+    end
+  end
+  
+  def create_periods(start_date=(subtype.period.end_day + 1.day))
+    (maximum_periods_num - periods_num_before_deadline).times { start_date = subtype.create_period(start_date) }
+  end
 end
