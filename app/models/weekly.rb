@@ -9,11 +9,4 @@ class Weekly < ApplicationRecord
   def period
     Period.find_by(id: period_id)
   end
-  
-  def make_periods
-    today = Time.zone.now.to_s
-    count = branch.periods.where('deadline >= ?', today).count
-    # while count < 4 do
-      
-  end
 end

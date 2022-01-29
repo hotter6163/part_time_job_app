@@ -11,7 +11,6 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
                     period_type: 'two_weeks'
                   },
           one_week: { start_day: 1,
-                      start_date: '2022-01-31',
                       deadline_day: 7
                     },
           two_weeks: {  start_day: 1,
@@ -31,7 +30,8 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
                         end_day: 30,
                         deadline_day: 15
                       },
-          user: { user_select: 'new'}
+          user: 'new',
+          start_date: "2022-02-07"
         }
     @new_user_params = {
       user: {
@@ -53,7 +53,9 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     get new_company_registration_path
     @company_registration_params[:company][:name] = 'new_company'
     @company_registration_params[:branch][:period_type] = 'one_week'
-    @company_registration_params[:user][:user_select] = 'new'
+    @company_registration_params[:user] = 'new'
+    start_date = '2022-01-31'
+    @company_registration_params[:start_date] = start_date
     post check_company_registration_path, params: @company_registration_params
     get new_user_path
     
@@ -65,6 +67,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     end
     assert !!session[:company_registration]
     assert !!session[:user]
+    assert !!session[:start_date]
     assert_template 'company_registrations/new_user'
     
     # 正しい新規ユーザー情報を送信
@@ -78,11 +81,12 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
                       ->{ Relationship.count } => 1 do
       post company_registrations_path, params: @new_user_params
     end
-    relationship = assigns(:relationship)
+    relationship = Relationship.last
     assert relationship.master?
     assert relationship.admin?
     assert_nil session[:company_registration]
     assert_nil session[:user]
+    assert_nil session[:start_date]
     branch = assigns(:branch)
     assert_redirected_to branch_path(branch)
   end
@@ -94,7 +98,9 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     get new_company_registration_path
     @company_registration_params[:company][:name] = @company.name
     @company_registration_params[:branch][:period_type] = 'two_weeks'
-    @company_registration_params[:user][:user_select] = 'exist'
+    @company_registration_params[:user] = 'exist'
+    start_date = '2022-02-07'
+    @company_registration_params[:start_date] = start_date
     post check_company_registration_path, params: @company_registration_params
     get exist_user_path
     
@@ -121,7 +127,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
                       ->{ Relationship.count } => 1 do
       post company_registrations_path, params: @exist_user_params
     end
-    relationship = assigns(:relationship)
+    relationship = Relationship.last
     assert relationship.master?
     assert relationship.admin?
   end
@@ -133,7 +139,9 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     get new_company_registration_path
     @company_registration_params[:company][:name] = 'new_company'
     @company_registration_params[:branch][:period_type] = 'harf_month'
-    @company_registration_params[:user][:user_select] = 'new'
+    @company_registration_params[:user] = 'new'
+    start_date = '2022-02-01'
+    @company_registration_params[:start_date] = start_date
     post check_company_registration_path, params: @company_registration_params
     get new_user_path
     assert_difference ->{ Company.count } => 1,
@@ -145,7 +153,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
                       ->{ Relationship.count } => 1 do
       post company_registrations_path, params: @new_user_params
     end
-    relationship = assigns(:relationship)
+    relationship = Relationship.last
     assert relationship.master?
     assert relationship.admin?
   end
@@ -157,7 +165,9 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     get new_company_registration_path
     @company_registration_params[:company][:name] = @company.name
     @company_registration_params[:branch][:period_type] = 'one_month'
-    @company_registration_params[:user][:user_select] = 'exist'
+    @company_registration_params[:user] = 'exist'
+    start_date = '2022-02-01'
+    @company_registration_params[:start_date] = start_date
     post check_company_registration_path, params: @company_registration_params
     get exist_user_path
     assert_difference ->{ Company.count } => 0,
@@ -169,7 +179,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
                       ->{ Relationship.count } => 1 do
       post company_registrations_path, params: @exist_user_params
     end
-    relationship = assigns(:relationship)
+    relationship = Relationship.last
     assert relationship.master?
     assert relationship.admin?
   end

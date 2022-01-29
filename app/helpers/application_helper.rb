@@ -26,4 +26,14 @@ module ApplicationHelper
       end
     end
   end
+  
+  # sessionに追加
+  def add_sessions(args)
+    args.each { |key, value| session[key.to_sym] = value }
+  end
+  
+  # sessionの特定の値を削除
+  def delete_sessions(*ary)
+    ary.each { |key| session[key] = nil }
+  end
 end

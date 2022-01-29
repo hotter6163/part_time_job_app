@@ -2,6 +2,7 @@ require "test_helper"
 
 class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
   def setup
+    @start_date = '2022-02-07'
     @company_registration_params = 
         { company: {  name: 'new_company' },
           branch: { name: 'new_brnach',
@@ -10,11 +11,9 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
                     period_type: 'two_weeks'
                   },
           one_week: { start_day: 1,
-                      start_date: '2022-01-31',
                       deadline_day: 7
                     },
           two_weeks: {  start_day: 1,
-                        start_date: '2022-02-07',
                         deadline_day: 7
                       },
           harf_month: { one: {  start_day: 1,
@@ -30,7 +29,8 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
                         end_day: 30,
                         deadline_day: 15
                       },
-          user: { user_select: 'new'}
+          user: 'new',
+          start_date: @start_date
         }
     @new_user_params = {
       user: {
@@ -63,15 +63,16 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input[type=radio][name=?][value=?]', 'branch[period_type]', 'harf_month'
     assert_select 'input[type=radio][name=?][value=?]', 'branch[period_type]', 'one_month'
     
+    # シフト開始日情報
+    assert_select 'input[type=date][name=?]', 'start_date'
+    
     # シフト期間情報
     # 1週間
     assert_select 'select[name=?]', 'one_week[start_day]'
-    assert_select 'input[type=date][name=?]', 'one_week[start_date]'
     assert_select 'input[type=number][name=?]', 'one_week[deadline_day]'
     
     # 2週間
     assert_select 'select[name=?]', 'two_weeks[start_day]'
-    assert_select 'input[type=date][name=?]', 'two_weeks[start_date]'
     assert_select 'input[type=number][name=?]', 'two_weeks[deadline_day]'
     
     # 半月
@@ -88,31 +89,34 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'select[name=?]', 'one_month[deadline_day]'
     
     # マスターユーザー
-    assert_select 'input[type=radio][name=?][value=?]', 'user[user_select]', 'new'
-    assert_select 'input[type=radio][name=?][value=?]', 'user[user_select]', 'exist'
+    assert_select 'input[type=radio][name=?][value=?]', 'user', 'new'
+    assert_select 'input[type=radio][name=?][value=?]', 'user', 'exist'
   end
   
   # check_companyに正しい値が送信され、マスターが新規の時
   test "post check_company with valid params and user_select is new" do 
-    @company_registration_params[:user][:user_select] = "new"
+    @company_registration_params[:user] = "new"
     post check_company_registration_path, params: @company_registration_params
     assert_equal :new, session[:user]
+    assert_equal @start_date, session[:start_date]
     assert_redirected_to new_user_path
   end
   
   # check_companyに正しい値が送信され、マスターが既存の時
   test "post check_company with valid params and user_select is exist" do
-    @company_registration_params[:user][:user_select] = "exist"
+    @company_registration_params[:user] = "exist"
     post check_company_registration_path, params: @company_registration_params
     assert_equal :exist, session[:user]
+    assert_equal @start_date, session[:start_date]
     assert_redirected_to exist_user_path
   end
   
   # check_companyに正しい値が送信され、マスターがnew、exist以外の時
   test "post check_company with valid params and user_select is invalid" do
-    @company_registration_params[:user][:user_select] = "wrong"
+    @company_registration_params[:user] = "wrong"
     post check_company_registration_path, params: @company_registration_params
     assert_template "company_registrations/new"
+    assert_nil session[:user]
   end
   
   # POST check_company, period_type="one_week"
@@ -194,7 +198,7 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
   # before_action :new_user_filterのテスト
   # get new_user
   test "should redirect new_user when session[:user] is not 'new'" do
-    @company_registration_params[:user][:user_select] = "exist"
+    @company_registration_params[:user] = "exist"
     post check_company_registration_path, params: @company_registration_params
     get new_user_path
     assert_redirected_to new_company_registration_path
@@ -203,7 +207,7 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
   # before_action :exist_user_filterのテスト
   # get exist_user
   test "should redirect new_user when session[:user] is not 'exist'" do
-    @company_registration_params[:user][:user_select] = "new"
+    @company_registration_params[:user] = "new"
     post check_company_registration_path, params: @company_registration_params
     get exist_user_path
     assert_redirected_to new_company_registration_path
@@ -211,7 +215,7 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
   
   # get new_user 
   test "get new_user when have session[:company_registration]" do 
-    @company_registration_params[:user][:user_select] = "new"
+    @company_registration_params[:user] = "new"
     post check_company_registration_path, params: @company_registration_params
     get new_user_path
     assert_response :success
@@ -227,7 +231,7 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
   
   # get exist_user
   test "get exist_user when have session[:company_registration]" do 
-    @company_registration_params[:user][:user_select] = "exist"
+    @company_registration_params[:user] = "exist"
     post check_company_registration_path, params: @company_registration_params
     get exist_user_path
     assert_response :success

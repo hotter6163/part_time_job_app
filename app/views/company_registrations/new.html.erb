@@ -60,10 +60,6 @@
         <%= weekly_form.select :start_day, day_pull_down, include_blank: "シフト開始の曜日を選択して下さい", class: 'form-control' %>
       </div>
       <div>
-        <%= weekly_form.label :start_date, "このアプリを使って集めるシフトの開始日" %>
-        <%= weekly_form.date_field :start_date, class: 'form-control' %>
-      </div>
-      <div>
         <%= weekly_form.label :deadline_day, "締め切り日（シフト開始曜日の何日前か）" %>
         <%= weekly_form.number_field :deadline_day, in: 1..30, class: 'form-control' %> 
       </div>
@@ -76,10 +72,6 @@
       <div>
         <%= weekly_form.label :start_day, "シフト開始曜日" %>
         <%= weekly_form.select :start_day, day_pull_down, include_blank: "シフト開始の曜日を選択して下さい", class: 'form-control' %>
-      </div>
-      <div>
-        <%= weekly_form.label :start_date, "このアプリを使って集めるシフトの開始日" %>
-        <%= weekly_form.date_field :start_date, class: 'form-control' %>
       </div>
       <div>
         <%= weekly_form.label :deadline_day, "締め切り日（シフト開始曜日の何日前か）" %>
@@ -146,19 +138,25 @@
     <% end %>
   </div>
   
+  <!--このアプリを使い始める日付-->
+  <div>
+    <h3>このアプリで最初に回収するシフトの開始日</h3>
+    <div>
+      <%= f.date_field :start_date, class: 'form-control' %>
+    </div>
+  </div>
+  
   <!--マスターユーザー-->
   <div>
     <h3>マスターユーザーの選択</h3>
-    <%= fields_for :user do |user_form| %>
-      <div class="radio">
-        <%= user_form.radio_button :user_select, 'new', class: 'form-control', checked: true %>
-        <%= user_form.label :user_select, '新規のユーザーをマスターにする' %>
-      </div>
-      <div class="radio">
-        <%= user_form.radio_button :user_select, 'exist', class: 'form-control' %>
-        <%= user_form.label :user_select, '既存のユーザーをマスターにする' %>
-      </div>
-    <% end %>
+    <div class="radio">
+      <%= f.radio_button :user, 'new', class: 'form-control', checked: true %>
+      <%= f.label :user_select, '新規のユーザーをマスターにする' %>
+    </div>
+    <div class="radio">
+      <%= f.radio_button :user, 'exist', class: 'form-control' %>
+      <%= f.label :user_select, '既存のユーザーをマスターにする' %>
+    </div>
   </div>
   
   <%= f.submit "店舗情報を登録する", class: "btn btn-primary" %>

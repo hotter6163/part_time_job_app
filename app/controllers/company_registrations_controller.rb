@@ -26,13 +26,11 @@ class CompanyRegistrationsController < ApplicationController
       render "company_registrations/new" and return
     end
     
-    if params["user"]["user_select"] == "new"
-      session[:company_registration] = session_params
-      session[:user] = :new
+    if params["user"] == "new"
+      add_sessions(company_registration: session_params, user: :new, start_date: params["start_date"])
       redirect_to new_user_path
-    elsif params["user"]["user_select"] == "exist"
-      session[:company_registration] = session_params
-      session[:user] = :exist
+    elsif params["user"] == "exist"
+      add_sessions(company_registration: session_params, user: :exist, start_date: params["start_date"])
       redirect_to exist_user_path
     else
       render "company_registrations/new"
@@ -79,9 +77,8 @@ class CompanyRegistrationsController < ApplicationController
       @company.save
       @user.save
       sign_in(:user, @user)
-      @relationship = current_user.relationships.create(branch: @branch, master: true, admin: true)
-      session[:company_registration] = nil
-      session[:user] = nil
+      current_user.relationships.create(branch: @branch, master: true, admin: true)
+      delete_sessions(:company_registration, :user, :start_date)
       redirect_to branch_path(@branch)
     else # 未テスト
       redirect_to new_company_registration_path
