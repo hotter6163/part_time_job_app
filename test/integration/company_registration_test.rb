@@ -177,6 +177,22 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     branch = assigns(:branch)
     periods = branch.periods.all
     assert_equal start_date.to_date, periods[0].start_date
+    
+    # きれいな書き方わからんから力技のテスト
+    assert_equal '2022-02-01'.to_date, periods[0].start_date
+    assert_equal '2022-02-15'.to_date, periods[0].end_date
+    assert_equal '2022-01-20'.to_date, periods[0].deadline
+    assert_equal '2022-02-16'.to_date, periods[1].start_date
+    assert_equal '2022-02-28'.to_date, periods[1].end_date
+    assert_equal '2022-02-05'.to_date, periods[1].deadline
+    assert_equal '2022-03-01'.to_date, periods[2].start_date
+    assert_equal '2022-03-15'.to_date, periods[2].end_date
+    assert_equal '2022-02-20'.to_date, periods[2].deadline
+    assert_equal '2022-03-16'.to_date, periods[3].start_date
+    assert_equal '2022-03-31'.to_date, periods[3].end_date
+    assert_equal '2022-03-05'.to_date, periods[3].deadline
+    
+    
     branch.subtype.reload
     assert_equal periods[-1].id, branch.subtype.period_id
   end
@@ -189,7 +205,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     @company_registration_params[:company][:name] = @company.name
     @company_registration_params[:branch][:period_type] = 'one_month'
     @company_registration_params[:user] = 'exist'
-    start_date = '2022-02-01'
+    start_date = '2024-02-01'
     @company_registration_params[:start_date] = start_date
     post check_company_registration_path, params: @company_registration_params
     get exist_user_path
@@ -210,6 +226,15 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     branch = assigns(:branch)
     periods = branch.periods.all
     assert_equal start_date.to_date, periods[0].start_date
+    
+    # きれいな書き方わからんから力技のテスト
+    assert_equal '2024-02-01'.to_date, periods[0].start_date
+    assert_equal '2024-02-29'.to_date, periods[0].end_date
+    assert_equal '2024-01-15'.to_date, periods[0].deadline
+    assert_equal '2024-03-01'.to_date, periods[1].start_date
+    assert_equal '2024-03-31'.to_date, periods[1].end_date
+    assert_equal '2024-02-15'.to_date, periods[1].deadline
+    
     branch.subtype.reload
     assert_equal periods[-1].id, branch.subtype.period_id
   end

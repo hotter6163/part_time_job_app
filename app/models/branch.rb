@@ -38,13 +38,14 @@ class Branch < ApplicationRecord
   end
   
   def maximum_periods_num
-    if subtype.class == Weekly
+    case subtype
+    when Weekly then
       if subtype.num_of_weeks == 1
         6
       elsif subtype.num_of_weeks == 2
         4
       end
-    elsif subtype.class == Monthly
+    when Monthly then
       if subtype.period_num == 1
         2
       elsif subtype.period_num == 2
