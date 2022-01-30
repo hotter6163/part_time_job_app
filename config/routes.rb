@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       post :send_email
     end
   end
+  
   resources :relationships, only: [:new, :create]
   devise_for :users, controllers: { 
     registrations: 'users/registrations',

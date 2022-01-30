@@ -26,7 +26,7 @@ company = Company.create!(
   name: '滋賀工業株式会社'
 )
 
-# 支店
+# 店舗情報
 branch = company.branches.create!(
   name: '草津支店',
   display_day: 0,
@@ -34,6 +34,13 @@ branch = company.branches.create!(
   end_of_business_hours: '21:00',
   period_type: 0
 )
+branch.create_weekly!(
+  start_day: 1, 
+  deadline_day: 8,
+  num_of_weeks: 2
+)
+branch.create_periods("2022-02-07".in_time_zone)
+
 other_branch = company.branches.create!(
   name: '栗東支店',
   display_day: 1,
@@ -41,6 +48,18 @@ other_branch = company.branches.create!(
   end_of_business_hours: '24:00',
   period_type: 1
 )
+monthly = branch.create_monthly!(period_num: 2)
+monthly.monthly_periods.create!(
+  start_day: 1,
+  end_day: 15,
+  deadline_day: 20
+)
+monthly.monthly_periods.create!(
+  start_day: 16,
+  end_day: 30,
+  deadline_day: 5
+)
+branch.create_periods("2022-02-07".in_time_zone)
 
 # relationship
 Relationship.create!(user: user, branch: branch, master: true, admin: true)
