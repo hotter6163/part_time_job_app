@@ -60,9 +60,9 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
           end_time: ""
         },
         "10".to_sym => {
-          date: "",
-          start_time: "",
-          end_time: ""
+          date: "2030-03-03",
+          start_time: "19:00",
+          end_time: "02:00"
         },
         "11".to_sym => {
           date: "",
@@ -102,34 +102,39 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
           start_time: "",
           end_time: ""
         },
+        # 3, 4シフト日重複
         "3".to_sym => {
-          date: "",
-          start_time: "",
-          end_time: ""
+          date: "2030-02-25",
+          start_time: "08:30",
+          end_time: "14:00"
         },
         "4".to_sym => {
-          date: "",
-          start_time: "",
-          end_time: ""
+          date: "2030-02-25",
+          start_time: "08:30",
+          end_time: "14:00"
         },
+        # start_timeが空白
         "5".to_sym => {
-          date: "",
+          date: "2030-02-27",
           start_time: "",
-          end_time: ""
+          end_time: "14:00"
         },
+        # start_timeよりend_timeの方が早い
         "6".to_sym => {
-          date: "",
-          start_time: "",
-          end_time: ""
+          date: "2030-03-01",
+          start_time: "14:00",
+          end_time: "08:00"
         },
+        # dateが空白
         "7".to_sym => {
           date: "",
-          start_time: "",
-          end_time: ""
+          start_time: "8:30",
+          end_time: "14:00"
         },
+        # end_timeが空白
         "8".to_sym => {
-          date: "",
-          start_time: "",
+          date: "2030-02-27",
+          start_time: "8:30",
           end_time: ""
         },
         "9".to_sym => {
@@ -178,7 +183,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input[type=submit]'
   end
   
-  # ログイン捨ていなければリダイレクト
+  # ログインしていなければリダイレクト
   test "should redirect new_shift when not login" do 
     logout
     get new_shift_submission_path(@branch)
@@ -192,10 +197,37 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
   
-  # 正しい値を送信
-  test "post create_shift with valid_params" do 
-    assert_difference -> { ShiftSubmission.count } => 1, -> { ShiftRequest.count } => 5 do
-      post shift_submissions_path(@branch), params: @valid_shift_submission_params
+  # # 正しい値を送信
+  # test "post create_shift with valid_params" do 
+  #   assert_difference -> { ShiftSubmission.count } => 1, -> { ShiftRequest.count } => 6 do
+  #     post shift_submissions_path(@branch), params: @valid_shift_submission_params
+  #   end
+  #   assert_template "shift_submissions/success"
+  # end
+  
+  # 締め切りが過ぎた期間を送信
+  test "post create_shift with period after deadline" do
+    @invalid_shift_submission_params[:period] = periods(:one).id
+    assert_no_difference ['ShiftSubmission.count', 'ShiftRequest.count'] do
+      post shift_submissions_path(@branch), params: @invalid_shift_submission_params
     end
+    assert_template "shift_submissions/new_shift"
+  end
+  
+  # 別の企業の期間を送信
+  test "post create_shift with ohter branch's period" do
+    @invalid_shift_submission_params[:period] = periods(:five).id
+    assert_no_difference ['ShiftSubmission.count', 'ShiftRequest.count'] do
+      post shift_submissions_path(@branch), params: @invalid_shift_submission_params
+    end
+    assert_template "shift_submissions/new_shift"
+  end
+  
+  # 不適切なシフト希望を提出
+  test "post create_shift with invalid_params" do
+    assert_no_difference ['ShiftSubmission.count', 'ShiftRequest.count'] do
+      post shift_submissions_path(@branch), params: @invalid_shift_submission_params
+    end
+    assert_template "shift_submissions/new_shift"
   end
 end

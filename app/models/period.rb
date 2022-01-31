@@ -14,4 +14,12 @@ class Period < ApplicationRecord
   def days
     (0..(end_date - start_date).to_i).map { |n| start_date + n.day }
   end
+  
+  def before_deadline?
+    Time.zone.now < deadline + 1.day
+  end
+  
+  def is_date_in?(date)
+    start_date <= date && date < end_date + 1.day
+  end
 end

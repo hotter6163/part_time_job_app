@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_23_032311) do
+ActiveRecord::Schema.define(version: 2022_01_31_221544) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 2022_01_23_032311) do
     t.time "start_of_business_hours"
     t.time "end_of_business_hours"
     t.integer "period_type", default: 0
+    t.boolean "cross_day", default: false
     t.index ["company_id", "name"], name: "index_branches_on_company_id_and_name", unique: true
     t.index ["company_id"], name: "index_branches_on_company_id"
   end
@@ -77,10 +78,10 @@ ActiveRecord::Schema.define(version: 2022_01_23_032311) do
   end
 
   create_table "shift_requests", force: :cascade do |t|
-    t.integer "shift_submission_id", null: false
-    t.integer "date"
-    t.time "start_time"
-    t.time "end_time"
+    t.integer "shift_submission_id"
+    t.date "date"
+    t.datetime "start_time"
+    t.datetime "end_time"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["shift_submission_id", "date"], name: "index_shift_requests_on_shift_submission_id_and_date", unique: true

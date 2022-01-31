@@ -8,7 +8,8 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
           branch: { name: 'new_brnach',
                     start_of_business_hours: '08:30',
                     end_of_business_hours: '21:00',
-                    period_type: 'two_weeks'
+                    period_type: 'two_weeks',
+                    cross_day: '0'
                   },
           one_week: { start_day: 1,
                       deadline_day: 7
@@ -49,6 +50,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
   # 企業：新規
   # period_type: one_week
   # マスターユーザー：新規
+  # 営業日が日をまたがない
   test "company: new, period_type: one_week, user: new" do
     get new_company_registration_path
     @company_registration_params[:company][:name] = 'new_company'
@@ -87,6 +89,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     assert relationship.admin?
     
     branch = assigns(:branch)
+    assert_not branch.cross_day?
     periods = branch.periods.all
     assert_equal start_date.to_date, periods[0].start_date
     periods.each { |period| assert_equal @company_registration_params[:one_week][:start_day], period.start_date.wday }
@@ -102,6 +105,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
   # 企業：既存
   # period_type: two_weeks
   # マスターユーザー：既存
+  # 営業日が日をまたぐ
   test "company: exist, period_type: two_weeks, user: exist" do
     get new_company_registration_path
     @company_registration_params[:company][:name] = @company.name
@@ -109,6 +113,8 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     @company_registration_params[:user] = 'exist'
     start_date = '2022-02-07'
     @company_registration_params[:start_date] = start_date
+    @company_registration_params[:branch][:cross_day] = '1'
+    @company_registration_params[:branch][:end_of_business_hours] = '02:00'
     post check_company_registration_path, params: @company_registration_params
     get exist_user_path
     
@@ -141,6 +147,7 @@ class CompanyRegistrationTest < ActionDispatch::IntegrationTest
     assert relationship.admin?
     
     branch = assigns(:branch)
+    assert branch.cross_day?
     periods = branch.periods.all
     assert_equal start_date.to_date, periods[0].start_date
     periods.each { |period| assert_equal @company_registration_params[:one_week][:start_day], period.start_date.wday }

@@ -30,6 +30,11 @@
     </div>
     
     <div class="field">
+      <%= branch_form.label :cross_day, "営業時間は日をまたぐか" %>
+      <%= branch_form.check_box  :cross_day, class: 'form-control' %>
+    </div>
+    
+    <div class="field">
       <h3>シフト提出期間</h3>
       <div class="radio">
         <%= branch_form.radio_button :period_type, 'one_week', class: 'form-control js-check', onclick: 'displayForm()', checked: true %>

@@ -76,10 +76,10 @@ class CompanyRegistrationsController < ApplicationController
     if @company.valid?
       @company.save
       @user.save
-      sign_in(:user, @user)
-      current_user.relationships.create(branch: @branch, master: true, admin: true)
+      @user.relationships.create(branch: @branch, master: true, admin: true)
       @branch.create_periods(session[:start_date].in_time_zone)
       delete_sessions(:company_registration, :user, :start_date)
+      sign_in(:user, @user)
       redirect_to branch_path(@branch)
     else # 未テスト
       redirect_to new_company_registration_path
@@ -112,7 +112,7 @@ class CompanyRegistrationsController < ApplicationController
     
     # 店舗情報のストロングパラメータ
     def branch_params
-      result = params.require(:branch).permit(:name, :start_of_business_hours, :end_of_business_hours)
+      result = params.require(:branch).permit(:name, :start_of_business_hours, :end_of_business_hours, :cross_day)
       if params["branch"]["period_type"] == "one_week" || params["branch"]["period_type"] == "two_weeks"
         result[:period_type] = 0
       elsif params["branch"]["period_type"] == "harf_month" || params["branch"]["period_type"] == "one_month"

@@ -12,7 +12,7 @@ branch:
   company: company
   display_day: 0
   start_of_business_hours: <%= "08:30".in_time_zone %>
-  end_of_business_hours: <%= "21:00".in_time_zone %>
+  end_of_business_hours: <%= "02:00".in_time_zone %>
   period_type: 0
 
 branch1:
