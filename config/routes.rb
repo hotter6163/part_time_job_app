@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   get   'company_registrations/exist_user',   to: 'company_registrations#exist_user',     as: :exist_user
   post  'company_registrations',              to: 'company_registrations#create',         as: :company_registrations
   
+  # シフト提出
+  get   'shift_submission/:id', to: 'shift_submissions#new_shift',      as: :new_shift_submission
+  post  'shift_submission/:id', to: 'shift_submissions#create_shift',   as: :shift_submissions
+  
   resources :branches, only: [:show] do
     member do
       get :add_employee

@@ -48,7 +48,7 @@ other_branch = company.branches.create!(
   end_of_business_hours: '24:00',
   period_type: 1
 )
-monthly = branch.create_monthly!(period_num: 2)
+monthly = other_branch.create_monthly!(period_num: 2)
 monthly.monthly_periods.create!(
   start_day: 1,
   end_day: 15,
@@ -59,7 +59,7 @@ monthly.monthly_periods.create!(
   end_day: 30,
   deadline_day: 5
 )
-branch.create_periods("2022-02-07".in_time_zone)
+other_branch.create_periods("2022-02-01".in_time_zone)
 
 # relationship
 Relationship.create!(user: user, branch: branch, master: true, admin: true)

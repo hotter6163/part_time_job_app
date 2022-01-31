@@ -3,23 +3,23 @@ branch_have_no_relationship:
   name: branch_have_no_relationship
   company: company
   display_day: 0
-  start_of_business_hours: 10:00
-  end_of_business_hours: 24:00
+  start_of_business_hours: <%= "10:00".in_time_zone %>
+  end_of_business_hours: <%= "24:00".in_time_zone %>
   period_type: 1
 
 branch:
   name: branch
   company: company
   display_day: 0
-  start_of_business_hours: 08:30
-  end_of_business_hours: 21:00
+  start_of_business_hours: <%= "08:30".in_time_zone %>
+  end_of_business_hours: <%= "21:00".in_time_zone %>
   period_type: 0
 
 branch1:
   name: branch1
   company: company
   display_day: 1
-  start_of_business_hours: 6:00
-  end_of_business_hours: 23:00
+  start_of_business_hours: <%= "06:00".in_time_zone %>
+  end_of_business_hours: <%= "23:00".in_time_zone %>
   period_type: 1
 

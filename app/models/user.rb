@@ -31,7 +31,6 @@ class User < ApplicationRecord
     sql = " select  companies.name as company_name,
                     branches.id as branch_id,
                     branches.name as branch_name,
-                    relationships.id as relationship_id,
                     relationships.master,
                     relationships.admin
             from ( select id from users where id = #{id} ) as user

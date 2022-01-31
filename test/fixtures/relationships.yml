@@ -7,9 +7,9 @@ master_relationship_for_branch:
 employee_relationship_for_user:
   branch: branch1
   user: user
-  
-<% User.all[0..9].each_with_index do |user, i| %>
+
+<% 10.times do |i| %>
 employee_relationship_<%= i %>:
   branch: branch
-  user: <%= user %>
+  user: user_<%= i  %>
 <% end %>

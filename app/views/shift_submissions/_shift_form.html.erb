@@ -1,0 +1,21 @@
+<%= form.fields_for "#{num}".to_sym do |shift_form| %>
+  <tr id=<%= "#{num}" %>>
+    <td><%= "シフト希望#{num+1}" %></td>
+    <td>
+      <select name=<%= "shift_request[#{num}][date]" %>>
+        <option value="">--------</option>
+        <% @days.each do |key, value| %>
+          <% value.each do |date| %>
+            <option value=<%= date %> class=<%= "#{key}" %>><%= date %></option>
+          <% end %>
+        <% end %>
+      </select>
+    </td>
+    <td>
+      <%= shift_form.time_field :start_time, min: @branch.start_of_business_hours.to_s(:time), max: @branch.end_of_business_hours.to_s(:time), class: 'form-control' %>
+    </td>
+    <td>
+      <%= shift_form.time_field :end_time, min: @branch.start_of_business_hours.to_s(:time), max: @branch.end_of_business_hours.to_s(:time), class: 'form-control' %>
+    </td>
+  </tr>
+<% end %>

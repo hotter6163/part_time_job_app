@@ -6,7 +6,7 @@
   <% @branches.each do |branch| %>
     <tr>
       <td><%= "#{branch["company_name"]} #{branch["branch_name"]}" %></td>
-      <td><%= link_to "シフトを提出する", "#" %></td>
+      <td><%= link_to "シフトを提出する", new_shift_submission_path(branch["branch_id"]) %></td>
       <% if branch["admin"] == 1 %>
         <td><%= link_to  "企業ページへ", branch_path(branch["branch_id"]) %></td>
       <% end %>

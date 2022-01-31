@@ -1,0 +1,32 @@
+<h2>シフト希望提出</h2>
+
+<%= form_with(url: shift_submissions_path(@branch), local: true) do |f| %>
+  <!--シフト期間の選択-->
+  <div>
+    <%= f.label :period, '提出期間を選択してください' %>
+    <%= f.select :period, @periods, class: 'form-control' %>
+  </div>
+  
+  <!--シフトの送信フォーム-->
+  <%= fields_for :shift_request do |shift_request_form| %>
+    <div>
+      <table>
+        <!--テーブル見出し-->
+        <tr>
+          <th></th>
+          <th>日付</th>
+          <th>開始時間</th>
+          <th>終了時間</th>
+        </tr>
+        <!--1日分のシフト-->
+        <% forms_num[:max].times do |num| %>
+          <%= render "shift_submissions/shift_form",  form: shift_request_form, num: num %>
+        <% end %>
+      </table>
+    </div>
+  <% end %>
+  <%= f.submit "シフトを提出する", class: "btn btn-primary" %>
+<% end %>
+
+<script>
+</script>

@@ -33,19 +33,19 @@ class Branch < ApplicationRecord
     period_type == 0 ? weekly : monthly
   end
   
-  def periods_num_before_deadline
-    periods.where('deadline >= ?', Time.zone.now.to_s).count
+  def periods_before_deadline
+    periods.where('deadline >= ?', (Time.zone.now - 1.day).to_s)
   end
   
   def maximum_periods_num
     case subtype
-    when Weekly then
+    when Weekly
       if subtype.num_of_weeks == 1
         6
       elsif subtype.num_of_weeks == 2
         4
       end
-    when Monthly then
+    when Monthly
       if subtype.period_num == 1
         2
       elsif subtype.period_num == 2
@@ -55,6 +55,10 @@ class Branch < ApplicationRecord
   end
   
   def create_periods(start_date=(subtype.period.end_day + 1.day))
-    (maximum_periods_num - periods_num_before_deadline).times { start_date = subtype.create_period(start_date) }
+    (maximum_periods_num - periods_before_deadline.count).times { start_date = subtype.create_period(start_date) }
+  end
+  
+  def belong_to?(user)
+    !!relationships.find_by(user: user)
   end
 end

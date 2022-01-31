@@ -3,6 +3,7 @@ module ApplicationHelper
   include CompanyRegistrationsHelper
   include RelationshipsHelper
   include StaticPagesHelper
+  include ShiftSubmissionsHelper
   
   def create_new_user(sign_up_params)
     build_resource(sign_up_params)
