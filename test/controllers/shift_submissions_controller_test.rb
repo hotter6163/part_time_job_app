@@ -168,14 +168,11 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "get new_shift" do
-    get new_shift_submission_path(@branch)
+    get new_shift_submission_path(@period)
     assert_response :success
     assert_select 'form[action=?]', shift_submissions_path(@branch)
-    assert_select 'select[name=period]'
-    @branch.periods_before_deadline.each do |period|
-      assert_select 'option[value=?]', period.id.to_s
-      period.days.each { |date| assert_select 'option[value=?]', date.to_s }
-    end
+    assert_select 'input[name=period][type=hidden]'
+    @period.days.each { |date| assert_select 'option[value=?]', date.to_s }
     forms_num(@branch)[:max].times do |n|
       assert_select 'select[name=?]', "shift_request[#{n}][date]"
       assert_select 'input[type=time][name=?]', "shift_request[#{n}][start_time]"
@@ -193,15 +190,15 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
   
   # ログインユーザーがrelationship_idのユーザーではなかったらホームにリダイレクト
   test "should redirect new_shift when not correct_user" do
-    branch_not_correct_user = branches(:branch_have_no_relationship)
-    get new_shift_submission_path(branch_not_correct_user)
+    other_period = periods(:six)
+    get new_shift_submission_path(other_period)
     assert_redirected_to root_url
   end
   
   # 正しい値を送信
   test "post create_shift with valid_params" do 
     assert_difference -> { ShiftSubmission.count } => 1, -> { ShiftRequest.count } => 6 do
-      post shift_submissions_path(@branch), params: @valid_shift_submission_params
+      post shift_submissions_path(@period), params: @valid_shift_submission_params
     end
     assert_template "shift_submissions/success"
   end
@@ -210,7 +207,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
   test "post create_shift with period after deadline" do
     @invalid_shift_submission_params[:period] = periods(:one).id
     assert_no_difference ['ShiftSubmission.count', 'ShiftRequest.count'] do
-      post shift_submissions_path(@branch), params: @invalid_shift_submission_params
+      post shift_submissions_path(@period), params: @invalid_shift_submission_params
     end
     assert_template "shift_submissions/new_shift"
   end
@@ -219,7 +216,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
   test "post create_shift with ohter branch's period" do
     @invalid_shift_submission_params[:period] = periods(:five).id
     assert_no_difference ['ShiftSubmission.count', 'ShiftRequest.count'] do
-      post shift_submissions_path(@branch), params: @invalid_shift_submission_params
+      post shift_submissions_path(@period), params: @invalid_shift_submission_params
     end
     assert_template "shift_submissions/new_shift"
   end
@@ -227,7 +224,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
   # 不適切なシフト希望を提出
   test "post create_shift with invalid_params" do
     assert_no_difference ['ShiftSubmission.count', 'ShiftRequest.count'] do
-      post shift_submissions_path(@branch), params: @invalid_shift_submission_params
+      post shift_submissions_path(@period), params: @invalid_shift_submission_params
     end
     assert_template "shift_submissions/new_shift"
     error_nums = assigns(:error_nums)

@@ -29,3 +29,9 @@ five:
   deadline: 2030-02-13
   start_date: 2030-02-21
   end_date: 2030-03-06
+  
+six:
+  branch: branch_have_no_relationshipbranch1
+  deadline: 2030-02-13
+  start_date: 2030-02-21
+  end_date: 2030-03-06

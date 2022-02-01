@@ -37,6 +37,10 @@ class Branch < ApplicationRecord
     periods.where('deadline >= ?', (Time.zone.now - 1.day).to_s)
   end
   
+  def periods_before_end_date
+    periods.where('end_date >= ?', (Time.zone.now - 1.day).to_s)
+  end
+  
   def maximum_periods_num
     case subtype
     when Weekly

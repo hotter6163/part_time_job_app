@@ -4,10 +4,8 @@
     <td>
       <select name=<%= "shift_request[#{num}][date]" %>>
         <option value="">--------</option>
-        <% @days.each do |key, value| %>
-          <% value.each do |date| %>
-            <option value=<%= date %> class=<%= "#{key}" %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>><%= date %></option>
-          <% end %>
+        <% @period.days.each do |date| %>
+          <option value=<%= date %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>><%= date %></option>
         <% end %>
       </select>
     </td>

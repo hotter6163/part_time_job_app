@@ -3,13 +3,11 @@ class ShiftSubmissionsController < ApplicationController
   before_action :belong_to
   
   def new_shift
-    before_render_new_shift
   end
   
   def create_shift
     @period = Period.find_by(id: params[:period])
     unless @period && @period.before_deadline? && @period.branch == @branch
-      before_render_new_shift
       @period_error = "選択した提出期間が不適切です。"
       render 'shift_submissions/new_shift' and return
     end
@@ -35,14 +33,14 @@ class ShiftSubmissionsController < ApplicationController
       @shift_submission.save
       render "shift_submissions/success"
     else
-      before_render_new_shift
       render "shift_submissions/new_shift"
     end
   end
   
   private
     def belong_to
-      @branch = Branch.find_by(id: params[:id])
+      @period = Period.find_by(id: params[:id])
+      @branch = @period.branch
       unless @branch&.belong_to?(current_user)
         redirect_to root_url
       end
