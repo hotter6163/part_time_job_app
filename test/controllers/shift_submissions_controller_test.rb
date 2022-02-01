@@ -81,7 +81,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
         }
       }
     }
-    @error_nums = ["1", "4", "5", "6", "7", "8"]
+    @error_nums = ["1", "4", "5", "6", "7", "8", "3"]
     @invalid_shift_submission_params = {
       period: @period.id,
       shift_request: {
