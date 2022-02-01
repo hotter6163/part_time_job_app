@@ -6,16 +6,16 @@
         <option value="">--------</option>
         <% @days.each do |key, value| %>
           <% value.each do |date| %>
-            <option value=<%= date %> class=<%= "#{key}" %>><%= date %></option>
+            <option value=<%= date %> class=<%= "#{key}" %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>><%= date %></option>
           <% end %>
         <% end %>
       </select>
     </td>
     <td>
-      <%= shift_form.time_field :start_time, min: @branch.start_of_business_hours.to_s(:time), max: @branch.end_of_business_hours.to_s(:time), class: 'form-control' %>
+      <%= shift_form.time_field :start_time, min: @branch.start_of_business_hours.to_s(:time), max: @branch.end_of_business_hours.to_s(:time), class: 'form-control', value: params[:shift_request].present? ? params[:shift_request][num.to_s]["start_time"] : "" %>
     </td>
     <td>
-      <%= shift_form.time_field :end_time, min: @branch.start_of_business_hours.to_s(:time), max: @branch.end_of_business_hours.to_s(:time), class: 'form-control' %>
+      <%= shift_form.time_field :end_time, min: @branch.start_of_business_hours.to_s(:time), max: @branch.end_of_business_hours.to_s(:time), class: 'form-control', value: params[:shift_request].present? ? params[:shift_request][num.to_s]["end_time"] : "" %>
     </td>
   </tr>
 <% end %>

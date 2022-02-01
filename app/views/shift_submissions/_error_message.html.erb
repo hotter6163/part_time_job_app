@@ -6,7 +6,7 @@
   以下のシフトが不適切です。
   <ul>
     <% @error_nums.each do |num| %>
-      <li><%= "シフト#{num}" %></li>
+      <li><%= "シフト#{num.to_i + 1}" %></li>
     <% end %>
   </ul>
 <% end %>
