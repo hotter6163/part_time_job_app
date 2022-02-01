@@ -1,6 +1,6 @@
 <%= form.fields_for "#{num}".to_sym do |shift_form| %>
   <tr id=<%= "#{num}" %>>
-    <td><%= "シフト希望#{num+1}" %></td>
+    <td><%= "シフト#{num+1}" %></td>
     <td>
       <select name=<%= "shift_request[#{num}][date]" %>>
         <option value="">--------</option>

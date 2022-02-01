@@ -81,7 +81,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
         }
       }
     }
-    @error_nums = ["1", "4", "5", "6", "7", "8", "3"]
+    @error_nums = Set.new(["1", "4", "5", "6", "7", "8", "3", "9"])
     @invalid_shift_submission_params = {
       period: @period.id,
       shift_request: {
@@ -103,7 +103,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
           start_time: "",
           end_time: ""
         },
-        # 3, 4シフト日重複
+        # 3, 4, 9シフト日重複
         "3".to_sym => {
           date: "2030-02-25",
           start_time: "08:30",
@@ -139,9 +139,9 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
           end_time: ""
         },
         "9".to_sym => {
-          date: "",
-          start_time: "",
-          end_time: ""
+          date: "2030-02-25",
+          start_time: "08:30",
+          end_time: "14:00"
         },
         "10".to_sym => {
           date: "",

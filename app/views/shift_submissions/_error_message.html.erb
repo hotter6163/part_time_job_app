@@ -1,0 +1,12 @@
+<% if @period_error.present? %>
+  <%= @period_error %>
+<% end %>
+
+<% if @error_nums.present? %>
+  以下のシフトが不適切です。
+  <ul>
+    <% @error_nums.each do |num| %>
+      <li><%= "シフト#{num}" %></li>
+    <% end %>
+  </ul>
+<% end %>

@@ -10,6 +10,7 @@ class ShiftSubmissionsController < ApplicationController
     @period = Period.find_by(id: params[:period])
     unless @period && @period.before_deadline? && @period.branch == @branch
       before_render_new_shift
+      @period_error = "選択した提出期間が不適切です。"
       render 'shift_submissions/new_shift' and return
     end
     
@@ -19,9 +20,7 @@ class ShiftSubmissionsController < ApplicationController
     
     params[:shift_request].each do |key, value|
       # 送信された値の検証
-      if value.values.all?(&:blank?)
-        next
-      end
+      next if value.values.all?(&:blank?)
       
       shift_request = @shift_submission.shift_requests.build(shift_request_params(value))
       unless valid?(shift_request)
@@ -68,12 +67,11 @@ class ShiftSubmissionsController < ApplicationController
     end
     
     def valid?(shift_request)
-      unless shift_request.valid?
-        return false
-      end
-      unless @period.is_date_in?(shift_request.date)
-        return false
-      end
+      # モデルのバリデーション
+      # 提出したシフトの範囲内か
+      return false unless shift_request.valid? && @period.is_date_in?(shift_request.date)
+      
+      # 日付の一意性
       flg = false
       @shift_requests.each do |key, value|
         if value.date.to_s == shift_request.date.to_s
@@ -84,6 +82,7 @@ class ShiftSubmissionsController < ApplicationController
       if flg
         return false
       end
+      
       true
     end
 end
