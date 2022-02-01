@@ -61,4 +61,25 @@ class Branch < ApplicationRecord
   def belong_to?(user)
     !!relationships.find_by(user: user)
   end
+  
+  def time_in_business_hours(date, time_with_zone)
+    result = "#{date.to_s} #{time_with_zone.to_s(:time)}".in_time_zone
+    if start_of_business_hours_on(date) <= result && result <= end_of_business_hours_on(date)
+      result
+    else
+      result + 1.day
+    end
+  end
+  
+  def start_of_business_hours_on(date)
+    "#{date.to_s} #{start_of_business_hours.to_s(:time)}".in_time_zone
+  end
+  
+  def end_of_business_hours_on(date)
+    if cross_day?
+      "#{(date + 1.day).to_s} #{end_of_business_hours.to_s(:time)}".in_time_zone
+    else
+      "#{date.to_s} #{end_of_business_hours.to_s(:time)}".in_time_zone
+    end
+  end
 end

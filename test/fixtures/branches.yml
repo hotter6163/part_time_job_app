@@ -6,6 +6,7 @@ branch_have_no_relationship:
   start_of_business_hours: <%= "10:00".in_time_zone %>
   end_of_business_hours: <%= "24:00".in_time_zone %>
   period_type: 1
+  cross_day: true
 
 branch:
   name: branch
@@ -14,6 +15,7 @@ branch:
   start_of_business_hours: <%= "08:30".in_time_zone %>
   end_of_business_hours: <%= "02:00".in_time_zone %>
   period_type: 0
+  cross_day: true
 
 branch1:
   name: branch1
@@ -22,4 +24,5 @@ branch1:
   start_of_business_hours: <%= "06:00".in_time_zone %>
   end_of_business_hours: <%= "23:00".in_time_zone %>
   period_type: 1
+  cross_day: false
 

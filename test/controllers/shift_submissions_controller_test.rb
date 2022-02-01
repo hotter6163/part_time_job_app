@@ -81,6 +81,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
         }
       }
     }
+    @error_nums = ["1", "4", "5", "6", "7", "8"]
     @invalid_shift_submission_params = {
       period: @period.id,
       shift_request: {
@@ -123,7 +124,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
         "6".to_sym => {
           date: "2030-03-01",
           start_time: "14:00",
-          end_time: "08:00"
+          end_time: "09:00"
         },
         # dateが空白
         "7".to_sym => {
@@ -197,13 +198,13 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
   
-  # # 正しい値を送信
-  # test "post create_shift with valid_params" do 
-  #   assert_difference -> { ShiftSubmission.count } => 1, -> { ShiftRequest.count } => 6 do
-  #     post shift_submissions_path(@branch), params: @valid_shift_submission_params
-  #   end
-  #   assert_template "shift_submissions/success"
-  # end
+  # 正しい値を送信
+  test "post create_shift with valid_params" do 
+    assert_difference -> { ShiftSubmission.count } => 1, -> { ShiftRequest.count } => 6 do
+      post shift_submissions_path(@branch), params: @valid_shift_submission_params
+    end
+    assert_template "shift_submissions/success"
+  end
   
   # 締め切りが過ぎた期間を送信
   test "post create_shift with period after deadline" do
@@ -229,5 +230,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
       post shift_submissions_path(@branch), params: @invalid_shift_submission_params
     end
     assert_template "shift_submissions/new_shift"
+    error_nums = assigns(:error_nums)
+    @error_nums.each { |num| assert error_nums.include?(num) }
   end
 end

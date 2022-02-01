@@ -2,8 +2,8 @@
 
 one:
   period: one
-  user: one
+  user: user
 
 two:
   period: two
-  user: two
+  user: user
