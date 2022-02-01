@@ -170,7 +170,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
   test "get new_shift" do
     get new_shift_submission_path(@period)
     assert_response :success
-    assert_select 'form[action=?]', shift_submissions_path(@branch)
+    assert_select 'form[action=?]', shift_submissions_path(@period)
     assert_select 'input[name=period][type=hidden]'
     @period.days.each { |date| assert_select 'option[value=?]', date.to_s }
     forms_num(@branch)[:max].times do |n|
