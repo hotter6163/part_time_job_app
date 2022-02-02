@@ -4,6 +4,8 @@ class BranchesController < ApplicationController
   
   # get branch_path(branch)
   def show
+    @employees = @branch.employees
+    @periods = @branch.periods_before_end_date
   end
   
   # get add_employee_branch_path(branch)

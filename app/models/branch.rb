@@ -86,4 +86,8 @@ class Branch < ApplicationRecord
       "#{date.to_s} #{end_of_business_hours.to_s(:time)}".in_time_zone
     end
   end
+  
+  def employees
+    relationships.all.map(&:user)
+  end
 end

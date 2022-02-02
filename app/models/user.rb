@@ -28,18 +28,19 @@ class User < ApplicationRecord
   
   # ユーザーが所属している企業一覧を返す
   def branches
-    sql = " select  companies.name as company_name,
-                    branches.id as branch_id,
-                    branches.name as branch_name,
-                    relationships.master,
-                    relationships.admin
-            from ( select id from users where id = #{id} ) as user
-            inner join relationships on user.id = relationships.user_id
-            inner join branches on relationships.branch_id = branches.id
-            inner join companies on branches.company_id = companies.id"
-    ActiveRecord::Base.connection.select_all(sql)
+    relationships.all.map(&:branch)
   end
-   
+  
+  def shift_requests(period)
+    result = Hash.new([])
+    shift_submissions.find_by(period: period).shift_requests.all.each { |shift_request| result[shift_request.date.to_s] = shift_request.start_to_end }
+    result
+  end
+  
+  def submit_shift?(period)
+    !!shift_submissions.find_by(period: period)
+  end
+  
   # 特異メソッド
   class << self
     # メールアドレスの形式が正しいかの判定
