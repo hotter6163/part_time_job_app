@@ -2,6 +2,5 @@
 <h4>期間：<%= @period.start_to_end %></h4>
 <h4>シフトの提出が完了しました</h4>
 
-<%= link_to '提出したシフトを確認する', "#" %>
-<%= link_to '他のシフトを提出する', new_shift_submission_path(@branch) %>
+<%= link_to '提出したシフトを確認する', shift_submission_path(@period) %>
 <%= link_to 'トップページに戻る', root_url %>

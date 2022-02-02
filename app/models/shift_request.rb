@@ -15,4 +15,18 @@ class ShiftRequest < ApplicationRecord
       errors.add(:start_time, "開始時間より終了時間の方が早いです")
     end
   end
+  
+  def start_to_end
+    start_time_after_convert =  if date == start_time.to_date
+                                  start_time.to_s(:time)
+                                else
+                                  "#{start_time.hour + 24}:#{start_time.min < 10 ? "0#{start_time.min}" : start_time.min}"
+                                end
+    end_time_after_convert =  if date == end_time.to_date
+                                end_time.to_s(:time)
+                              else
+                                "#{end_time.hour + 24}:#{end_time.min < 10 ? "0#{end_time.min}" : end_time.min}"
+                              end
+    "#{start_time_after_convert} - #{end_time_after_convert}"
+  end
 end

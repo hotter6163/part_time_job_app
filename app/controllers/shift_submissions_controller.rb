@@ -1,17 +1,14 @@
 class ShiftSubmissionsController < ApplicationController
   before_action :authenticate_user!
   before_action :belong_to
+  before_action :before_deadline, only: [:new_shift, :create_shift]
+  before_action :already_submit_shift, only: [:new_shift, :create_shift]
+  before_action :before_submit_shift, only: [:show]
   
   def new_shift
   end
   
   def create_shift
-    @period = Period.find_by(id: params[:period])
-    unless @period && @period.before_deadline? && @period.branch == @branch
-      @period_error = "選択した提出期間が不適切です。"
-      render 'shift_submissions/new_shift' and return
-    end
-    
     @shift_submission = @period.shift_submissions.build(user: current_user)
     @error_nums = Set.new
     @shift_requests = {}
@@ -37,12 +34,38 @@ class ShiftSubmissionsController < ApplicationController
     end
   end
   
+  def show
+    
+  end
+  
   private
     def belong_to
       @period = Period.find_by(id: params[:id])
+      unless @period
+        redirect_to root_url
+      end
       @branch = @period.branch
       unless @branch&.belong_to?(current_user)
         redirect_to root_url
+      end
+    end
+    
+    def before_deadline
+      unless @period.before_deadline?
+        redirect_to root_url
+      end
+    end
+    
+    def already_submit_shift
+      if !!@period.shift_submissions.find_by(user: current_user)
+        redirect_to shift_submission_path(@period)
+      end
+    end
+    
+    def before_submit_shift
+      @shift_submission = @period.shift_submissions.find_by(user: current_user)
+      unless !!@shift_submission
+        redirect_to new_shift_submission_path(@period)
       end
     end
     
@@ -53,15 +76,6 @@ class ShiftSubmissionsController < ApplicationController
       result[:end_time] = @branch.time_in_business_hours(shift_request['date'].to_date, shift_request['end_time'].in_time_zone)
       result[:end_time] + 1.day if result[:start_time] > result[:end_time]
       result
-    end
-    
-    def before_render_new_shift
-      @periods = []
-      @days = {}
-      @branch.periods_before_deadline.each do |period|
-        @periods << [period.start_to_end, period.id]
-        @days[period.id] = period.days
-      end
     end
     
     def valid?(shift_request)

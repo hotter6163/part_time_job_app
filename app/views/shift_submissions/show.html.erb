@@ -1,0 +1,19 @@
+<h2>シフト確認</h2>
+<h3>期間：<%= @period.start_to_end %></h3>
+
+<% if @shift_submission.shift_requests.all.present? %>
+  <table>
+    <tr>
+      <th>日付</th>
+      <th>時間</th>
+    </tr>
+    <% @shift_submission.shift_requests.all.each do |shift_request| %>
+      <tr>
+        <td><%= shift_request.date %></td>
+        <td><%= shift_request.start_to_end %></td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  この期間の出勤可能なシフトは提出されていません。
+<% end %>

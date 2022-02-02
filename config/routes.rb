@@ -7,8 +7,9 @@ Rails.application.routes.draw do
   post  'company_registrations',              to: 'company_registrations#create',         as: :company_registrations
   
   # シフト提出
-  get   'shift_submission/:id', to: 'shift_submissions#new_shift',      as: :new_shift_submission
-  post  'shift_submission/:id', to: 'shift_submissions#create_shift',   as: :shift_submissions
+  get   'shift_submissions/:id',      to: 'shift_submissions#new_shift',    as: :new_shift_submission
+  post  'shift_submissions/:id',      to: 'shift_submissions#create_shift', as: :shift_submissions
+  get   'shift_submissions/:id/show', to: 'shift_submissions#show',         as: :shift_submission
   
   resources :branches, only: [:show] do
     member do

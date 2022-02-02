@@ -6,7 +6,7 @@
   <!--シフト期間の選択-->
   <div>
     シフト期間：<%= @period.start_to_end %>
-    <%= hidden_field_tag :period, value: @period.id, class: 'form-control' %>
+    <%= hidden_field_tag :period, @period.id, class: 'form-control' %>
   </div>
   
   <!--シフトの送信フォーム-->
