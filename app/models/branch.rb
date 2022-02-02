@@ -90,4 +90,12 @@ class Branch < ApplicationRecord
   def employees
     relationships.all.map(&:user)
   end
+  
+  def shift_requests(period)
+    result = Hash.new([])
+    employees.each do |employee|
+      result[employee.full_name] = employee.shift_requests(period)
+    end
+    result
+  end
 end

@@ -31,6 +31,17 @@ class BranchesController < ApplicationController
     render "branches/send_email"
   end
   
+  def show_periods
+    unless @period = @branch.periods.find_by(id: params[:period_id])
+      redirect_to branch_path(@branch) and return
+    end
+    
+    @shift_requests = @branch.shift_requests(@period)
+  end
+  
+  def show_date
+  end
+  
   private
     # ログインしているユーザーが管理者権限を持っているか確認
     def admin_user

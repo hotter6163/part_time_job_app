@@ -6,7 +6,7 @@
   <tr>
     <th></th>
       <% @periods.each do |period| %>
-        <th><%= link_to period.start_to_end, "#" %></th>
+        <th><%= link_to period.start_to_end, periods_branch_path(@branch, period.id) %></th>
       <% end %>
   </tr>
   <% @employees.each do |employee| %>

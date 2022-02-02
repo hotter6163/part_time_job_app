@@ -15,6 +15,8 @@ Rails.application.routes.draw do
     member do
       get :add_employee
       post :send_email
+      get "periods/:period_id",  to: 'branches#show_periods',  as: :periods
+      get "date/:date",     to: 'branches#show_date',      as: :date
     end
   end
   

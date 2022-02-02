@@ -33,8 +33,14 @@ class User < ApplicationRecord
   
   def shift_requests(period)
     result = Hash.new([])
-    shift_submissions.find_by(period: period).shift_requests.all.each { |shift_request| result[shift_request.date.to_s] = shift_request.start_to_end }
+    if shift_submission = shift_submissions.find_by(period: period)
+      shift_submission.shift_requests.all.each { |shift_request| result[shift_request.date.to_s] = shift_request.start_to_end }
+    end
     result
+  end
+  
+  def shift_request(date)
+    
   end
   
   def submit_shift?(period)
