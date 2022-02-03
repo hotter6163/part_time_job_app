@@ -16,17 +16,23 @@ class ShiftRequest < ApplicationRecord
     end
   end
   
+  def start_time_of_30_hours_system
+    if date == start_time.to_date
+      start_time.to_s(:time)
+    else
+      "#{start_time.hour + 24}:#{start_time.min < 10 ? "0#{start_time.min}" : start_time.min}"
+    end
+  end
+  
+  def end_time_of_30_hours_system
+    if date == end_time.to_date
+      end_time.to_s(:time)
+    else
+      "#{end_time.hour + 24}:#{end_time.min < 10 ? "0#{end_time.min}" : end_time.min}"
+    end
+  end
+  
   def start_to_end
-    start_time_after_convert =  if date == start_time.to_date
-                                  start_time.to_s(:time)
-                                else
-                                  "#{start_time.hour + 24}:#{start_time.min < 10 ? "0#{start_time.min}" : start_time.min}"
-                                end
-    end_time_after_convert =  if date == end_time.to_date
-                                end_time.to_s(:time)
-                              else
-                                "#{end_time.hour + 24}:#{end_time.min < 10 ? "0#{end_time.min}" : end_time.min}"
-                              end
-    "#{start_time_after_convert} - #{end_time_after_convert}"
+    "#{start_time_of_30_hours_system} - #{end_time_of_30_hours_system}"
   end
 end

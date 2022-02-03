@@ -40,13 +40,18 @@ class BranchesController < ApplicationController
   end
   
   def show_date
+    unless @period = @branch.period_including(params[:date])
+      redirect_to branch_path(@branch) and return
+    end
+    @shift_requests = {}
+    @branch.employees.each { |employee| @shift_requests[employee.full_name] = employee.shift_request(@period, params[:date]) }
   end
   
   private
     # ログインしているユーザーが管理者権限を持っているか確認
     def admin_user
       @branch = Branch.find_by(id: params[:id])
-      unless admin_user?(user: current_user, branch: @branch)
+      unless @branch.admin_user?(current_user)
         redirect_to(root_url)
       end
     end

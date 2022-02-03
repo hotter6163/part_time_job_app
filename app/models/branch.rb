@@ -98,4 +98,13 @@ class Branch < ApplicationRecord
     end
     result
   end
+  
+  def admin_user?(user)
+    relationship = relationships.find_by(user: user)
+    relationship && relationship.admin?
+  end
+  
+  def period_including(date)
+    periods.find_by("start_date <= ? and end_date >= ?", date, date)
+  end
 end

@@ -70,7 +70,7 @@ class ShiftSubmissionsController < ApplicationController
     end
     
     def shift_request_params(shift_request)
-      return  unless shift_request.values.all?(&:present?)
+      return unless shift_request.values.all?(&:present?)
       result = shift_request.permit(:date)
       result[:start_time] = @branch.time_in_business_hours(shift_request['date'].to_date, shift_request['start_time'].in_time_zone)
       result[:end_time] = @branch.time_in_business_hours(shift_request['date'].to_date, shift_request['end_time'].in_time_zone)

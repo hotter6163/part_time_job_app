@@ -39,8 +39,9 @@ class User < ApplicationRecord
     result
   end
   
-  def shift_request(date)
-    
+  def shift_request(period, date)
+    return nil unless shift_submission = shift_submissions.find_by(period: period)
+    shift_submission.shift_requests.find_by(date: date)
   end
   
   def submit_shift?(period)
