@@ -2,7 +2,7 @@ require "test_helper"
 
 class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @start_date = '2022-02-07'
+    @start_date = '2022-08-01'
     @company_registration_params = 
         { company: {  name: 'new_company' },
           branch: { name: 'new_brnach',
@@ -122,6 +122,7 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
   # POST check_company, period_type="one_week"
   test 'post check_company with period_type="one_week"' do
     @company_registration_params[:branch][:period_type] = 'one_week'
+    @company_registration_params[:start_date] = 
     post check_company_registration_path, params: @company_registration_params
     assert !!session[:company_registration][:company]
     assert !!session[:company_registration][:branch]

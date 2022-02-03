@@ -16,9 +16,9 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
     get root_url
     branches = user.branches
     branches.each do |branch|
-      assert_match branch["branch_name"], response.body
-      if branch["admin"] == 1
-        assert_select "a[href=?]", branch_path(branch["branch_id"])
+      assert_match branch.company_name, response.body
+      if branch.relationships.find_by(user: user).admin?
+        assert_select "a[href=?]", branch_path(branch)
       end
     end
   end

@@ -2,9 +2,6 @@
 <h3>店舗情報を入力してください</h3>
 
 <%= form_with(url: check_company_registration_path, local: true) do |f| %>
-  <%= render 'shared/error_messages', object: @company %>
-  <%= render 'shared/error_messages', object: @branch %>
-  
   <!--企業情報-->
   <%= fields_for @company do |company_form| %>
     <div class="field">
@@ -65,8 +62,8 @@
         <%= weekly_form.select :start_day, day_pull_down, include_blank: "シフト開始の曜日を選択して下さい", class: 'form-control' %>
       </div>
       <div>
-        <%= weekly_form.label :deadline_day, "締め切り日（シフト開始曜日の何日前か）" %>
-        <%= weekly_form.number_field :deadline_day, in: 1..30, class: 'form-control' %> 
+        <%= weekly_form.label :deadline_day, "締め切り日" %>
+        <%= weekly_form.number_field :deadline_day, in: 1..30, class: 'form-control' %> 日前
       </div>
     <% end %>
   </div>
@@ -79,8 +76,8 @@
         <%= weekly_form.select :start_day, day_pull_down, include_blank: "シフト開始の曜日を選択して下さい", class: 'form-control' %>
       </div>
       <div>
-        <%= weekly_form.label :deadline_day, "締め切り日（シフト開始曜日の何日前か）" %>
-        <%= weekly_form.number_field :deadline_day, in: 1..30, class: 'form-control' %> 
+        <%= weekly_form.label :deadline_day, "締め切り日" %>
+        <%= weekly_form.number_field :deadline_day, in: 1..30, class: 'form-control' %> 日前
       </div>
     <% end %>
   </div>

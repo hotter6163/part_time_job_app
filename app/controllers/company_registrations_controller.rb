@@ -9,6 +9,11 @@ class CompanyRegistrationsController < ApplicationController
   end
   
   def check_company
+    @error_messages = []
+    unless valid_params?
+      render "company_registrations/new" and return
+    end
+    
     @company = Company.find_by(company_params) || Company.new(company_params)
     @branch = @company.branches.build(branch_params)
     if !!session_params[:weekly]
@@ -87,6 +92,72 @@ class CompanyRegistrationsController < ApplicationController
   end
   
   private
+    def valid_params?
+      japanese = {
+        "company" => {
+          "name" => "企業名"
+        },
+        "branch" => {
+          "name" => "店舗名",
+          "start_of_business_hours" => "営業開始時間",
+          "end_of_business_hours" => "営業終了時間"
+        },
+        "one_week" => {
+          "start_day" => "シフト開始曜日",
+          "deadline_day" => "締め切り日"
+        },
+        "two_weeks" => {
+          "start_day" => "シフト開始曜日",
+          "deadline_day" => "締め切り日"
+        },
+        "harf_month" => {
+          "one" => {
+            "start_day" => "期間1のシフト開始日",
+            "end_day" => "期間1のシフト終了日",
+            "deadline_day" => "期間1のシフト締切日"
+          },
+          "two" => {
+            "start_day" => "期間2のシフト開始日",
+            "end_day" => "期間2のシフト終了日",
+            "deadline_day" => "期間2のシフト締切日"
+          }
+        },
+        "one_month" => {
+          "start_day" => "シフト開始日",
+          "end_day" => "シフト終了日",
+          "deadline_day" => "シフト締切日"
+        }
+      }
+      params["company"].each { |key, value| @error_messages << "#{japanese["company"][key]}を入力してください。" if value.blank? }
+      params["branch"].each { |key, value| @error_messages << "#{japanese["branch"][key]}を入力してください。" if value.blank? }
+      @error_messages << "営業時間が日をまたぐ場合はチェックを付けてください。" if params["branch"]["start_of_business_hours"].in_time_zone >= params["branch"]["end_of_business_hours"].in_time_zone && params["branch"]["cross_day"] == "0"
+      @error_messages << "営業時間が日をまたぐ場合はチェックを付けてください。" if params["branch"]["period_type"].blank?
+      
+      case params["branch"]["period_type"]
+      when "one_week"
+        params["one_week"].each { |key, value| @error_messages << "#{japanese["one_week"][key]}を入力してください。" if value.blank? }
+        @error_messages << "シフトの開始日が不適切です" unless params["start_date"].in_time_zone.wday == params["one_week"]["start_day"].to_i
+      when "two_weeks"
+        params["two_weeks"].each { |key, value| @error_messages << "#{japanese["two_weeks"][key]}を入力してください。" if value.blank? }
+        @error_messages << "シフトの開始日が不適切です" unless params["start_date"].in_time_zone.wday == params["two_weeks"]["start_day"].to_i
+      when "harf_month"
+        days = []
+        params["harf_month"].each do |num, param|
+          param.each do |key, value|
+            @error_messages << "#{japanese["harf_month"][num][key]}を入力してください。" if value.blank?
+            days << value.to_i if key == "start_day"
+          end
+        end
+         @error_messages << "シフトの開始日が不適切です" unless !!params["start_date"] && days.include?(params["start_date"].in_time_zone.day)
+      when "one_month"
+        params["one_month"].each { |key, value| @error_messages << "#{japanese["two_weeks"][key]}を入力してください。" if value.blank? }
+        @error_messages << "シフトの開始日が不適切です" unless !!params["start_date"] && params["start_date"].in_time_zone.day == params["one_month"]["start_day"].to_i
+      end
+      
+      @error_messages << "マスターユーザーを選択してください" if params["user"].blank?
+      @error_messages.blank?
+    end
+  
     # sessionに入れるもの
     def session_params
       result = {  company: company_params,
