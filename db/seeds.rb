@@ -46,7 +46,8 @@ other_branch = company.branches.create!(
   display_day: 1,
   start_of_business_hours: '9:00',
   end_of_business_hours: '24:00',
-  period_type: 1
+  period_type: 1,
+  cross_day: 1  
 )
 monthly = other_branch.create_monthly!(period_num: 2)
 monthly.monthly_periods.create!(
