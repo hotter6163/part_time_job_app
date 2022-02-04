@@ -12,7 +12,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # POST /resource
   def create
-    resource = create_new_user(sign_up_params)
+    resource = create_new_user(new_user_params)
     yield resource if block_given?
     if resource.persisted?
       set_flash_message! :notice, :signed_up

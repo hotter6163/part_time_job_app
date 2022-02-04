@@ -220,10 +220,6 @@ class CompanyRegistrationsController < ApplicationController
       params.require(:one_month).permit(:start_day, :end_day, :deadline_day)
     end
     
-    def new_user_params
-      params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
-    end
-    
     # before_action
     def have_company_registration_session
       unless !!session[:company_registration]

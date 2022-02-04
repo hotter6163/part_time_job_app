@@ -19,4 +19,8 @@ class ApplicationController < ActionController::Base
         end
       end
     end
+    
+    def new_user_params
+      params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
+    end
 end
