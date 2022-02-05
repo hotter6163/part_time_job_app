@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_31_221544) do
+ActiveRecord::Schema.define(version: 2022_02_05_010214) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -63,6 +63,15 @@ ActiveRecord::Schema.define(version: 2022_01_31_221544) do
     t.index ["branch_id", "deadline"], name: "index_periods_on_branch_id_and_deadline", unique: true
     t.index ["branch_id", "start_date"], name: "index_periods_on_branch_id_and_start_date", unique: true
     t.index ["branch_id"], name: "index_periods_on_branch_id"
+  end
+
+  create_table "relationship_digests", force: :cascade do |t|
+    t.integer "branch_id"
+    t.string "digest"
+    t.boolean "used", default: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["branch_id"], name: "index_relationship_digests_on_branch_id"
   end
 
   create_table "relationships", force: :cascade do |t|
@@ -134,6 +143,7 @@ ActiveRecord::Schema.define(version: 2022_01_31_221544) do
   add_foreign_key "monthlies", "periods"
   add_foreign_key "monthly_periods", "monthlies"
   add_foreign_key "periods", "branches"
+  add_foreign_key "relationship_digests", "branches"
   add_foreign_key "relationships", "branches"
   add_foreign_key "relationships", "users"
   add_foreign_key "shift_requests", "shift_submissions"
