@@ -1,6 +1,6 @@
 require "test_helper"
 
-class RelationshipTokenTest < ActiveSupport::TestCase
+class RelationshipDigestTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
