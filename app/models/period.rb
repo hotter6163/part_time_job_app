@@ -8,7 +8,7 @@ class Period < ApplicationRecord
   validates :start_date, uniqueness: { scope: :branch_id }
   
   def start_to_end
-    "#{start_date} - #{end_date}"
+    "#{start_date.strftime("%m月%d日")} - #{end_date.strftime("%m月%d日")}"
   end
   
   def days

@@ -1,0 +1,2 @@
+class RelationshipToken < ApplicationRecord
+end
