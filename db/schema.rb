@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_05_010214) do
+ActiveRecord::Schema.define(version: 2022_02_06_051601) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -71,8 +71,10 @@ ActiveRecord::Schema.define(version: 2022_02_05_010214) do
     t.boolean "used", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "email"
     t.index ["branch_id"], name: "index_relationship_digests_on_branch_id"
     t.index ["digest"], name: "index_relationship_digests_on_digest", unique: true
+    t.index ["email"], name: "index_relationship_digests_on_email"
   end
 
   create_table "relationships", force: :cascade do |t|

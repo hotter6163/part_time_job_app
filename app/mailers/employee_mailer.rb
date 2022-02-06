@@ -9,7 +9,8 @@ class EmployeeMailer < ApplicationMailer
   def add_new_user(branch, token, email)
     @branch = branch
     @token = token
-    mail to: email, subject: "#{branch.company_name}から従業員登録の申請"
+    @email = email
+    mail to: @email, subject: "#{branch.company_name}から従業員登録の申請"
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml
@@ -21,6 +22,7 @@ class EmployeeMailer < ApplicationMailer
   def add_existing_user(branch, token, user)
     @branch = branch
     @token = token
-    mail to: user.email, subject: "#{branch.company_name}から従業員登録の申請"
+    @user = user
+    mail to: @user.email, subject: "#{@branch.company_name}から従業員登録の申請"
   end
 end

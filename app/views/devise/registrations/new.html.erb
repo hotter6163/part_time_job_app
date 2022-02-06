@@ -5,8 +5,8 @@
   
   <%= render "shared/new_user_registration_form", form: f %>
   
-  <% if !!params[:token] %>
-    <%= hidden_field_tag :token, params[:token] %>
+  <% if @relationship_digest.present? %>
+    <%= render "relationships/hidden_params" %>
   <% end %>
   
   <div class="actions">

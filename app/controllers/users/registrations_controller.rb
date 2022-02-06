@@ -3,8 +3,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-  before_action :valid_relationship_token, only: [:new, :create], if: -> { params[:token].present? }
-  after_action :redirect_new_relationships, only: [:create], if: -> { params[:token].present? }
+  before_action :valid_relationship_token, only: [:new, :create], if: -> { params[:token].present? && params[:email].present? }
   
   # GET /resource/new
   # def new
@@ -12,9 +11,31 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  def create
+    build_resource(sign_up_params)
+
+    resource.save
+    yield resource if block_given?
+    if resource.persisted?
+      if resource.active_for_authentication?
+        set_flash_message! :notice, :signed_up
+        sign_up(resource_name, resource)
+        if @relationship_digest.nil?
+          respond_with resource, location: after_sign_up_path_for(resource)
+        else
+          redirect_to new_relationship_path(token: params[:token], email: params[:email])
+        end
+      else
+        set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"
+        expire_data_after_sign_in!
+        respond_with resource, location: after_inactive_sign_up_path_for(resource)
+      end
+    else
+      clean_up_passwords resource
+      set_minimum_password_length
+      respond_with resource
+    end
+  end
 
   # POST /resource
   # def create

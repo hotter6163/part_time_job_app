@@ -11,33 +11,53 @@ class AddEmployeeTest < ActionDispatch::IntegrationTest
   
   # ユーザー登録していない従業員を登録
   test "add employee who is new user" do
+    email = 'new_user@example.com'
     get add_employee_branch_path(@branch)
-    post send_email_branch_path(@branch), params: { email: 'new_user@example.com' }
+    assert_difference "RelationshipDigest.count", 1 do
+      post send_email_branch_path(@branch), params: { email: email }
+    end
     branch = assigns(:branch)
     assert_equal 1, ActionMailer::Base.deliveries.size
     assert !!flash[:success]
     assert_template "branches/send_email"
     
     logout
-    # # 間違ったトークンでアクセス
-    # get new_user_registration_path(token: "invalid_token")
-    # assert_redirected_to root_url
     
     # 正しいトークンでアクセス
-    get new_user_registration_path(token: branch.relationship_token)
+    get new_user_registration_path(token: branch.relationship_token, email: email)
     assert_response :success
     assert_template "devise/registrations/new"
-    assert_select "input[name=branch_id][type=hidden][value=?]", branch.relationship_token
+    assert_select "input[name=token][type=hidden][value=?]", branch.relationship_token
+    assert_select "input[name=email][type=hidden][value=?]", email
     
     assert_difference "User.count", 1 do
       post user_registration_path, params: { user: {  last_name: "example",
                                                       first_name: "test",
-                                                      email: "test@example.com",
+                                                      email: email,
                                                       password: "password",
                                                       password_confirmation: "password" },
-                                              branch_id: @branch.id }
+                                              token: branch.relationship_token,
+                                              email: email}
     end
-    assert_redirected_to new_relationship_path
+    assert_redirected_to new_relationship_path(token: branch.relationship_token, email: email)
+    
+    follow_redirect!
+    assert_template "relationships/new"
+    assert_select "form[action=?]", relationships_path
+    assert_select "input[name=token][type=hidden][value=?]", branch.relationship_token
+    assert_select "input[name=email][type=hidden][value=?]", email
+    assert_select "input[type=submit][name=commit]"
+    
+    assert_difference "Relationship.count", 1 do
+      post relationships_path, params: {  token: branch.relationship_token,
+                                          email: email }
+    end
+    relationship = assigns(:relationship)
+    assert_equal relationship.branch_id, branch.id
+    assert_not relationship.admin?
+    assert_not relationship.master?
+    
+    assert_redirected_to root_url
   end
   
   # # ユーザー登録済みの従業員を登録

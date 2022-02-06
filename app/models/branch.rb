@@ -22,20 +22,20 @@ class Branch < ApplicationRecord
     "#{company.name} #{name}"
   end
   
-  def create_relationship_token
-    @relationship_token = RelationshipDigest.new_token
-    relationship_digests.create(digest: RelationshipDigest.digest(@token))
+  def create_relationship_token(email)
+    self.relationship_token = RelationshipDigest.new_token
+    relationship_digests.create(digest: RelationshipDigest.digest(@relationship_token), email: email)
   end
   
   # 既存ユーザーへ従業員登録用メールを送信
   def send_email_to_existing_user(user)
-    create_relationship_token
+    create_relationship_token(user.email)
     EmployeeMailer.add_existing_user(self, @relationship_token, user).deliver_now
   end
   
   # 新規ユーザーへ従業員登録用メールを送信
   def send_email_to_new_user(email)
-    create_relationship_token
+    create_relationship_token(email)
     EmployeeMailer.add_new_user(self, @relationship_token, email).deliver_now
   end
   
@@ -116,16 +116,5 @@ class Branch < ApplicationRecord
   
   def period_including(date)
     periods.find_by("start_date <= ? and end_date >= ?", date, date)
-  end
-  
-  def valid_relationship_digest(token)
-    result = nil
-    relationship_digests.all.each do |relationship_digest| 
-      if relationship_digest.valid_token?(token)
-        result = relationship_digest
-        break
-      end
-    end
-    result
   end
 end

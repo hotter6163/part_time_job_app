@@ -12,14 +12,10 @@ class ApplicationController < ActionController::Base
     
     # 送信されたbranch_idが正しいかどうか
     def valid_relationship_token
-      digest = RelationshipDigest.digest(params[:token])
-      unless @relationship_digest = RelationshipDigest.find_by(digest: digest)
+      @relationship_digest = RelationshipDigest.find_by(email: params[:email])
+      unless @relationship_digest.valid_token?(params[:token])
         redirect_to root_url
       end
-    end
-    
-    def redirect_new_relationships
-      redirect_to new_relationship_path(token: params[:token])
     end
     
     def new_user_params

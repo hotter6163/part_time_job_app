@@ -6,7 +6,7 @@ class RelationshipDigest < ApplicationRecord
   end
   
   def valid_token?(token)
-    BCrypt::Password.new(@digest).is_password?(token)
+    BCrypt::Password.new(digest).is_password?(token)
   end
   
   class << self

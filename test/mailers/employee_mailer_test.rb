@@ -14,7 +14,9 @@ class EmployeeMailerTest < ActionMailer::TestCase
     assert_equal "#{@branch.company_name}から従業員登録の申請", mail.subject
     assert_equal [new_user_email], mail.to
     assert_equal ["noreply@example.com"], mail.from
-    assert_match new_user_registration_path(token: @token), mail.body.encoded
+    assert_match @token, mail.body.encoded
+    assert_match CGI.escape(new_user_email), mail.body.encoded
+    assert_match "/users/sign_up", mail.body.encoded
   end
 
   test "add_existing_user" do
@@ -22,6 +24,8 @@ class EmployeeMailerTest < ActionMailer::TestCase
     assert_equal "#{@branch.company_name}から従業員登録の申請", mail.subject
     assert_equal [@user.email], mail.to
     assert_equal ["noreply@example.com"], mail.from
-    assert_match new_relationship_path(token: @token), mail.body.encoded
+    assert_match @token, mail.body.encoded
+    assert_match CGI.escape(@user.email), mail.body.encoded
+    assert_match "/relationships/new", mail.body.encoded
   end
 end
