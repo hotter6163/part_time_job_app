@@ -3,7 +3,8 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-  before_action :find_branch, only: [:new]
+  before_action :valid_relationship_token, only: [:new, :create], if: -> { params[:token].present? }
+  after_action :redirect_new_relationships, only: [:create], if: -> { params[:token].present? }
   
   # GET /resource/new
   # def new
@@ -11,21 +12,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # end
 
   # POST /resource
-  def create
-    resource = create_new_user(new_user_params)
-    yield resource if block_given?
-    if resource.persisted?
-      set_flash_message! :notice, :signed_up
-      sign_up(resource_name, resource)
-      respond_with resource, location: after_sign_up_path_for(resource)
-      
-      create_relationship(params[:branch_id]) if !!params[:branch_id]
-    else
-      clean_up_passwords resource
-      set_minimum_password_length
-      respond_with resource
-    end
-  end
+  # def create
+  #   super
+  # end
 
   # POST /resource
   # def create

@@ -1,8 +1,11 @@
 class Branch < ApplicationRecord
+  attr_accessor :relationship_token
+  
   # モデルの関係性
   belongs_to :company
   has_many :relationships, dependent: :destroy
   has_many :periods, dependent: :destroy
+  has_many :relationship_digests, dependent: :destroy
   has_one :weekly, dependent: :destroy
   has_one :monthly, dependent: :destroy
   
@@ -19,14 +22,21 @@ class Branch < ApplicationRecord
     "#{company.name} #{name}"
   end
   
+  def create_relationship_token
+    @relationship_token = RelationshipDigest.new_token
+    relationship_digests.create(digest: RelationshipDigest.digest(@token))
+  end
+  
   # 既存ユーザーへ従業員登録用メールを送信
   def send_email_to_existing_user(user)
-    EmployeeMailer.add_existing_user(self, user).deliver_now
+    create_relationship_token
+    EmployeeMailer.add_existing_user(self, @relationship_token, user).deliver_now
   end
   
   # 新規ユーザーへ従業員登録用メールを送信
   def send_email_to_new_user(email)
-    EmployeeMailer.add_new_user(self, email).deliver_now
+    create_relationship_token
+    EmployeeMailer.add_new_user(self, @relationship_token, email).deliver_now
   end
   
   def subtype
@@ -106,5 +116,16 @@ class Branch < ApplicationRecord
   
   def period_including(date)
     periods.find_by("start_date <= ? and end_date >= ?", date, date)
+  end
+  
+  def valid_relationship_digest(token)
+    result = nil
+    relationship_digests.all.each do |relationship_digest| 
+      if relationship_digest.valid_token?(token)
+        result = relationship_digest
+        break
+      end
+    end
+    result
   end
 end

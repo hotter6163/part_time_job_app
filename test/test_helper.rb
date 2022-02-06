@@ -21,13 +21,13 @@ class ActiveSupport::TestCase
   
   def new_user_registration_path(hash={})
     result = "/users/sign_up"
-    hash.each_with_index { |row, index| result += ( index == 0 ? "?#{row[0]}=#{row[1]}" : "=#{row[0]}=#{row[1]}") }
+    hash.each_with_index { |row, index| result += ( index == 0 ? "?#{row[0]}=#{row[1]}" : "&#{row[0]}=#{row[1]}") }
     result
   end
   
   def new_relationship_path(hash={})
     result = "/relationships/new"
-    hash.each_with_index { |row, index| result += ( index == 0 ? "?#{row[0]}=#{row[1]}" : "=#{row[0]}=#{row[1]}") }
+    hash.each_with_index { |row, index| result += ( index == 0 ? "?#{row[0]}=#{row[1]}" : "&#{row[0]}=#{row[1]}") }
     result
   end
 end

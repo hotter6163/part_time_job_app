@@ -11,13 +11,15 @@ class ApplicationController < ActionController::Base
     end
     
     # 送信されたbranch_idが正しいかどうか
-    def find_branch
-      if params[:branch_id]
-        unless Branch.find_by(id: params[:branch_id])
-          flash[:denger] = "支店IDが無効です"
-          redirect_to root_url 
-        end
+    def valid_relationship_token
+      digest = RelationshipDigest.digest(params[:token])
+      unless @relationship_digest = RelationshipDigest.find_by(digest: digest)
+        redirect_to root_url
       end
+    end
+    
+    def redirect_new_relationships
+      redirect_to new_relationship_path(token: params[:token])
     end
     
     def new_user_params

@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 2022_02_05_010214) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["branch_id"], name: "index_relationship_digests_on_branch_id"
+    t.index ["digest"], name: "index_relationship_digests_on_digest", unique: true
   end
 
   create_table "relationships", force: :cascade do |t|

@@ -5,8 +5,8 @@
   
   <%= render "shared/new_user_registration_form", form: f %>
   
-  <% if !!params[:branch_id] %>
-    <%= hidden_field_tag :branch_id, params[:branch_id] %>
+  <% if !!params[:token] %>
+    <%= hidden_field_tag :token, params[:token] %>
   <% end %>
   
   <div class="actions">

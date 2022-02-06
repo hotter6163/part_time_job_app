@@ -56,7 +56,7 @@ class BranchesControllerTest < ActionDispatch::IntegrationTest
     valid_addresses = %w[user@sample.com USER@foo.COM A_US-ER@foo.bar.org
                          first.last@foo.jp alice+bob@baz.cn]
     valid_addresses.each do |valid_address|
-      assert_difference "ActionMailer::Base.deliveries.size", 1 do
+      assert_difference ["ActionMailer::Base.deliveries.size","RelationshipDigest.count"], 1 do
         post send_email_branch_path(@admin_branch), params: { email: valid_address }
       end
       assert_template 'branches/send_email'
