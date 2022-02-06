@@ -16,6 +16,7 @@ class RelationshipsController < ApplicationController
     @relationship = @branch.relationships.new(user: current_user)
     if @relationship.valid?
       @relationship.save
+      @relationship_digest.update_attribute(:used, true)
       flash[:success] = "#{@branch.company_name}の従業員として登録されました。"
     else
       flash[:denger] = "#{@branch.company_name}への従業員登録に失敗したました。"

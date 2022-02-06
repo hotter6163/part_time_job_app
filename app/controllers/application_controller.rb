@@ -13,7 +13,7 @@ class ApplicationController < ActionController::Base
     # 送信されたbranch_idが正しいかどうか
     def valid_relationship_token
       @relationship_digest = RelationshipDigest.find_by(email: params[:email])
-      unless @relationship_digest.valid_token?(params[:token])
+      unless @relationship_digest.valid_token?(params[:token]) && @relationship_digest.available?
         redirect_to root_url
       end
     end

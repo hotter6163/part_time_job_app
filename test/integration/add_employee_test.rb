@@ -56,33 +56,49 @@ class AddEmployeeTest < ActionDispatch::IntegrationTest
     assert_equal relationship.branch_id, branch.id
     assert_not relationship.admin?
     assert_not relationship.master?
+    relationship_digest = assigns(:relationship_digest)
+    relationship_digest.reload
+    assert relationship_digest.used?
     
     assert_redirected_to root_url
+    follow_redirect!
+    assert_match branch.company_name, response.body
   end
   
-  # # ユーザー登録済みの従業員を登録
-  # test "add employee who is existing user" do
-  #   get add_employee_branch_path(@branch)
-  #   post send_email_branch_path(@branch), params: { email: @employee.email }
-  #   assert_equal 1, ActionMailer::Base.deliveries.size
-  #   assert !!flash[:success]
-  #   assert_template "branches/send_email"
-  #   logout
+  # ユーザー登録済みの従業員を登録
+  test "add employee who is existing user" do
+    get add_employee_branch_path(@branch)
+    post send_email_branch_path(@branch), params: { email: @employee.email }
+    branch = assigns(:branch)
+    assert_equal 1, ActionMailer::Base.deliveries.size
+    assert !!flash[:success]
+    assert_template "branches/send_email"
     
-  #   new_employee = users(:user_have_no_relationship)
-  #   login_as(new_employee)
-  #   get new_relationship_path(branch_id: @branch.id)
-  #   assert_template "relationships/new"
-  #   assert_select 'form[action=?]', relationships_path
-  #   assert_select 'input[name=branch_id][type=hidden][value=?]', @branch.id.to_s
-  #   assert_select 'input[type="submit"][name="commit"]'
+    logout
     
-  #   assert_difference 'Relationship.count' do
-  #     post relationships_path, params: { branch_id: @branch.id }
-  #   end
-  #   relationship = assigns(:relationship)
-  #   assert_equal @branch.id, relationship.branch_id
-  #   assert_not relationship.master
-  #   assert_not relationship.admin
-  # end
+    login_as(@employee)
+    get new_relationship_path(token: branch.relationship_token, email: @employee.email)
+    assert_template "relationships/new"
+    assert_select "form[action=?]", relationships_path
+    assert_select "input[name=token][type=hidden][value=?]", branch.relationship_token
+    assert_select "input[name=email][type=hidden][value=?]", @employee.email
+    assert_select "input[type=submit][name=commit]"
+    
+    assert_difference "Relationship.count", 1 do
+      post relationships_path, params: {  token: branch.relationship_token,
+                                          email: @employee.email }
+    end
+    relationship = assigns(:relationship)
+    assert_equal branch.id, relationship.branch_id
+    assert_equal @employee.email, relationship.user.email
+    assert_not relationship.admin?
+    assert_not relationship.master?
+    relationship_digest = assigns(:relationship_digest)
+    relationship_digest.reload
+    assert relationship_digest.used?
+    
+    assert_redirected_to root_url
+    follow_redirect!
+    assert_match branch.company_name, response.body
+  end
 end
