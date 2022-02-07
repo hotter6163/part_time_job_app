@@ -3,7 +3,7 @@ class ShiftSubmissionsController < ApplicationController
   before_action :belong_to
   before_action :before_deadline, only: [:new_shift, :create_shift]
   before_action :already_submit_shift, only: [:new_shift, :create_shift]
-  before_action :before_submit_shift, only: [:show]
+  before_action :not_submit_shift, only: [:show]
   
   def new_shift
   end
@@ -62,7 +62,7 @@ class ShiftSubmissionsController < ApplicationController
       end
     end
     
-    def before_submit_shift
+    def not_submit_shift
       @shift_submission = @period.shift_submissions.find_by(user: current_user)
       unless !!@shift_submission
         redirect_to new_shift_submission_path(@period)

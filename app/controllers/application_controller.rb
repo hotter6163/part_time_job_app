@@ -10,7 +10,8 @@ class ApplicationController < ActionController::Base
         devise_parameter_sanitizer.permit(:sign_up, keys: [:last_name, :first_name])
     end
     
-    # 送信されたbranch_idが正しいかどうか
+    # before_action
+    # 従業員登録時のtokenとemailの確認
     def valid_relationship_token
       @relationship_digest = RelationshipDigest.find_by(email: params[:email])
       unless @relationship_digest.valid_token?(params[:token]) && @relationship_digest.available?
@@ -18,6 +19,7 @@ class ApplicationController < ActionController::Base
       end
     end
     
+    # ユーザー登録用のパラメータ
     def new_user_params
       params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
     end
