@@ -1,8 +1,8 @@
-<header class="navbar navbar-fixed-top navbar-inverse">
-  <div class="container">
+<header>
+  <div>
     <%= link_to '<アルバイト管理システム>', root_url, id: 'logo' %>
     <nav>
-      <ul class="nav navbar-nav navbar-right">
+      <ul>
         <% if user_signed_in? %>
           <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
         <% else %>
