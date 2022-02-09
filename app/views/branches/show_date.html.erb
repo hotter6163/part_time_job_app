@@ -14,7 +14,7 @@
     <% @branch.employees.each do |employee| %>
       <tr>
         <td><%= employee.full_name %></td>
-        <td><%= employee.submit_shift?(@period) ? "提出済み" : "未提出" %></td>
+        <td><%= employee.submit_shift?(@period) ? "提出済" : "未提出" %></td>
         <td><%= @shift_requests[employee.full_name].start_time_of_30_hours_system if @shift_requests[employee.full_name].present? %></td>
         <td><%= @shift_requests[employee.full_name].end_time_of_30_hours_system if @shift_requests[employee.full_name].present? %></td>
       </tr>
