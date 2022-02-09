@@ -1,0 +1,11 @@
+<%= link_to "企業トップへ", branch_path(@branch) %>
+<br>
+シフトを確認する
+<ul class="list-unstyled">
+  <% @branch.periods_before_end_date.each do |period| %>
+    <li>
+      <%= link_to period.start_to_end, periods_branch_path(@branch, period.id) %>
+    </li>
+  <% end %>
+</ul>
+<%= link_to "従業員を追加する", add_employee_branch_path(@branch) %>

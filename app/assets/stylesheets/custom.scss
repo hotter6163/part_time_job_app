@@ -1,5 +1,5 @@
-// @import "bootstrap-sprockets";
-// @import "bootstrap";
+@import "bootstrap-sprockets";
+@import "bootstrap";
 
 // /* mixins, variables, etc. */
 
@@ -8,24 +8,25 @@
 // $main-color-2: #ffffff;
 // $accent-color: #009bc6;
 
-// @mixin box_sizing {
-//   -moz-box-sizing:    border-box;
-//   -webkit-box-sizing: border-box;
-//   box-sizing:         border-box;
-// }
+@mixin box_sizing {
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing:         border-box;
+}
 
-// /* miscellaneous */
+/* miscellaneous */
 
-// .debug_dump {
-//   clear: both;
-//   float: left;
-//   width: 100%;
-//   margin-top: 45px;
-//   @include box_sizing;
-// }
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 45px;
+  @include box_sizing;
+}
 
 // // ページ全体
 // body {
+//   padding-top: 100px;
 // }
 
 // header {

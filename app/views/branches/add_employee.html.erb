@@ -1,6 +1,5 @@
-<h1><%= @branch.company_name %></h1>
-
-<h2>追加する従業員のメールアドレスを入力してください</h2>
+<% provide(:title, '従業員の追加') %>
+<% provide(:subtitle, '追加する従業員のメールアドレスを入力してください。') %>
 
 <%= form_with url: send_email_branch_path(@branch), local: true do |f| %>
   <%= f.label :email %>

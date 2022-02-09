@@ -1,0 +1,14 @@
+<aside class="col-sm-2">
+  <%= render "branches/sidebar" %>
+</aside>
+
+<main class="col-sm-10">
+  <h1><%= @branch.company_name %></h1>
+  <% if yield(:title).present? %>
+    <h2><%= yield(:title) %></h2>
+  <% end %>
+  <% if yield(:subtitle).present? %>
+    <h3><%= yield(:subtitle) %></h3>
+  <% end %>
+  <%= yield %>
+</main>

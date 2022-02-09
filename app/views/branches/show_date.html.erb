@@ -1,19 +1,23 @@
-<h2>シフト希望一覧</h2>
-<h3>日付：<%= params[:date].to_date %></h3>
+<% provide(:title, 'シフト希望') %>
+<% provide(:subtitle, "日付：#{params[:date].to_date.strftime("%m/%d")}") %>
 
-<table>
-  <tr>
-    <th>従業員名</th>
-    <th>提出状況</th>
-    <th>開始時間</th>
-    <th>終了時間</th>
-  </tr>
-  <% @branch.employees.each do |employee| %>
+<table class="table">
+  <thead class="thead-light">
     <tr>
-      <td><%= employee.full_name %></td>
-      <td><%= employee.submit_shift?(@period) ? "提出済み" : "未提出" %></td>
-      <td><%= @shift_requests[employee.full_name].start_time_of_30_hours_system if @shift_requests[employee.full_name].present? %></td>
-      <td><%= @shift_requests[employee.full_name].end_time_of_30_hours_system if @shift_requests[employee.full_name].present? %></td>
+      <th></th>
+      <th>提出状況</th>
+      <th>開始時間</th>
+      <th>終了時間</th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @branch.employees.each do |employee| %>
+      <tr>
+        <td><%= employee.full_name %></td>
+        <td><%= employee.submit_shift?(@period) ? "提出済み" : "未提出" %></td>
+        <td><%= @shift_requests[employee.full_name].start_time_of_30_hours_system if @shift_requests[employee.full_name].present? %></td>
+        <td><%= @shift_requests[employee.full_name].end_time_of_30_hours_system if @shift_requests[employee.full_name].present? %></td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>

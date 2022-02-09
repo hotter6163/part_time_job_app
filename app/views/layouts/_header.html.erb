@@ -2,9 +2,10 @@
   <div>
     <%= link_to '<アルバイト管理システム>', root_url, id: 'logo' %>
     <nav>
-      <ul>
+      <ul class="list-inline">
         <% if user_signed_in? %>
-          <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
+          <li class="list-inline-item">シフトを提出する</li>
+          <li class="list-inline-item"><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
         <% else %>
           <li><%= link_to 'ログイン', new_user_session_path %></li>
         <% end %>

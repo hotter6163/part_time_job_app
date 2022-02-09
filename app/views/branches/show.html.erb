@@ -1,24 +1,24 @@
-<h1><%= @branch.company_name %></h1>
+<% provide(:title, 'シフト提出状況') %>
 
-<h3>シフト提出状況</h3>
-
-<table>
-  <tr>
-    <th></th>
-      <% @periods.each do |period| %>
-        <th><%= link_to period.start_to_end, periods_branch_path(@branch, period.id) %></th>
-      <% end %>
-  </tr>
-  <% @employees.each do |employee| %>
+<table class="table">
+  <thead class="thead-light">
     <tr>
-      <td><%= employee.full_name %></td>
-      <% @periods.each do |period| %>
-        <td>
-          <%= employee.submit_shift?(period) ? "提出" : "未提出" %>
-        </td>
-      <% end %>
+      <th></th>
+        <% @periods.each do |period| %>
+          <th><%= link_to period.start_to_end, periods_branch_path(@branch, period.id) %></th>
+        <% end %>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @employees.each do |employee| %>
+      <tr>
+        <td><%= employee.full_name %></td>
+        <% @periods.each do |period| %>
+          <td>
+            <%= employee.submit_shift?(period) ? "提出" : "未提出" %>
+          </td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
-
-<%= link_to "従業員を追加する", add_employee_branch_path(@branch) %>

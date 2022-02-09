@@ -1,21 +1,25 @@
-<h2>シフト希望一覧</h2>
-<h3>期間：<%= @period.start_to_end %></h3>
+<% provide(:title, 'シフト希望') %>
+<% provide(:subtitle, "期間：#{@period.start_to_end}") %>
 
-<table>
-  <tr>
-    <th></th>
-    <th>提出状況</th>
-    <% @period.days.each do |date| %>
-      <th><%= link_to date.to_s, date_branch_path(@branch, date.to_s) %></th>
-    <% end %>
-  </tr>
-  <% @branch.employees.each do |user| %>
+<table class="table">
+  <thead class="thead-light">
     <tr>
-      <td><%= user.full_name %></td>
-      <td><%= user.submit_shift?(@period) ? "済" : "未" %></td>
+      <th></th>
+      <th>提出状況</th>
       <% @period.days.each do |date| %>
-        <td><%= @shift_requests[user.full_name][date.to_s].present? ? @shift_requests[user.full_name][date.to_s] : "" %></td>
+        <th><%= link_to date.strftime("%m/%d"), date_branch_path(@branch, date.to_s) %></th>
       <% end %>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @branch.employees.each do |user| %>
+      <tr>
+        <td><%= user.full_name %></td>
+        <td><%= user.submit_shift?(@period) ? "済" : "未" %></td>
+        <% @period.days.each do |date| %>
+          <td><%= @shift_requests[user.full_name][date.to_s].present? ? @shift_requests[user.full_name][date.to_s] : "" %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
