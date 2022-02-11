@@ -1,38 +1,45 @@
-<table>
-  <tr>
-    <th>企業</th>
-    <th></th>
-  </tr>
-  <% @branches.each do |branch| %>
+<table class="table">
+  <thead>
     <tr>
-      <td><%= branch.company_name %></td>
-      <td>
-        <table>
-          <% branch.periods_before_end_date.each do |period| %>
-            <tr>
-              <td><%= period.start_to_end %></td>
-              <td><%= period.before_deadline? ? "期限前" : "期限切れ" %></td>
-              <td><%= current_user.submit_shift?(period) ? "提出済み" : "未提出" %></td>
-              <% if period.before_deadline? %>
-                <% if current_user.submit_shift?(period) %>
-                  <td><%= link_to "シフトを確認する", shift_submission_path(period) %></td>
-                <% else %>
-                  <td><%= link_to "シフトを提出する", new_shift_submission_path(period) %></td>
-                <% end %>
-              <% else %>
-                <% if current_user.submit_shift?(period) %>
-                  <td><%= link_to "シフトを確認する", shift_submission_path(period) %></td>
-                <% else %>
-                  <td>シフトを提出していません</td>
-                <% end %>
-              <% end %>
-            </tr>
-          <% end %>
-        </table>
-      </td>
-      <% if current_user.relationships.find_by(branch: branch).admin? %>
-        <td><%= link_to  "管理人ページへ", branch_path(branch) %></td>
-      <% end %>
+      <th>企業</th>
+      <th></th>
+      <th></th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @branches.each do |branch| %>
+      <tr>
+        <td><%= branch.company_name %></td>
+        <td>
+          <table>
+            <% branch.periods_before_end_date.each do |period| %>
+              <tr>
+                <td><%= period.start_to_end %></td>
+                <td><%= period.before_deadline? ? "期限前" : "期限切れ" %></td>
+                <td><%= current_user.submit_shift?(period) ? "提出済" : "未提出" %></td>
+                <% if period.before_deadline? %>
+                  <% if current_user.submit_shift?(period) %>
+                    <td><%= link_to "シフトを確認する", shift_submission_path(period) %></td>
+                  <% else %>
+                    <td><%= link_to "シフトを提出する", new_shift_submission_path(period) %></td>
+                  <% end %>
+                <% else %>
+                  <% if current_user.submit_shift?(period) %>
+                    <td><%= link_to "シフトを確認する", shift_submission_path(period) %></td>
+                  <% else %>
+                    <td>シフトを提出していません</td>
+                  <% end %>
+                <% end %>
+              </tr>
+            <% end %>
+          </table>
+        </td>
+        <% if current_user.relationships.find_by(branch: branch).admin? %>
+          <td><%= link_to  "管理人ページへ", branch_path(branch) %></td>
+        <% else %>
+          <td></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
 </table>

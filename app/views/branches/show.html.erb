@@ -14,7 +14,7 @@
       <tr>
         <td><%= employee.full_name %></td>
         <% @periods.each do |period| %>
-          <td>
+          <td class=<%= employee.submit_shift?(period) ? 'table-success' : 'table-warning' %>>
             <%= employee.submit_shift?(period) ? "提出済" : "未提出" %>
           </td>
         <% end %>

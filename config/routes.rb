@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   resources :relationships, only: [:new, :create]
   devise_for :users, controllers: { 
     registrations: 'users/registrations',
+    sessions: 'users/sessions'
   }
   root 'static_pages#home'
 end

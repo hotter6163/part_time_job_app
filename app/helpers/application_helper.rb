@@ -30,4 +30,9 @@ module ApplicationHelper
   def delete_sessions(*ary)
     ary.each { |key| session[key] = nil }
   end
+  
+  def correct_key?(key)
+    correct_keys = Set.new(["primary", 'secondaly', "success", "danger", "warning", "info", "light", "dark"])
+    correct_keys.include?(key)
+  end
 end

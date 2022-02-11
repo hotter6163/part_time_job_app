@@ -12,12 +12,12 @@
     </tr>
   </thead>
   <tbody>
-    <% @branch.employees.each do |user| %>
-      <tr>
-        <td><%= user.full_name %></td>
-        <td><%= user.submit_shift?(@period) ? "提出済" : "未提出" %></td>
+    <% @branch.employees.each do |employee| %>
+      <tr <%= 'class=table-warning' unless employee.submit_shift?(@period) %>>
+        <td><%= employee.full_name %></td>
+        <td><%= employee.submit_shift?(@period) ? "提出済" : "未提出" %></td>
         <% @period.days.each do |date| %>
-          <td><%= @shift_requests[user.full_name][date.to_s].present? ? @shift_requests[user.full_name][date.to_s] : "" %></td>
+          <td><%= @shift_requests[employee.full_name][date.to_s].present? ? @shift_requests[employee.full_name][date.to_s] : "" %></td>
         <% end %>
       </tr>
     <% end %>

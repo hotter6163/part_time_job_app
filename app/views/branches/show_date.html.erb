@@ -12,7 +12,7 @@
   </thead>
   <tbody>
     <% @branch.employees.each do |employee| %>
-      <tr>
+      <tr <%= 'class=table-warning' unless employee.submit_shift?(@period) %>>
         <td><%= employee.full_name %></td>
         <td><%= employee.submit_shift?(@period) ? "提出済" : "未提出" %></td>
         <td><%= @shift_requests[employee.full_name].start_time_of_30_hours_system if @shift_requests[employee.full_name].present? %></td>

@@ -1,6 +1,3 @@
-@import "bootstrap-sprockets";
-@import "bootstrap";
-
 // /* mixins, variables, etc. */
 
 // $base-color: #d0e39b;
@@ -24,17 +21,19 @@
   @include box_sizing;
 }
 
-// // ページ全体
-// body {
-//   padding-top: 100px;
-// }
+td, th {
+  text-align: center;
+}
 
-// header {
-//   background-color: $main-color-1;
-// }
+// サイドバー
+aside {
+  background-color: #fafafa;
+}
 
-// main {
-// }
+aside ul, header ul {
+  padding-inline-start: 20px;
+}
 
-// footer {
-// }
+table {
+  background-color: #ffffff;
+}

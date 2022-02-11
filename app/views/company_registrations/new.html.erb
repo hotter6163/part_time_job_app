@@ -4,66 +4,75 @@
 <%= form_with(url: check_company_registration_path, local: true) do |f| %>
   <!--企業情報-->
   <%= fields_for @company do |company_form| %>
-    <div class="field">
-      <%= company_form.label :name %>
-      <%= company_form.text_field :name, class: 'form-control' %>
+    <div class="form-group row">
+      <%= company_form.label :name, class: "col-md-2" %>
+      <%= company_form.text_field :name, class: "form-control col-md-10" %>
     </div>
   <% end %>
   
   <!--店舗情報-->
   <%= fields_for @branch do |branch_form| %>
-    <div class="field">
-      <%= branch_form.label :name %>
-      <%= branch_form.text_field :name, class: 'form-control' %>
-    </div>
-    <div class="field">
-      <%= branch_form.label :start_of_business_hours %>
-      <%= branch_form.time_field :start_of_business_hours, class: 'form-control' %>
+    <div class="form-group row">
+      <%= branch_form.label :name, class: "col-md-2" %>
+      <%= branch_form.text_field :name, class: "form-control col-md-10" %>
     </div>
     
-    <div class="field">
-      <%= branch_form.label :end_of_business_hours %>
-      <%= branch_form.time_field :end_of_business_hours, class: 'form-control' %>
+    <div class="form-group row">
+      <%= branch_form.label "営業時間", class: "col-md-2" %>
+      <div class="col-md-10">
+        <div class="row">
+          <%= branch_form.time_field :start_of_business_hours, class: "form-control col-5" %>
+          <div class="col-2">～</div>
+          <%= branch_form.time_field :end_of_business_hours, class: "form-control col-5" %>
+        </div>
+      </div>
     </div>
     
-    <div class="field">
-      <%= branch_form.label :cross_day, "営業時間は日をまたぐか" %>
-      <%= branch_form.check_box  :cross_day, class: 'form-control' %>
+    <div class="form-group row">
+      <div class="col-md-2"></div>
+      <div class="col-md-10">
+        <div class="row form-check">
+          <%= branch_form.check_box :cross_day, class: "form-check-input" %>
+          <%= branch_form.label :cross_day, "営業時間が日をまたぐ", class: "form-check-label" %>
+        </div>
+      </div>
     </div>
     
-    <div class="field">
-      <h3>シフト提出期間</h3>
-      <div class="radio">
-        <%= branch_form.radio_button :period_type, 'one_week', class: 'form-control js-check', onclick: 'displayForm()', checked: true %>
-        <%= branch_form.label '1週間ごと' %>
-      </div>
-      <div class="radio">
-        <%= branch_form.radio_button :period_type, 'two_weeks', class: 'form-control js-check', onclick: 'displayForm()' %>
-        <%= branch_form.label '2週間ごと' %>
-      </div>
-      <div class="radio">
-        <%= branch_form.radio_button :period_type, 'harf_month', class: 'form-control js-check', onclick: 'displayForm()' %>
-        <%= branch_form.label '半月ごと' %>
-      </div>
-      <div class="radio">
-        <%= branch_form.radio_button :period_type, 'one_month', class: 'form-control js-check', onclick: 'displayForm()' %>
-        <%= branch_form.label '1ヵ月ごと' %>
+    <div class="form-group">
+      <h4>シフト提出期間</h4>
+      <div class="ml-5">
+        <div class="form-check">
+          <%= branch_form.radio_button :period_type, 'one_week', class: 'form-check-input js-check', onclick: 'displayForm()', checked: true %>
+          <%= branch_form.label '1週間ごと', class: "form-check-label" %>
+        </div>
+        <div class="form-check">
+          <%= branch_form.radio_button :period_type, 'two_weeks', class: 'form-check-input js-check', onclick: 'displayForm()' %>
+          <%= branch_form.label '2週間ごと', class: "form-check-label" %>
+        </div>
+        <div class="form-check">
+          <%= branch_form.radio_button :period_type, 'harf_month', class: 'form-check-input js-check', onclick: 'displayForm()' %>
+          <%= branch_form.label '半月ごと', class: "form-check-label" %>
+        </div>
+        <div class="form-check">
+          <%= branch_form.radio_button :period_type, 'one_month', class: 'form-check-input js-check', onclick: 'displayForm()' %>
+          <%= branch_form.label '1ヵ月ごと', class: "form-check-label" %>
+        </div>
       </div>
     </div>
   <% end %>
   
   <!--monthly or weekly情報-->
-  <h3>シフト提出期間詳細</h3>
+  <h4>シフト提出期間詳細</h4>
   <div id="one-week-form">
     1週間
     <%= fields_for :one_week do |weekly_form| %>
       <div>
         <%= weekly_form.label :start_day, "シフト開始曜日" %>
-        <%= weekly_form.select :start_day, day_pull_down, include_blank: "シフト開始の曜日を選択して下さい", class: 'form-control' %>
+        <%= weekly_form.select :start_day, day_pull_down, include_blank: "シフト開始の曜日を選択して下さい" %>
       </div>
       <div>
         <%= weekly_form.label :deadline_day, "締め切り日" %>
-        <%= weekly_form.number_field :deadline_day, in: 1..30, class: 'form-control' %> 日前
+        <%= weekly_form.number_field :deadline_day, in: 1..30 %> 日前
       </div>
     <% end %>
   </div>
@@ -73,11 +82,11 @@
     <%= fields_for :two_weeks do |weekly_form| %>
       <div>
         <%= weekly_form.label :start_day, "シフト開始曜日" %>
-        <%= weekly_form.select :start_day, day_pull_down, include_blank: "シフト開始の曜日を選択して下さい", class: 'form-control' %>
+        <%= weekly_form.select :start_day, day_pull_down, include_blank: "シフト開始の曜日を選択して下さい" %>
       </div>
       <div>
         <%= weekly_form.label :deadline_day, "締め切り日" %>
-        <%= weekly_form.number_field :deadline_day, in: 1..30, class: 'form-control' %> 日前
+        <%= weekly_form.number_field :deadline_day, in: 1..30 %> 日前
       </div>
     <% end %>
   </div>
@@ -90,15 +99,15 @@
         <%= monthly_form.fields_for :one do |one| %>
           <div>
             <%= one.label :start_day, "シフト開始日" %>
-            <%= one.select :start_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+            <%= one.select :start_day, date_pull_down, include_blank: "日付を選択してください" %>
           </div>
           <div>
             <%= one.label :end_day, "シフト終了日" %>
-            <%= one.select :end_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+            <%= one.select :end_day, date_pull_down, include_blank: "日付を選択してください" %>
           </div>
           <div>
             <%= one.label :deadline_day, "シフト締切日" %>
-            <%= one.select :deadline_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+            <%= one.select :deadline_day, date_pull_down, include_blank: "日付を選択してください" %>
           </div>
         <% end %>
       </div>
@@ -107,15 +116,15 @@
         <%= monthly_form.fields_for :two do |two| %>
           <div>
             <%= two.label :start_day, "シフト開始日" %>
-            <%= two.select :start_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+            <%= two.select :start_day, date_pull_down, include_blank: "日付を選択してください" %>
           </div>
           <div>
             <%= two.label :end_day, "シフト終了日" %>
-            <%= two.select :end_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+            <%= two.select :end_day, date_pull_down, include_blank: "日付を選択してください" %>
           </div>
           <div>
             <%= two.label :deadline_day, "シフト締切日" %>
-            <%= two.select :deadline_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+            <%= two.select :deadline_day, date_pull_down, include_blank: "日付を選択してください" %>
           </div>
         <% end %>
       </div>
@@ -127,36 +136,39 @@
     <%= fields_for :one_month do |monthly_form| %>
       <div>
         <%= monthly_form.label :start_day, "シフト開始日" %>
-        <%= monthly_form.select :start_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+        <%= monthly_form.select :start_day, date_pull_down, include_blank: "日付を選択してください" %>
       </div>
       <div>
         <%= monthly_form.label :end_day, "シフト終了日" %>
-        <%= monthly_form.select :end_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+        <%= monthly_form.select :end_day, date_pull_down, include_blank: "日付を選択してください" %>
       </div>
       <div>
         <%= monthly_form.label :deadline_day, "シフト締切日" %>
-        <%= monthly_form.select :deadline_day, date_pull_down, include_blank: "日付を選択してください", class: 'form-control' %>
+        <%= monthly_form.select :deadline_day, date_pull_down, include_blank: "日付を選択してください" %>
       </div>
     <% end %>
   </div>
   
   <!--このアプリを使い始める日付-->
-  <div>
-    <h3>このアプリで最初に回収するシフトの開始日</h3>
-    <div>
-      <%= f.date_field :start_date, class: 'form-control' %>
-    </div>
+  <div class="form-group row">
+    <%= f.label :start_date, "シフトの開始日", class: "col-md-2" %>
+    <%= f.date_field :start_date, class: "col-md-10 form-control" %>
+    <div class="col-md-2"></div>
+    <small class="form-text text-muted col-md-10">
+      このアプリを使ってシフトを集め始める最初の日を入力してください。<br>
+      上の「シフト提出期間詳細」で入力した曜日、日と一致しないと登録が完了しません。
+    </small>
   </div>
   
   <!--マスターユーザー-->
-  <div>
-    <h3>マスターユーザーの選択</h3>
+  <div class="form-group">
+    <h4>マスターユーザーの選択</h4>
     <div class="radio">
-      <%= f.radio_button :user, 'new', class: 'form-control', checked: true %>
+      <%= f.radio_button :user, 'new', checked: true %>
       <%= f.label :user_select, '新規のユーザーをマスターにする' %>
     </div>
     <div class="radio">
-      <%= f.radio_button :user, 'exist', class: 'form-control' %>
+      <%= f.radio_button :user, 'exist' %>
       <%= f.label :user_select, '既存のユーザーをマスターにする' %>
     </div>
   </div>

@@ -17,9 +17,12 @@ class User < ApplicationRecord
                           
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise  :database_authenticatable, :registerable,
-          :recoverable, :rememberable, :validatable,
-          :timeoutable
+  devise  :database_authenticatable, 
+          :registerable,
+          :recoverable, 
+          :rememberable, 
+          :timeoutable,
+          :validatable
   
   # ユーザーのフルネームを返す
   def full_name
@@ -46,6 +49,10 @@ class User < ApplicationRecord
   
   def submit_shift?(period)
     !!shift_submissions.find_by(period: period)
+  end
+  
+  def admin_branches
+    relationships.where(admin: true).map(&:branch)
   end
   
   # 特異メソッド

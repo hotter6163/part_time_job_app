@@ -1,12 +1,20 @@
-<div>
-  <h2><アルバイト管理システム>へ<br>ようこそ！！</h2>
-  
-  <h3>初めて利用する方は、
-  管理者を登録してください。</h3>
-  
-  <h3>既にアカウントをお持ちの方は、
-  右上からログインしてください。</h3>
-  
-  <%= link_to "店舗情報を登録する", new_company_registration_path, class: "" %>
-  <%= link_to "ユーザーを登録する", new_user_registration_path, class: "" %>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="jumbotron">
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="display-3">
+            ようこそ！！<br>
+            <アプリケーション名>へ！
+          </h1>
+        </div>
+        <div class="col-md-9">
+          <p class="lead">このアプリケーションの説明</p>
+        </div>
+        <div class="col-md-3">
+          <%= link_to "店舗情報を登録する", new_company_registration_path, class: "btn btn-lg btn-primary" %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -6,26 +6,20 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
   </head>
 
-  <body>
+  <body style="padding-top: 60px">
     <%= render 'layouts/header' %>
     <%= render 'shared/flash' %>
     <% if params["controller"] == "branches" %>
-      <div class="container-fluid">
-        <div class="row">
-          <%= render "branches/layout" %>
-        </div>
-      </div>
+      <%= render "branches/layout" %>
+    <% elsif params["container"] == "static_pages" && params["action"] == "home" && !user_signed_in? %>
+      <%= yield %>
     <% else %>
-      <div class="container justify-content-center">
-        <div class="row justify-content-center">
-          <div>
-            <%= yield %>
-          </div>
-        </div>
+      <div class="container">
+        <%= yield %>
       </div>
     <% end %>
     <div class="container">

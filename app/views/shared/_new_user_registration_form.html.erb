@@ -1,27 +1,27 @@
 <div class="field">
-  <%= form.label :last_name %><br />
-  <%= form.text_field :last_name, autofocus: true, autocomplete: "family-name", class: 'form-control' %>
+  <%= form.label :last_name %>
+  <%= form.text_field :last_name, autofocus: true, autocomplete: "family-name" %>
 </div>
 
 <div class="field">
-  <%= form.label :first_name %><br />
-  <%= form.text_field :first_name, autocomplete: "given-name", class: 'form-control' %>
+  <%= form.label :first_name %>
+  <%= form.text_field :first_name, autocomplete: "given-name" %>
 </div>
 
 <div class="field">
-  <%= form.label :email %><br />
-  <%= form.email_field :email, autocomplete: "email", class: 'form-control' %>
+  <%= form.label :email %>
+  <%= form.email_field :email, autocomplete: "email" %>
 </div>
 
 <div class="field">
   <%= form.label :password %>
   <% if @minimum_password_length %>
   <em>(最低<%= @minimum_password_length %>文字入力してください)</em>
-  <% end %><br />
-  <%= form.password_field :password, autocomplete: "new-password", class: 'form-control' %>
+  <% end %>
+  <%= form.password_field :password, autocomplete: "new-password" %>
 </div>
 
 <div class="field">
-  <%= form.label :password_confirmation %><br />
-  <%= form.password_field :password_confirmation, autocomplete: "new-password", class: 'form-control' %>
+  <%= form.label :password_confirmation %>
+  <%= form.password_field :password_confirmation, autocomplete: "new-password" %>
 </div>
