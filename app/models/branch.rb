@@ -68,7 +68,7 @@ class Branch < ApplicationRecord
     end
   end
   
-  def create_periods(start_date=(subtype.period.end_day + 1.day))
+  def create_periods(start_date=(subtype.period.end_date + 1.day))
     (maximum_periods_num - periods_before_deadline.count).times { start_date = subtype.create_period(start_date) }
   end
   

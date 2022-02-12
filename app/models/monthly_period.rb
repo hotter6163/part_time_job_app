@@ -11,21 +11,21 @@ class MonthlyPeriod < ApplicationRecord
   def date(attribute, start_date)
     day = send("#{attribute}_day")
     if day == 30
-      result = Date.new(start_date.year, start_date.month + 1, 1).in_time_zone - 1.day
+      result = Date.new(start_date.year, start_date.month + 1, 1) - 1.day
     else
-      result = Date.new(start_date.year, start_date.month, day).in_time_zone
+      result = Date.new(start_date.year, start_date.month, day)
     end
     
     case attribute
-    when :start then
+    when :start
       result
-    when :end then
+    when :end
       if result >= start_date
         result
       else
         result + 1.month
       end
-    when :deadline then
+    when :deadline
       if result <= start_date
         result
       else
