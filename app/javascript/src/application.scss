@@ -1,1 +1,36 @@
 @import '~bootstrap/scss/bootstrap';
+
+@mixin box_sizing {
+  -moz-box-sizing:    border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing:         border-box;
+}
+
+form {
+  margin-top: 1rem;
+}
+
+.debug_dump {
+  clear: both;
+  float: left;
+  width: 100%;
+  margin-top: 45px;
+  @include box_sizing;
+}
+
+td, th {
+  text-align: center;
+}
+
+// サイドバー
+aside {
+  background-color: #fafafa;
+}
+
+aside ul, header ul {
+  padding-inline-start: 20px;
+}
+
+table {
+  background-color: #ffffff;
+}

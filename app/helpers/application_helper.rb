@@ -35,4 +35,12 @@ module ApplicationHelper
     correct_keys = Set.new(["primary", 'secondaly', "success", "danger", "warning", "info", "light", "dark"])
     correct_keys.include?(key)
   end
+  
+  def col_size_for_form_label
+    "col-md-2"
+  end
+  
+  def col_size_for_form_input
+    "col-md-10"
+  end
 end

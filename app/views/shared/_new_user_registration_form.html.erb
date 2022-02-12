@@ -1,27 +1,28 @@
-<div class="field">
-  <%= form.label :last_name %>
-  <%= form.text_field :last_name, autofocus: true, autocomplete: "family-name" %>
+<div class="form-group row">
+  <%= form.label :last_name, class: "#{col_size_for_form_label}" %>
+  <%= form.text_field :last_name, autofocus: true, autocomplete: "family-name", class: "#{col_size_for_form_input} form-control" %>
 </div>
 
-<div class="field">
-  <%= form.label :first_name %>
-  <%= form.text_field :first_name, autocomplete: "given-name" %>
+<div class="form-group row">
+  <%= form.label :first_name, class: "#{col_size_for_form_label}" %>
+  <%= form.text_field :first_name, autocomplete: "given-name", class: "#{col_size_for_form_input} form-control" %>
 </div>
 
-<div class="field">
-  <%= form.label :email %>
-  <%= form.email_field :email, autocomplete: "email" %>
+<div class="form-group row">
+  <%= form.label :email, class: "#{col_size_for_form_label}" %>
+  <%= form.email_field :email, autocomplete: "email", class: "#{col_size_for_form_input} form-control" %>
 </div>
 
-<div class="field">
-  <%= form.label :password %>
+<div class="form-group row">
+  <%= form.label :password, class: "#{col_size_for_form_label}" %>
+  <%= form.password_field :password, autocomplete: "new-password", class: "#{col_size_for_form_input} form-control" %>
   <% if @minimum_password_length %>
-  <em>(最低<%= @minimum_password_length %>文字入力してください)</em>
+    <div class=<%= "#{col_size_for_form_label}" %>></div>
+    <em class="<%= "#{col_size_for_form_input}" %> form-text">(最低<%= @minimum_password_length %>文字入力してください)</em>
   <% end %>
-  <%= form.password_field :password, autocomplete: "new-password" %>
 </div>
 
-<div class="field">
-  <%= form.label :password_confirmation %>
-  <%= form.password_field :password_confirmation, autocomplete: "new-password" %>
+<div class="form-group row">
+  <%= form.label :password_confirmation, class: "#{col_size_for_form_label}" %>
+  <%= form.password_field :password_confirmation, autocomplete: "new-password", class: "#{col_size_for_form_input} form-control" %>
 </div>

@@ -93,41 +93,6 @@ class CompanyRegistrationsController < ApplicationController
   
   private
     def valid_params?
-      japanese = {
-        "company" => {
-          "name" => "企業名"
-        },
-        "branch" => {
-          "name" => "店舗名",
-          "start_of_business_hours" => "営業開始時間",
-          "end_of_business_hours" => "営業終了時間"
-        },
-        "one_week" => {
-          "start_day" => "シフト開始曜日",
-          "deadline_day" => "締め切り日"
-        },
-        "two_weeks" => {
-          "start_day" => "シフト開始曜日",
-          "deadline_day" => "締め切り日"
-        },
-        "harf_month" => {
-          "one" => {
-            "start_day" => "期間1のシフト開始日",
-            "end_day" => "期間1のシフト終了日",
-            "deadline_day" => "期間1のシフト締切日"
-          },
-          "two" => {
-            "start_day" => "期間2のシフト開始日",
-            "end_day" => "期間2のシフト終了日",
-            "deadline_day" => "期間2のシフト締切日"
-          }
-        },
-        "one_month" => {
-          "start_day" => "シフト開始日",
-          "end_day" => "シフト終了日",
-          "deadline_day" => "シフト締切日"
-        }
-      }
       params["company"].each { |key, value| @error_messages << "#{japanese["company"][key]}を入力してください。" if value.blank? }
       params["branch"].each { |key, value| @error_messages << "#{japanese["branch"][key]}を入力してください。" if value.blank? }
       @error_messages << "営業時間が日をまたぐ場合はチェックを付けてください。" if params["branch"]["start_of_business_hours"].in_time_zone >= params["branch"]["end_of_business_hours"].in_time_zone && params["branch"]["cross_day"] == "0"

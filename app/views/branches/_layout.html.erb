@@ -5,10 +5,15 @@
     </aside>
     
     <main class="col-lg-10 order-1 order-lg-2">
+      <!--企業名-->
       <h1><%= @branch.company_name %></h1>
+      
+      <!--ページタイトル-->
       <% if yield(:title).present? %>
         <h2><%= yield(:title) %></h2>
       <% end %>
+      
+      <!--ページサブタイトル（説明）-->
       <% if yield(:subtitle).present? %>
         <h3><%= yield(:subtitle) %></h3>
       <% end %>

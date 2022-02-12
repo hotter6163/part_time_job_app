@@ -23,10 +23,10 @@ class BranchesController < ApplicationController
     @user = User.find_by(email: params[:email])
     if !!@user
       @branch.send_email_to_existing_user(@user)
-      flash[:success] = "#{@user.full_name}さんに従業員登録用のメールを送信しました。"
+      flash.now[:success] = "#{@user.full_name}さんに従業員登録用のメールを送信しました。"
     else
       @branch.send_email_to_new_user(params[:email])
-      flash[:success] = "新規のユーザー（#{params[:email]}）に従業員登録用のメールを送信しました。"
+      flash.now[:success] = "新規のユーザー（#{params[:email]}）に従業員登録用のメールを送信しました。"
     end
     render "branches/send_email"
   end

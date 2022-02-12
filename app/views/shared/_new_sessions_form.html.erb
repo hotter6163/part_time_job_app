@@ -1,9 +1,9 @@
-<div class="field">
-  <%= form.label :email, "Eメール" %>
-  <%= form.email_field :email, autofocus: true, autocomplete: "email" %>
+<div class="form-group row">
+  <%= form.label :email, "メールアドレス", class: "#{col_size_for_form_label}" %>
+  <%= form.email_field :email, autofocus: true, autocomplete: "email", class: "form-control #{col_size_for_form_input}" %>
 </div>
 
-<div class="field">
-  <%= form.label :password, "パスワード" %>
-  <%= form.password_field :password, autocomplete: "current-password" %>
+<div class="form-group row">
+  <%= form.label :password, "パスワード", class: "#{col_size_for_form_label}" %>
+  <%= form.password_field :password, autocomplete: "current-password", class: "form-control #{col_size_for_form_input}" %>
 </div>

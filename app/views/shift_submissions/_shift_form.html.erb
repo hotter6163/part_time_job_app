@@ -2,7 +2,7 @@
   <tr id=<%= "#{num}" %>>
     <td><%= "シフト#{num+1}" %></td>
     <td>
-      <select name=<%= "shift_request[#{num}][date]" %>>
+      <select class="form-control" name=<%= "shift_request[#{num}][date]" %>>
         <option value="">--------</option>
         <% @period.days.each do |date| %>
           <option value=<%= date %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>><%= date %></option>
