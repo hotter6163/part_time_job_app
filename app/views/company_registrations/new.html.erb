@@ -40,7 +40,7 @@
     
     <div class="form-group">
       <h4>シフト提出期間</h4>
-      <div class="ml-4">
+      <div class="ml-4" id="branch_period_type">
         <div class="form-check">
           <%= branch_form.radio_button :period_type, 'one_week', class: 'form-check-input js-check', onclick: 'displayForm()', checked: true %>
           <%= branch_form.label '1週間ごと', class: "form-check-label" %>
@@ -179,7 +179,7 @@
   <!--マスターユーザー-->
   <div class="form-group">
     <h4>マスターユーザーの選択</h4>
-    <div class="ml-4">
+    <div class="ml-4" id="user">
       <div class="radio">
         <%= f.radio_button :user, 'new', checked: true %>
         <%= f.label :user_select, '新規のユーザーをマスターにする' %>
