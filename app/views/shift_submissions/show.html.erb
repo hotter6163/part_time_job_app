@@ -3,17 +3,19 @@
 
 <% if @shift_submission.shift_requests.all.present? %>
   <table class="table">
-    <thead>
+    <thead class="thead-light">
       <tr>
         <th>日付</th>
-        <th>時間</th>
+        <th>開始時間</th>
+        <th>終了時間</th>
       </tr>
     </thead>
     <tbody>
-      <% @shift_submission.shift_requests.all.each do |shift_request| %>
+      <% @shift_submission.shift_requests.all.order(:date).each do |shift_request| %>
         <tr>
-          <td><%= shift_request.date %></td>
-          <td><%= shift_request.start_to_end %></td>
+          <td><%= shift_request.date.strftime("%m/%d") %></td>
+          <td><%= shift_request.start_time_of_30_hours_system %></td>
+          <td><%= shift_request.end_time_of_30_hours_system %></td>
         </tr>
       <% end %>
     </tbody>

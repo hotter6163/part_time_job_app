@@ -35,7 +35,6 @@ class ShiftSubmissionsController < ApplicationController
   end
   
   def show
-    
   end
   
   private
