@@ -80,7 +80,7 @@ class CompanyRegistrationsController < ApplicationController
       @company.save
       @user.save
       @user.relationships.create(branch: @branch, master: true, admin: true)
-      @branch.create_periods(session[:start_date].in_time_zone)
+      @branch.create_periods(session[:start_date].to_date)
       delete_sessions(:company_registration, :user, :start_date)
       sign_in(:user, @user)
       redirect_to branch_path(@branch)
