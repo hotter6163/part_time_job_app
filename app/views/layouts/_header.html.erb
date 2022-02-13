@@ -4,12 +4,12 @@
     <%= link_to '<アルバイト管理システム>', root_url, id: 'logo', class: "navbar-brand" %>
     
     <!--ナビゲーションバー切換用のアイコン-->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav-contents" aria-controls="nav-contents" aria-expanded="false" aria-label="ナビゲーション切替">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#切り替え表示されるコンテンツ名" aria-controls="切り替え表示されるコンテンツ名" aria-expanded="false" aria-label="ナビゲーション切替">
       <span class="navbar-toggler-icon"></span>
     </button>
     
     <!--ナビゲーション-->
-    <div class="collapse navbar-collapse justify-content-end" id="nav-contents">
+    <div class="collapse navbar-collapse justify-content-end" id="切り替え表示されるコンテンツ名">
       <ul class="navbar-nav">
         <% if user_signed_in? %>
         <!--ログイン時-->
