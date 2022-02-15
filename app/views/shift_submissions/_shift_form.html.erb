@@ -1,11 +1,10 @@
 <%= form.fields_for "#{num}".to_sym do |shift_form| %>
-  <tr id=<%= "#{num}" %>>
-    <td><%= "シフト#{num+1}" %></td>
+  <tr id=<%= "form-#{num}" %>>
     <td>
       <select class="form-control" name=<%= "shift_request[#{num}][date]" %>>
         <option value="">--------</option>
         <% @period.days.each do |date| %>
-          <option value=<%= date %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>><%= date %></option>
+          <option value=<%= date %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>><%= date.strftime("%m/%d") %></option>
         <% end %>
       </select>
     </td>

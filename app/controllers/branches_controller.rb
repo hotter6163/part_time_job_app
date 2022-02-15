@@ -20,10 +20,15 @@ class BranchesController < ApplicationController
       flash[:denger] = "正しいメースアドレスを入力してください。"
       render 'branches/add_employee' and return
     end
-    @user = User.find_by(email: params[:email])
-    if !!@user
-      @branch.send_email_to_existing_user(@user)
-      flash.now[:success] = "#{@user.full_name}さんに従業員登録用のメールを送信しました。"
+    
+    if @user = User.find_by(email: params[:email])
+      if @branch.relationships.find_by(user: @user)
+        flash.now[:warning] = "#{@user.full_name}さんは既に従業員として登録されています。"
+        render 'branches/add_employee' and return
+      else
+        @branch.send_email_to_existing_user(@user)
+        flash.now[:success] = "#{@user.full_name}さんに従業員登録用のメールを送信しました。"
+      end
     else
       @branch.send_email_to_new_user(params[:email])
       flash.now[:success] = "新規のユーザー（#{params[:email]}）に従業員登録用のメールを送信しました。"
