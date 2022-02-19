@@ -16,7 +16,7 @@
           <!--管理者ページへのリンク-->
           <% if current_user.admin_branches.present? %>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle text-white" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">管理人ページへ</a>
+              <a class="nav-link dropdown-toggle text-white" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">管理人ページ</a>
               <div class="dropdown-menu bg-dark">
                 <% current_user.admin_branches.each do |branch| %>
                   <%= link_to branch.company_name, branch_path(branch), class: "dropdown-item text-white" %>
