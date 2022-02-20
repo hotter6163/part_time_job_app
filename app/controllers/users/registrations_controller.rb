@@ -23,7 +23,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
         if @relationship_digest.nil?
           respond_with resource, location: after_sign_up_path_for(resource)
         else
-          redirect_to new_relationship_path(token: params[:token], email: params[:email])
+          redirect_to new_relationship_path(token: params[:token], email: params[:email], branch_id: @branch.id)
         end
       else
         set_flash_message! :notice, :"signed_up_but_#{resource.inactive_message}"

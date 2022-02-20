@@ -6,13 +6,11 @@ class RelationshipsController < ApplicationController
   # get new_relationship_path
   # 従業員登録するかの確認
   def new
-    @branch = @relationship_digest.branch
   end
   
   # post relationships_path
   # 従業員の登録
   def create
-    @branch = @relationship_digest.branch
     @relationship = @branch.relationships.new(user: current_user)
     if @relationship.valid?
       @relationship.save

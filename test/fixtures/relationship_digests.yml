@@ -8,8 +8,10 @@ one:
   branch: branch
   digest: <%= RelationshipDigest.digest("unuserd_token") %>
   used: false
+  email: 'new_user@example.com'
   
 two:
   branch: branch
   digest: <%= RelationshipDigest.digest("used_token") %>
   used: true
+  email: 'new_user@example.com'

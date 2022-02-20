@@ -24,7 +24,7 @@ class AddEmployeeTest < ActionDispatch::IntegrationTest
     logout
     
     # 正しいトークンでアクセス
-    get new_user_registration_path(token: branch.relationship_token, email: email)
+    get new_user_registration_path(token: branch.relationship_token, email: email, branch_id: @branch.id)
     assert_response :success
     assert_template "devise/registrations/new"
     assert_select "input[name=token][type=hidden][value=?]", branch.relationship_token
@@ -37,20 +37,25 @@ class AddEmployeeTest < ActionDispatch::IntegrationTest
                                                       password: "password",
                                                       password_confirmation: "password" },
                                               token: branch.relationship_token,
-                                              email: email}
+                                              email: email,
+                                              branch_id: @branch.id
+      }
     end
-    assert_redirected_to new_relationship_path(token: branch.relationship_token, email: email)
+    assert_redirected_to new_relationship_path(token: branch.relationship_token, email: email, branch_id: @branch.id)
     
     follow_redirect!
     assert_template "relationships/new"
     assert_select "form[action=?]", relationships_path
     assert_select "input[name=token][type=hidden][value=?]", branch.relationship_token
     assert_select "input[name=email][type=hidden][value=?]", email
+    assert_select "input[name=branch_id][type=hidden][value=?]", @branch.id.to_s
     assert_select "input[type=submit][name=commit]"
     
     assert_difference "Relationship.count", 1 do
       post relationships_path, params: {  token: branch.relationship_token,
-                                          email: email }
+                                          email: email,
+                                          branch_id: @branch.id
+      }
     end
     relationship = assigns(:relationship)
     assert_equal relationship.branch_id, branch.id
@@ -77,16 +82,19 @@ class AddEmployeeTest < ActionDispatch::IntegrationTest
     logout
     
     login_as(@employee)
-    get new_relationship_path(token: branch.relationship_token, email: @employee.email)
+    get new_relationship_path(token: branch.relationship_token, email: @employee.email, branch_id: @branch.id)
     assert_template "relationships/new"
     assert_select "form[action=?]", relationships_path
     assert_select "input[name=token][type=hidden][value=?]", branch.relationship_token
     assert_select "input[name=email][type=hidden][value=?]", @employee.email
+    assert_select "input[name=branch_id][type=hidden][value=?]", @branch.id.to_s
     assert_select "input[type=submit][name=commit]"
     
     assert_difference "Relationship.count", 1 do
       post relationships_path, params: {  token: branch.relationship_token,
-                                          email: @employee.email }
+                                          email: @employee.email,
+                                          branch_id: @branch.id
+      }
     end
     relationship = assigns(:relationship)
     assert_equal branch.id, relationship.branch_id

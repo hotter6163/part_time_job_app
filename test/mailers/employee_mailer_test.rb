@@ -15,6 +15,7 @@ class EmployeeMailerTest < ActionMailer::TestCase
     assert_equal [new_user_email], mail.to
     assert_equal ["noreply@example.com"], mail.from
     assert_match @token, mail.body.encoded
+    assert_match @branch.id.to_s, mail.body.encoded
     assert_match CGI.escape(new_user_email), mail.body.encoded
     assert_match "/users/sign_up", mail.body.encoded
   end
@@ -25,6 +26,7 @@ class EmployeeMailerTest < ActionMailer::TestCase
     assert_equal [@user.email], mail.to
     assert_equal ["noreply@example.com"], mail.from
     assert_match @token, mail.body.encoded
+    assert_match @branch.id.to_s, mail.body.encoded
     assert_match CGI.escape(@user.email), mail.body.encoded
     assert_match "/relationships/new", mail.body.encoded
   end
