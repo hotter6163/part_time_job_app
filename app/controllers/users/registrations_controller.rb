@@ -3,7 +3,7 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   # before_action :configure_sign_up_params, only: [:create]
   # before_action :configure_account_update_params, only: [:update]
-  before_action :valid_relationship_token, only: [:new, :create], if: -> { params[:token].present? && params[:email].present? }
+  before_action :valid_relationship_token, only: [:new, :create], if: -> { params[:token].present? && params[:email].present? && params[:branch_id].present? }
   
   # GET /resource/new
   # def new

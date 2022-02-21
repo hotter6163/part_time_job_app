@@ -10,21 +10,8 @@ class ShiftSubmissionsController < ApplicationController
   
   def create_shift
     @shift_submission = @period.shift_submissions.build(user: current_user)
-    @error_nums = Set.new
-    @shift_requests = {}
     
-    params[:shift_request].each do |key, value|
-      # 送信された値の検証
-      next if value.values.all?(&:blank?)
-      
-      shift_request = @shift_submission.shift_requests.build(shift_request_params(value))
-      unless valid?(shift_request)
-        @error_nums << key
-        next
-      end
-      
-      @shift_requests[key] = shift_request
-    end
+    verify_params
     
     if @error_nums.empty?
       @shift_submission.save
@@ -39,8 +26,7 @@ class ShiftSubmissionsController < ApplicationController
   
   private
     def belong_to
-      @period = Period.find_by(id: params[:id])
-      unless @period
+      unless @period = Period.find_by(id: params[:id])
         redirect_to root_url
       end
       @branch = @period.branch
@@ -82,7 +68,7 @@ class ShiftSubmissionsController < ApplicationController
       # 提出したシフトの範囲内か
       return false unless shift_request.valid? && @period.is_date_in?(shift_request.date)
       
-      # 日付の一意性
+      # 同じ日付が複数ないか
       flg = false
       @shift_requests.each do |key, value|
         if value.date.to_s == shift_request.date.to_s
@@ -95,5 +81,23 @@ class ShiftSubmissionsController < ApplicationController
       end
       
       true
+    end
+    
+    def verify_params
+      @error_nums = Set.new
+      @shift_requests = {}
+      
+      params[:shift_request].each do |key, value|
+        # 送信された値の検証
+        next if value.values.all?(&:blank?)
+        
+        shift_request = @shift_submission.shift_requests.build(shift_request_params(value))
+        unless valid?(shift_request)
+          @error_nums << key
+          next
+        end
+        
+        @shift_requests[key] = shift_request
+      end
     end
 end
