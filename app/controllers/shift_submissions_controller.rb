@@ -6,10 +6,12 @@ class ShiftSubmissionsController < ApplicationController
   before_action :not_submit_shift, only: [:show]
   
   def new_shift
+    @error_nums = Set.new
   end
   
   def create_shift
     @shift_submission = @period.shift_submissions.build(user: current_user)
+    @error_nums = Set.new
     
     verify_params
     
@@ -17,6 +19,7 @@ class ShiftSubmissionsController < ApplicationController
       @shift_submission.save
       render "shift_submissions/success"
     else
+      flash.now[:danger] = "登録できない項目があります。"
       render "shift_submissions/new_shift"
     end
   end
@@ -84,7 +87,6 @@ class ShiftSubmissionsController < ApplicationController
     end
     
     def verify_params
-      @error_nums = Set.new
       @shift_requests = {}
       
       params[:shift_request].each do |key, value|

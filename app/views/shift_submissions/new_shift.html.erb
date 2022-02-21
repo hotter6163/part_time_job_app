@@ -3,8 +3,6 @@
 <h3>期間：<%= @period.start_to_end %></h3>
 
 <%= form_with(url: shift_submissions_path(@period), local: true) do |f| %>
-  <%= render 'shift_submissions/error_message' %>
-  
   <!--シフト期間の選択-->
   <div>
     <%= hidden_field_tag :period, @period.id %>
@@ -12,24 +10,14 @@
   
   <!--シフトの送信フォーム-->
   <%= fields_for :shift_request do |shift_request_form| %>
-    <div>
-      <table class="table">
-        <!--テーブル見出し-->
-        <thead>
-          <tr>
-            <th>日付</th>
-            <th>開始時間</th>
-            <th>終了時間</th>
-          </tr>
-        </thead>
-        <!--1日分のシフト-->
-        <tbody>
-          <% @period.days.count.times do |num| %>
-            <%= render "shift_submissions/shift_form",  form: shift_request_form, num: num %>
-          <% end %>
-        </tbody>
-      </table>
+    <div class="form-row">
+      <div class="col-4">日付</div>
+      <div class="col-4">開始時間</div>
+      <div class="col-4">終了時間</div>
     </div>
+    <% @period.days.count.times do |num| %>
+      <%= render "shift_submissions/shift_form",  form: shift_request_form, num: num %>
+    <% end %>
   <% end %>
   
   <div class="fixed-bottom bg-light text-center pt-2 pb-2">

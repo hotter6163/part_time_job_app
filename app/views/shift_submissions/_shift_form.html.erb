@@ -1,18 +1,24 @@
 <%= form.fields_for "#{num}".to_sym do |shift_form| %>
-  <tr id=<%= "form-#{num}" %>>
-    <td class="pr-2 pl-2">
+  <div class="form-row ss-row <%= 'error-row' if @error_nums.include?(num.to_s) %>">
+    <div class="col-4">
       <select class="form-control" name=<%= "shift_request[#{num}][date]" %>>
         <option value="">--------</option>
         <% @period.days.each do |date| %>
           <option value=<%= date %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>><%= date.strftime("%m/%d") %></option>
         <% end %>
       </select>
-    </td>
-    <td class="pr-2 pl-2">
-      <%= shift_form.time_field :start_time, min: @branch.start_of_business_hours.to_s(:time), max: @branch.end_of_business_hours.to_s(:time), class: 'form-control', value: params[:shift_request].present? ? params[:shift_request][num.to_s]["start_time"] : "" %>
-    </td>
-    <td class="pr-2 pl-2">
-      <%= shift_form.time_field :end_time, min: @branch.start_of_business_hours.to_s(:time), max: @branch.end_of_business_hours.to_s(:time), class: 'form-control', value: params[:shift_request].present? ? params[:shift_request][num.to_s]["end_time"] : "" %>
-    </td>
-  </tr>
+    </div>
+    <div class="col-4">
+      <%= shift_form.time_field :start_time,  min: @branch.start_of_business_hours.to_s(:time), 
+                                              max: @branch.end_of_business_hours.to_s(:time), 
+                                              class: 'form-control',
+                                              value: params[:shift_request].present? ? params[:shift_request][num.to_s]["start_time"] : "" %>
+    </div>
+    <div class="col-4">
+      <%= shift_form.time_field :end_time,  min: @branch.start_of_business_hours.to_s(:time), 
+                                            max: @branch.end_of_business_hours.to_s(:time), 
+                                            class: 'form-control', 
+                                            value: params[:shift_request].present? ? params[:shift_request][num.to_s]["end_time"] : "" %>
+    </div>
+  </div>
 <% end %>
