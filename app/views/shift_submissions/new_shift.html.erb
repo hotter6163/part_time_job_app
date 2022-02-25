@@ -10,10 +10,10 @@
   
   <!--シフトの送信フォーム-->
   <%= fields_for :shift_request do |shift_request_form| %>
-    <div class="form-row">
-      <div class="col-4">日付</div>
-      <div class="col-4">開始時間</div>
-      <div class="col-4">終了時間</div>
+    <div class="form-row pseudo-table-header">
+      <div class="col-4 pseudo-table-row">日付</div>
+      <div class="col-4 pseudo-table-row">開始時間</div>
+      <div class="col-4 pseudo-table-row">終了時間</div>
     </div>
     <% @period.days.count.times do |num| %>
       <%= render "shift_submissions/shift_form",  form: shift_request_form, num: num %>

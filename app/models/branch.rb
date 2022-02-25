@@ -104,7 +104,7 @@ class Branch < ApplicationRecord
   def shift_requests(period)
     result = Hash.new([])
     employees.each do |employee|
-      result[employee.full_name] = employee.shift_requests(period)
+      result[employee.id] = employee.shift_requests(period)
     end
     result
   end

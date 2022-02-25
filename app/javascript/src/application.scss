@@ -45,3 +45,14 @@ table {
 .error-row {
   border: thin solid #d9534f;
 }
+
+.pseudo-table-header {
+  background-color: #e9ecef;
+}
+
+.pseudo-table-row {
+  padding: 0.75rem;
+  color: #495057;
+  text-align: center;
+  font-weight: bold;
+}
