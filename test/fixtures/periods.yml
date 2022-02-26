@@ -35,3 +35,9 @@ six:
   deadline: 2030-02-13
   start_date: 2030-02-21
   end_date: 2030-03-06
+  
+seven:
+  branch: branch
+  deadline: 2030-02-27
+  start_date: 2030-03-07
+  end_date: 2030-03-20

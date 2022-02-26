@@ -1,0 +1,2 @@
+class ShiftRequestsController < ApplicationController
+end

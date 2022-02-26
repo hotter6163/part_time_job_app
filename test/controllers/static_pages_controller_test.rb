@@ -19,6 +19,9 @@ class StaticPagesControllerTest < ActionDispatch::IntegrationTest
       if branch.relationships.find_by(user: user).admin?
         assert_select "a[href=?]", branch_path(branch)
       end
+      branch.periods_before_deadline.each do |period|
+        assert_select "a[href=?]", shift_submissions_path(period)
+      end
     end
   end
 end

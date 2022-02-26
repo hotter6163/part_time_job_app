@@ -9,8 +9,14 @@ Rails.application.routes.draw do
   # シフト提出
   get   'shift_submissions/:id',      to: 'shift_submissions#new_shift',    as: :new_shift_submission
   post  'shift_submissions/:id',      to: 'shift_submissions#create_shift', as: :shift_submissions
-  get   'shift_submissions/:id/show', to: 'shift_submissions#show',         as: :shift_submission
+  get   'shift_submissions/:id/show', to: 'shift_submissions#show',         as: :shift_submission 
   
+  resources :shift_submissions, only: [] do 
+    member do
+      resources :shift_requests, only: [:create, :update, :destroy]
+    end
+  end
+    
   resources :branches, only: [:show] do
     member do
       get :add_employee

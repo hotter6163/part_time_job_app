@@ -1,13 +1,38 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  shift_submission: one
-  date: 1
-  start_time: 2022-01-23 01:48:32
-  end_time: 2022-01-23 01:48:32
+  shift_submission: seven
+  date: 2030-03-09
+  start_time: 2030-03-09 14:00
+  end_time: 2030-03-09 21:00
 
 two:
-  shift_submission: two
-  date: 1
-  start_time: 2022-01-23 01:48:32
-  end_time: 2022-01-23 01:48:32
+  shift_submission: seven
+  date: 2030-03-12
+  start_time: 2030-03-12 14:00
+  end_time: 2030-03-12 21:00
+  
+three:
+  shift_submission: seven
+  date: 2030-03-15
+  start_time: 2030-03-15 14:00
+  end_time: 2030-03-15 21:00
+  
+four:
+  shift_submission: seven
+  date: 2030-03-18
+  start_time: 2030-03-18 14:00
+  end_time: 2030-03-18 21:00
+  
+  
+five:
+  shift_submission: one
+  date: 2020-01-26
+  start_time: 2020-01-26 14:00
+  end_time: 2020-01-26 21:00
+  
+six:
+  shift_submission: one
+  date: 2020-01-29
+  start_time: 2020-01-29 14:00
+  end_time: 2020-01-29 21:00

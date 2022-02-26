@@ -230,4 +230,36 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
     error_nums = assigns(:error_nums)
     @error_nums.each { |num| assert error_nums.include?(num) }
   end
+  
+  test "show shift_submission before deadline" do
+    period = periods(:seven)
+    get shift_submission_path(period)
+    shift_submission = period.shift_submissions.find_by(user: @user)
+    shift_requests = shift_submission.shift_requests.all
+    assert_match period.start_to_end, response.body
+    shift_requests.each do |shift_request|
+      assert_match shift_request.date.strftime("%m/%d"), response.body
+      assert_match shift_request.start_time_of_30_hours_system, response.body
+      assert_match shift_request.end_time_of_30_hours_system, response.body
+      assert_select 'a[href=?][method=patch]', shift_request_path(shift_submission, shift_request)
+      assert_select 'a[href=?][method=delete]', shift_request_path(shift_submission, shift_request)
+    end
+    assert_select 'a[href=?]', shift_request_path(shift_submission)
+  end
+  
+  test "show shift_submission after deadline" do
+    period = periods(:one)
+    get shift_submission_path(period)
+    shift_submission = period.shift_submissions.find_by(user: @user)
+    shift_requests = shift_submission.shift_requests.all
+    assert_match period.start_to_end, response.body
+    shift_requests.each do |shift_request|
+      assert_match shift_request.date.strftime("%m/%d"), response.body
+      assert_match shift_request.start_time_of_30_hours_system, response.body
+      assert_match shift_request.end_time_of_30_hours_system, response.body
+      assert_select 'a[href=?][method=patch]', shift_request_path(shift_submission, shift_request), 0
+      assert_select 'a[href=?][method=delete]', shift_request_path(shift_submission, shift_request), 0
+    end
+    assert_select 'a[href=?]', shift_request_path(shift_submission), 0
+  end
 end
