@@ -36,3 +36,9 @@ six:
   date: 2020-01-29
   start_time: 2020-01-29 14:00
   end_time: 2020-01-29 21:00
+  
+seven:
+  shift_submission: two
+  date: 2030-03-15
+  start_time: 2030-03-15 14:00
+  end_time: 2030-03-15 21:00

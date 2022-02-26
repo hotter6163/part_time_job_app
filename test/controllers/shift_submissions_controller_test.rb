@@ -241,10 +241,9 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
       assert_match shift_request.date.strftime("%m/%d"), response.body
       assert_match shift_request.start_time_of_30_hours_system, response.body
       assert_match shift_request.end_time_of_30_hours_system, response.body
-      assert_select 'a[href=?][method=patch]', shift_request_path(shift_submission, shift_request)
-      assert_select 'a[href=?][method=delete]', shift_request_path(shift_submission, shift_request)
+      assert_select 'a[href=?][data-method=delete]', shift_submission_shift_request_path(shift_submission, shift_request)
     end
-    assert_select 'a[href=?]', shift_request_path(shift_submission)
+    assert_select 'form[action=?]', shift_submission_shift_requests_path(shift_submission)
   end
   
   test "show shift_submission after deadline" do
@@ -257,9 +256,8 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
       assert_match shift_request.date.strftime("%m/%d"), response.body
       assert_match shift_request.start_time_of_30_hours_system, response.body
       assert_match shift_request.end_time_of_30_hours_system, response.body
-      assert_select 'a[href=?][method=patch]', shift_request_path(shift_submission, shift_request), 0
-      assert_select 'a[href=?][method=delete]', shift_request_path(shift_submission, shift_request), 0
+      assert_select 'a[href=?][data-method=delete]', shift_submission_shift_request_path(shift_submission, shift_request), 0
     end
-    assert_select 'a[href=?]', shift_request_path(shift_submission), 0
+    assert_select 'form[action=?]', shift_submission_shift_requests_path(shift_submission), 0
   end
 end

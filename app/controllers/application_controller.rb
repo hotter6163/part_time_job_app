@@ -33,4 +33,10 @@ class ApplicationController < ActionController::Base
     def new_user_params
       params.require(:user).permit(:first_name, :last_name, :email, :password, :password_confirmation)
     end
+    
+    def before_deadline
+      unless @period.before_deadline?
+        redirect_to root_url
+      end
+    end
 end

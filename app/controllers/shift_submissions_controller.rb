@@ -38,12 +38,6 @@ class ShiftSubmissionsController < ApplicationController
       end
     end
     
-    def before_deadline
-      unless @period.before_deadline?
-        redirect_to root_url
-      end
-    end
-    
     def already_submit_shift
       if !!@period.shift_submissions.find_by(user: current_user)
         redirect_to shift_submission_path(@period)
@@ -51,7 +45,7 @@ class ShiftSubmissionsController < ApplicationController
     end
     
     def not_submit_shift
-      @shift_submission = @period.shift_submissions.find_by(user: current_user)
+      @shift_submission = @current_user.shift_submissions.find_by(period: @period)
       unless !!@shift_submission
         redirect_to new_shift_submission_path(@period)
       end

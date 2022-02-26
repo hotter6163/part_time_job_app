@@ -1,0 +1,35 @@
+<div class="fixed-bottom bg-light text-center pt-1 pb-2">
+  <div class="container">
+    <div class="form-row pseudo-table-header">
+      <div class="col-4 pseudo-table-row">日付</div>
+      <div class="col-4 pseudo-table-row">開始時間</div>
+      <div class="col-4 pseudo-table-row">終了時間</div>
+    </div>
+    
+    <%= form_with(url: shift_submission_shift_requests_path(@shift_submission), scope: :shift_request, class: "mt-2", local: true) do |f| %>
+      <div class="form-row ss-row">
+        <div class="col-4">
+          <select class="form-control" name=<%= "shift_request[date]" %>>
+            <option value="">--------</option>
+            <% @period.days.each do |date| %>
+              <option value=<%= date %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>><%= date.strftime("%m/%d") %></option>
+            <% end %>
+          </select>
+        </div>
+        <div class="col-4">
+          <%= f.time_field :start_time, min: @branch.start_of_business_hours.to_s(:time), 
+                                        max: @branch.end_of_business_hours.to_s(:time), 
+                                        class: 'form-control',
+                                        value: params[:shift_request].present? ? params[:shift_request][num.to_s]["start_time"] : "" %>
+        </div>
+        <div class="col-4">
+          <%= f.time_field :end_time, min: @branch.start_of_business_hours.to_s(:time), 
+                                      max: @branch.end_of_business_hours.to_s(:time), 
+                                      class: 'form-control', 
+                                      value: params[:shift_request].present? ? params[:shift_request][num.to_s]["end_time"] : "" %>
+        </div>
+      </div>
+      <%= f.submit "シフトを追加・変更する", class: "btn btn-primary btn-sm w-50" %>
+    <% end %>
+  </div>
+</div>
