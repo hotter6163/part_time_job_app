@@ -15,7 +15,7 @@
     <tbody>
       <% @shift_submission.shift_requests.all.order(:date).each do |shift_request| %>
         <tr>
-          <td><%= shift_request.date.strftime("%m/%d") %></td>
+          <td><%= date_display(shift_request.date) %></td>
           <td><%= shift_request.start_time_of_30_hours_system %></td>
           <td><%= shift_request.end_time_of_30_hours_system %></td>
         </tr>

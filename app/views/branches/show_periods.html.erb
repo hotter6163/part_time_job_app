@@ -17,7 +17,7 @@
         <td><%= employee.full_name %></td>
         <td><%= employee.submit_shift?(@period) ? "提出済" : "未提出" %></td>
         <% @period.days.each do |date| %>
-          <td><%= @shift_requests[employee.id][date.to_s] %></td>
+          <td><%= @shift_requests[employee.id][date.to_s].present? ? @shift_requests[employee.id][date.to_s] : "" %></td>
         <% end %>
       </tr>
     <% end %>
