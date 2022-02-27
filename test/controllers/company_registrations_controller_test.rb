@@ -45,6 +45,8 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
     @exist_user_params = { user: { email: user.email, password: "password" } }
   end
   
+  # ------------------------------------------------
+  # get new
   test "should get new" do 
     get new_company_registration_path
     assert_response :success
@@ -93,6 +95,8 @@ class CompanyRegistrationsControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input[type=radio][name=?][value=?]', 'user', 'exist'
   end
   
+  # ------------------------------------------------
+  # post check_company
   # check_companyに正しい値が送信され、マスターが新規の時
   test "post check_company with valid params and user_select is new" do 
     @company_registration_params[:user] = "new"

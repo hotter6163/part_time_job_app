@@ -8,6 +8,8 @@ class BranchesControllerTest < ActionDispatch::IntegrationTest
     @not_admin_branch = Relationship.find_by(user: @user, admin: false).branch
   end
   
+  # ------------------------------------------------
+  # get show
   # ログインせずにアクセスすると、ログイン画面へ
   test "should redirect show when not signin" do
     logout
@@ -21,7 +23,6 @@ class BranchesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
   
-  # get show
   # adminユーザーだけ企業ページにアクセスできる
   test "should get show" do
     get branch_path(@admin_branch)
@@ -29,6 +30,7 @@ class BranchesControllerTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", add_employee_branch_path(@admin_branch)
   end
   
+  # ------------------------------------------------
   # get add_employee
   test "should get add_employee" do 
     get add_employee_branch_path(@admin_branch)
@@ -37,6 +39,8 @@ class BranchesControllerTest < ActionDispatch::IntegrationTest
     assert_select 'input[type="submit"][name="commit"]'
   end
   
+  # ------------------------------------------------
+  # post send_email
   # send_emailに不適切なメールアドレスが送信されたら入力画面へ
   test "should redirect send_email when send invalid email" do 
     invalid_addresses = %w[user@example,com user_at_foo.org user.name@example.

@@ -16,7 +16,7 @@ class Period < ApplicationRecord
   end
   
   def before_deadline?
-    Time.zone.now < deadline + 1.day
+    Time.zone.now < (deadline + 1.day).in_time_zone
   end
   
   def is_date_in?(date)
