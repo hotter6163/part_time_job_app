@@ -166,14 +166,16 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
       }
     }
   end
-
+  
+  # ------------------------------------------------
+  # get new_shift
   test "get new_shift" do
     get new_shift_submission_path(@period)
     assert_response :success
     assert_select 'form[action=?]', shift_submissions_path(@period)
     assert_select 'input[name=period][type=hidden]'
     @period.days.each { |date| assert_select 'option[value=?]', date.to_s }
-    forms_num(@branch)[:max].times do |n|
+    @period.days.count.times do |n|
       assert_select 'select[name=?]', "shift_request[#{n}][date]"
       assert_select 'input[type=time][name=?]', "shift_request[#{n}][start_time]"
       assert_select 'input[type=time][name=?]', "shift_request[#{n}][end_time]"
@@ -195,6 +197,9 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
   
+  
+  # ------------------------------------------------
+  # post create_shift
   # 正しい値を送信
   test "post create_shift with valid_params" do 
     assert_difference -> { ShiftSubmission.count } => 1, -> { ShiftRequest.count } => 6 do
@@ -231,6 +236,9 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
     @error_nums.each { |num| assert error_nums.include?(num) }
   end
   
+  
+  # ------------------------------------------------
+  # get show
   test "show shift_submission before deadline" do
     period = periods(:seven)
     get shift_submission_path(period)
