@@ -6,7 +6,7 @@ class ShiftRequestsController < ApplicationController
   
   def create
     unless params[:shift_request].values.all?(&:present?) && @period.is_date_in?(params[:shift_request]["date"].to_date)
-      flash.now[:danger] = "送信されたシフトが追加・変更できませんでした。"
+      flash[:danger] = "送信されたシフトが追加・変更できませんでした。"
       redirect_to shift_submission_path(@period) and return
     end
     
@@ -17,9 +17,9 @@ class ShiftRequestsController < ApplicationController
     shift_request.end_time = shift_request_params(params[:shift_request])[:end_time]
     if shift_request.valid?
       shift_request.save
-      flash.now[:success] = "#{date_display(shift_request.date)}のシフトを追加・変更しました。"
+      flash[:success] = "#{date_display(shift_request.date)}のシフトを追加・変更しました。"
     else
-      flash.now[:danger] = "送信されたシフトが追加・変更できませんでした。"
+      flash[:danger] = "送信されたシフトが追加・変更できませんでした。"
     end
     redirect_to shift_submission_path(@period)
   end
