@@ -43,4 +43,8 @@ module ApplicationHelper
   def col_size_for_form_input
     "col-md-10"
   end
+  
+  def date_display(date)
+    I18n.l date, format: :with_day
+  end
 end

@@ -167,3 +167,7 @@ ja:
     end_day: 終了日
     deadline_day: 締切日
   
+  # 時間のフォーマット
+  date:
+    formats:
+      with_day: "%m/%d(%a)"

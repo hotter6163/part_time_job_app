@@ -4,7 +4,9 @@
       <select class="form-control" name=<%= "shift_request[#{num}][date]" %>>
         <option value="">--------</option>
         <% @period.days.each do |date| %>
-          <option value=<%= date %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>><%= date.strftime("%m/%d") %></option>
+          <option value=<%= date %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>>
+            <%= date_display(date) %>
+          </option>
         <% end %>
       </select>
     </div>
