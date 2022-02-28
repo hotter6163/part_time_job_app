@@ -27,13 +27,25 @@
           
           <!--シフト提出へのリンク-->
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-white" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">シフトを提出する</a>
+            <a class="nav-link dropdown-toggle text-white" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">シフトを提出・確認する</a>
             <div class="dropdown-menu bg-dark">
               <% current_user.branches.each do |branch| %>
                 <%= link_to branch.company_name, "#", class: "dropdown-item disabled text-white" %>
                 <ul>
-                  <% branch.periods_before_deadline.each do |period| %>
-                    <li class="list-unstyled"><%= link_to period.start_to_end, new_shift_submission_path(period), class: "dropdown-item text-white" %></li>
+                  <% branch.periods_before_end_date.each do |period| %>
+                    <li class="list-unstyled">
+                      <% if period.before_deadline? %>
+                        <% if current_user.submit_shift?(period) %>
+                          <%= link_to "#{period.start_to_end}(提出済)", shift_submission_path(period), class: "dropdown-item text-white" %>
+                        <% else %>
+                          <%= link_to period.start_to_end, new_shift_submission_path(period), class: "dropdown-item text-white" %>
+                        <% end %>
+                      <% else %>
+                        <% if current_user.submit_shift?(period) %>
+                          <%= link_to "#{period.start_to_end}(期限切・提出済)", shift_submission_path(period), class: "dropdown-item text-white" %>
+                        <% end %>
+                      <% end %>
+                    </li>
                   <% end %>
                 </ul>
               <% end %>
