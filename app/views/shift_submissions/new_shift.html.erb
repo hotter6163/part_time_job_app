@@ -24,3 +24,49 @@
     <%= f.submit "シフトを提出する", class: "btn btn-primary w-50" %>
   </div>
 <% end %>
+
+<div class="form-row mb-3">
+  <div class="col-4"></div>
+  <div class="col-4 text-center">
+    <button type="button" id="btn-fill-start-time" class="btn btn-sm border border-primary text-primary">最初から</button>
+  </div>
+  <div class="col-4 text-center">
+    <button type="button" id="btn-fill-end-time" class="btn btn-sm border border-primary text-primary">最後まで</button>
+  </div>
+</div>
+
+<div class="text-center">
+  <button type="button" id="btn-add-row" class="btn text-secondary border border-secondary">提出するシフトを追加＋</button>
+</div>
+
+<script>
+  var rows = new Array;
+  var num_of_displays = <%= 1 %>;
+  var btn_add_row = $('#btn-add-row');
+  var btn_fill_start_time = $('#btn-fill-start-time');
+  var btn_fill_end_time = $('#btn-fill-end-time');
+  var start_of_business_hours = '<%= @branch.start_of_business_hours.to_s(:time) %>';
+  var end_of_business_hours = '<%= @branch.end_of_business_hours.to_s(:time) %>';
+  
+  for (let step=0; step < <%= @period.days.count %>; step++) {
+    rows[step] = document.getElementById("row-" + step);
+    if (step >= num_of_displays) {
+      rows[step].style.display = "none";
+    }
+  }
+  
+  btn_fill_start_time.click(function() {
+    var input = document.getElementById("start-time-form-" + (num_of_displays - 1));
+    input.value = start_of_business_hours;
+  })
+  
+  btn_fill_end_time.click(function() {
+    var input = document.getElementById("end-time-form-" + (num_of_displays - 1));
+    input.value = end_of_business_hours;
+  })
+  
+  btn_add_row.click(function() {
+    rows[num_of_displays].style.display = '';
+    num_of_displays += 1;
+  })
+</script>
