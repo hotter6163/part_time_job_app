@@ -1,7 +1,7 @@
 <%= form.fields_for "#{num}".to_sym do |shift_form| %>
   <div id="row-<%= num %>" class="form-row ss-row <%= 'error-row' if @error_nums.include?(num.to_s) %>">
     <div class="col-4">
-      <select class="form-control" name=<%= "shift_request[#{num}][date]" %>>
+      <select id="select-<%= num %>" class="form-control" name=<%= "shift_request[#{num}][date]" %>>
         <option value="">--------</option>
         <% @period.days.each do |date| %>
           <option value=<%= date %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>>

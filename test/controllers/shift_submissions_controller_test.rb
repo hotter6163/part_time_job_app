@@ -82,6 +82,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
       }
     }
     @error_nums = Set.new(["1", "4", "5", "6", "7", "8", "3", "9"])
+    @num_of_displays = 10
     @invalid_shift_submission_params = {
       period: @period.id,
       shift_request: {
@@ -234,6 +235,8 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_template "shift_submissions/new_shift"
     error_nums = assigns(:error_nums)
     @error_nums.each { |num| assert error_nums.include?(num) }
+    num_of_displays = assigns(:num_of_displays)
+    assert_equal @num_of_displays, num_of_displays
   end
   
   

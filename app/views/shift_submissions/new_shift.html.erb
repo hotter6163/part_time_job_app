@@ -20,28 +20,28 @@
     <% end %>
   <% end %>
   
-  <div class="fixed-bottom bg-light text-center pt-2 pb-2">
-    <%= f.submit "シフトを提出する", class: "btn btn-primary w-50" %>
+  <div class="form-row ss-row">
+    <div class="col-4"></div>
+    <div class="col-4 text-center">
+      <button type="button" id="btn-fill-start-time" class="btn btn-sm border border-primary text-primary">最初から</button>
+    </div>
+    <div class="col-4 text-center">
+      <button type="button" id="btn-fill-end-time" class="btn btn-sm border border-primary text-primary">最後まで</button>
+    </div>
+  </div>
+  
+  <div class="text-center ss-row ">
+    <%= f.submit "シフトを提出する", class: "btn btn-primary w-75" %>
   </div>
 <% end %>
 
-<div class="form-row mb-3">
-  <div class="col-4"></div>
-  <div class="col-4 text-center">
-    <button type="button" id="btn-fill-start-time" class="btn btn-sm border border-primary text-primary">最初から</button>
-  </div>
-  <div class="col-4 text-center">
-    <button type="button" id="btn-fill-end-time" class="btn btn-sm border border-primary text-primary">最後まで</button>
-  </div>
-</div>
-
 <div class="text-center">
-  <button type="button" id="btn-add-row" class="btn text-secondary border border-secondary">提出するシフトを追加＋</button>
+  <button type="button" id="btn-add-row" class="btn text-secondary border border-secondary w-75">提出するシフトを追加＋</button>
 </div>
 
 <script>
   var rows = new Array;
-  var num_of_displays = <%= 1 %>;
+  var num_of_displays = <%= @num_of_displays || 1 %>;
   var btn_add_row = $('#btn-add-row');
   var btn_fill_start_time = $('#btn-fill-start-time');
   var btn_fill_end_time = $('#btn-fill-end-time');
