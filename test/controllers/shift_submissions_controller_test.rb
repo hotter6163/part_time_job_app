@@ -237,6 +237,15 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
     @error_nums.each { |num| assert error_nums.include?(num) }
     num_of_displays = assigns(:num_of_displays)
     assert_equal @num_of_displays, num_of_displays
+    @invalid_shift_submission_params[:shift_request].each do |key, value|
+      next if value.values.all?(&:blank?)
+      
+      if value[:date].present? && @period.is_date_in?(value[:date].to_date)
+        assert_select "select#select-#{key} option[value=?][selected]", value[:date]
+      end
+      assert_select "input#start-time-form-#{key}[value=?]", value[:start_time]
+      assert_select "input#end-time-form-#{key}[value=?]", value[:end_time]
+    end
   end
   
   
