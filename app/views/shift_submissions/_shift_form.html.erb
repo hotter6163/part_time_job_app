@@ -4,7 +4,7 @@
       <select id="select-<%= num %>" class="form-control" name=<%= "shift_request[#{num}][date]" %>>
         <option value="">--------</option>
         <% @period.days.each do |date| %>
-          <option value=<%= date %> <%= "selected" if params[:shift_request].present? && params[:shift_request][num.to_s]["date"] == date.to_s %>>
+          <option value=<%= date %> <%= "selected" if shift_submission_params[num.to_s]["date"] == date.to_s %>>
             <%= date_display(date) %>
           </option>
         <% end %>
@@ -15,14 +15,14 @@
                                               max: @branch.end_of_business_hours.to_s(:time), 
                                               id: "start-time-form-#{num}",
                                               class: 'form-control',
-                                              value: params[:shift_request].present? ? params[:shift_request][num.to_s]["start_time"] : "" %>
+                                              value: shift_submission_params[num.to_s]["start_time"] %>
     </div>
     <div class="col-4">
       <%= shift_form.time_field :end_time,  min: @branch.start_of_business_hours.to_s(:time), 
                                             max: @branch.end_of_business_hours.to_s(:time), 
                                             id: "end-time-form-#{num}",
                                             class: 'form-control', 
-                                            value: params[:shift_request].present? ? params[:shift_request][num.to_s]["end_time"] : "" %>
+                                            value: shift_submission_params[num.to_s]["end_time"] %>
     </div>
   </div>
 <% end %>

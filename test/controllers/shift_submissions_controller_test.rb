@@ -235,8 +235,6 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_template "shift_submissions/new_shift"
     error_nums = assigns(:error_nums)
     @error_nums.each { |num| assert error_nums.include?(num) }
-    num_of_displays = assigns(:num_of_displays)
-    assert_equal @num_of_displays, num_of_displays
     @invalid_shift_submission_params[:shift_request].each do |key, value|
       next if value.values.all?(&:blank?)
       

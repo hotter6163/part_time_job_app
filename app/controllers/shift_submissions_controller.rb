@@ -78,7 +78,6 @@ class ShiftSubmissionsController < ApplicationController
         # 送信された値の検証
         next if value.values.all?(&:blank?)
         
-        @num_of_displays = key.to_i + 1
         shift_request = @shift_submission.shift_requests.build(shift_request_params(value))
         unless valid?(shift_request)
           @error_nums << key
