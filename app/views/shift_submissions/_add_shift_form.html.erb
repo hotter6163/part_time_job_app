@@ -1,33 +1,99 @@
-<div class="fixed-bottom bg-light text-center pt-1 pb-2">
+<div id="add-shift-form" class="fixed-bottom bg-light text-center pt-2">
   <div class="container">
-    <div class="form-row pseudo-table-header">
-      <div class="col-4 pseudo-table-row pt-2 pb-2">日付</div>
-      <div class="col-4 pseudo-table-row pt-2 pb-2">開始時間</div>
-      <div class="col-4 pseudo-table-row pt-2 pb-2">終了時間</div>
+    <div id="shift-form">
+      <div class="text-center mb-3">
+        <button type="button" id="close" class="btn text-secondary border border-secondary w-100">閉じる</button>
+      </div>
+      
+      <div class="form-row pseudo-table-header">
+        <div class="col-4 pseudo-table-row pt-2 pb-2">日付</div>
+        <div class="col-4 pseudo-table-row pt-2 pb-2">開始時間</div>
+        <div class="col-4 pseudo-table-row pt-2 pb-2">終了時間</div>
+      </div>
+      
+      <%= form_with(url: shift_submission_shift_requests_path(@shift_submission), scope: :shift_request, class: "mt-1", local: true) do |f| %>
+        <div class="form-row ss-row">
+          <div class="col-4">
+            <select class="form-control" name=<%= "shift_request[date]" %>>
+              <option value="">--------</option>
+              <% @period.days.each do |date| %>
+                <option value=<%= date %>><%= date_display(date) %></option>
+              <% end %>
+            </select>
+          </div>
+          <div class="col-4">
+            <%= f.time_field :start_time, min: @branch.start_of_business_hours.to_s(:time), 
+                                          max: @branch.end_of_business_hours.to_s(:time),
+                                          id: 'start-time-form',
+                                          class: 'form-control' %>
+          </div>
+          <div class="col-4">
+            <%= f.time_field :end_time, min: @branch.start_of_business_hours.to_s(:time), 
+                                        max: @branch.end_of_business_hours.to_s(:time), 
+                                        id: 'end-time-form',
+                                        class: 'form-control' %>
+          </div>
+        </div>
+        
+        <div class="form-row ss-row">
+          <div class="col-4"></div>
+          <div class="col-4 text-center">
+            <button type="button" id="btn-fill-start-time" class="btn btn-sm border border-primary text-primary">最初から</button>
+          </div>
+          <div class="col-4 text-center">
+            <button type="button" id="btn-fill-end-time" class="btn btn-sm border border-primary text-primary">最後まで</button>
+          </div>
+        </div>
+        
+        <%= f.submit "シフトを追加・変更", class: "btn btn-primary w-50" %>
+      <% end %>
     </div>
     
-    <%= form_with(url: shift_submission_shift_requests_path(@shift_submission), scope: :shift_request, class: "mt-1", local: true) do |f| %>
-      <div class="form-row ss-row">
-        <div class="col-4">
-          <select class="form-control" name=<%= "shift_request[date]" %>>
-            <option value="">--------</option>
-            <% @period.days.each do |date| %>
-              <option value=<%= date %>><%= date_display(date) %></option>
-            <% end %>
-          </select>
-        </div>
-        <div class="col-4">
-          <%= f.time_field :start_time, min: @branch.start_of_business_hours.to_s(:time), 
-                                        max: @branch.end_of_business_hours.to_s(:time), 
-                                        class: 'form-control' %>
-        </div>
-        <div class="col-4">
-          <%= f.time_field :end_time, min: @branch.start_of_business_hours.to_s(:time), 
-                                      max: @branch.end_of_business_hours.to_s(:time), 
-                                      class: 'form-control' %>
-        </div>
+    <div id="open-btn">
+      <div class="text-center mb-3">
+        <button type="button" id="open" class="btn text-secondary border border-secondary w-100">シフトを追加・変更する</button>
       </div>
-      <%= f.submit "シフトを追加・変更する", class: "btn btn-primary btn-sm w-50" %>
-    <% end %>
+    </div>
   </div>
 </div>
+
+<script>
+  var btn_open = $('#open');
+  var btn_close = $('#close');
+  var open_btn = document.getElementById('open-btn');
+  var shift_form = document.getElementById('shift-form');
+  var add_shift_form = document.getElementById('add-shift-form');
+  var body = document.body;
+  
+  var btn_fill_start_time = $('#btn-fill-start-time');
+  var btn_fill_end_time = $('#btn-fill-end-time');
+  var start_time_form = document.getElementById("start-time-form");
+  var end_time_form = document.getElementById("end-time-form");
+  var start_of_business_hours = '<%= @branch.start_of_business_hours.to_s(:time) %>';
+  var end_of_business_hours = '<%= @branch.end_of_business_hours.to_s(:time) %>';
+  
+  shift_form.style.display = "none";
+  add_shift_form.style.paddingBottom = "0.5rem";
+  
+  btn_open.click(function() {
+    shift_form.style.display = "";
+    open_btn.style.display = "none";
+    add_shift_form.style.paddingBottom = "3rem";
+    body.style.paddingBottom = "240px";
+  })
+  
+  btn_close.click(function() {
+    shift_form.style.display = "none";
+    open_btn.style.display = "";
+    add_shift_form.style.paddingBottom = "0.5rem";
+    body.style.paddingBottom = "60px";
+  })
+  
+  btn_fill_start_time.click(function() {
+    start_time_form.value = start_of_business_hours;
+  })
+  
+  btn_fill_end_time.click(function() {
+    end_time_form.value = end_of_business_hours;
+  })
+</script>
