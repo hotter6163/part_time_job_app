@@ -2,37 +2,7 @@
 <h3>企業：<%= @branch.company_name %></h3>
 <h3>期間：<%= @period.start_to_end %></h3>
 
-<% if @shift_submission.shift_requests.all.present? %>
-  <table class="table">
-    <thead class="thead-light">
-      <tr>
-        <th>日付</th>
-        <th>開始時間</th>
-        <th>終了時間</th>
-        <% if @period.before_deadline? %>
-          <th></th>
-        <% end %>
-      </tr>
-    </thead>
-    <tbody>
-      <% @shift_submission.shift_requests.all.order(:date).each do |shift_request| %>
-        <tr>
-          <td><%= date_display(shift_request.date) %></td>
-          <td><%= shift_request.start_time_of_30_hours_system %></td>
-          <td><%= shift_request.end_time_of_30_hours_system %></td>
-          <% if @period.before_deadline? %>
-            <td>
-              <%= link_to "×", shift_submission_shift_request_path(@shift_submission, shift_request),  method: :delete,
-                                                                                      data: { confirm: "#{shift_request.date.strftime("%m/%d")}のシフトを削除しますがよろしかったですか？" }%>
-            </td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-<% else %>
-  この期間の出勤可能なシフトは提出されていません。
-<% end %>
+<%= render 'shift_submissions/shift_requests', shift_requests: @shift_submission.shift_requests.all.order(:date) %>
 
 <% if @period.before_deadline? %>
   <%= render "shift_submissions/add_shift_form" %>

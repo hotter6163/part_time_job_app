@@ -2,12 +2,7 @@
 <h3>企業：<%= @branch.company_name %></h3>
 <h3>期間：<%= @period.start_to_end %></h3>
 
-<%= form_with(url: shift_submissions_path(@period), local: true) do |f| %>
-  <!--シフト期間の選択-->
-  <div>
-    <%= hidden_field_tag :period, @period.id %>
-  </div>
-  
+<%= form_with(url: check_shift_submissions_path(@period), local: true) do |f| %>
   <!--シフトの送信フォーム-->
   <%= fields_for :shift_request do |shift_request_form| %>
     <div class="form-row pseudo-table-header">
@@ -31,7 +26,7 @@
   </div>
   
   <div class="text-center ss-row ">
-    <%= f.submit "シフトを提出する", class: "btn btn-primary w-75" %>
+    <%= f.submit "確認画面へ", class: "btn btn-primary w-75" %>
   </div>
 <% end %>
 

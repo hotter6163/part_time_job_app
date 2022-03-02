@@ -173,8 +173,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
   test "get new_shift" do
     get new_shift_submission_path(@period)
     assert_response :success
-    assert_select 'form[action=?]', shift_submissions_path(@period)
-    assert_select 'input[name=period][type=hidden]'
+    assert_select 'form[action=?]', check_shift_submissions_path(@period)
     @period.days.each { |date| assert_select 'option[value=?]', date.to_s }
     @period.days.count.times do |n|
       assert_select 'select[name=?]', "shift_request[#{n}][date]"
@@ -200,20 +199,31 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
   
   
   # ------------------------------------------------
-  # post create_shift
+  # post check_shift
   # 正しい値を送信
-  test "post create_shift with valid_params" do 
-    assert_difference -> { ShiftSubmission.count } => 1, -> { ShiftRequest.count } => 6 do
-      post shift_submissions_path(@period), params: @valid_shift_submission_params
+  test "post check_shift with valid_params" do 
+    post check_shift_submissions_path(@period), params: @valid_shift_submission_params
+    assert !!session[:shift_requests]
+    assert_template "shift_submissions/check"
+    assert_select "form[action=?]", shift_submissions_path(@period)
+    assert_select "a[href=?]", new_shift_submission_path(@period)
+    
+    # 戻るを押した時の挙動
+    get new_shift_submission_path(@period)
+    @valid_shift_submission_params[:shift_request].each do |key, value|
+      if value[:date].present?
+        assert_select "select#select-#{key} option[value=?][selected]", value[:date]
+      end
+      assert_select "input#start-time-form-#{key}[value=?]", value[:start_time]
+      assert_select "input#end-time-form-#{key}[value=?]", value[:end_time]
     end
-    assert_template "shift_submissions/success"
   end
   
   # 締め切りが過ぎた期間を送信
   test "post create_shift with period after deadline" do
     @invalid_shift_submission_params[:period] = periods(:one).id
     assert_no_difference ['ShiftSubmission.count', 'ShiftRequest.count'] do
-      post shift_submissions_path(@period), params: @invalid_shift_submission_params
+      post check_shift_submissions_path(@period), params: @invalid_shift_submission_params
     end
     assert_template "shift_submissions/new_shift"
   end
@@ -222,7 +232,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
   test "post create_shift with ohter branch's period" do
     @invalid_shift_submission_params[:period] = periods(:five).id
     assert_no_difference ['ShiftSubmission.count', 'ShiftRequest.count'] do
-      post shift_submissions_path(@period), params: @invalid_shift_submission_params
+      post check_shift_submissions_path(@period), params: @invalid_shift_submission_params
     end
     assert_template "shift_submissions/new_shift"
   end
@@ -230,7 +240,7 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
   # 不適切なシフト希望を提出
   test "post create_shift with invalid_params" do
     assert_no_difference ['ShiftSubmission.count', 'ShiftRequest.count'] do
-      post shift_submissions_path(@period), params: @invalid_shift_submission_params
+      post check_shift_submissions_path(@period), params: @invalid_shift_submission_params
     end
     assert_template "shift_submissions/new_shift"
     error_nums = assigns(:error_nums)
@@ -246,6 +256,23 @@ class ShiftSubmissionsControllerTest < ActionDispatch::IntegrationTest
     end
   end
   
+  # ------------------------------------------------
+  # post create_shift
+  test "post create_shift" do 
+    post check_shift_submissions_path(@period), params: @valid_shift_submission_params
+    assert_difference -> { ShiftSubmission.count } => 1, -> { ShiftRequest.count } => 6 do
+      post shift_submissions_path(@period), params: @valid_shift_submission_params
+    end
+    assert_redirected_to shift_submission_path(@period)
+    assert_not !!session[:shift_requests]
+  end
+  
+  test "should redirect create_shift when have no shift_requests in session" do
+    assert_no_difference ['ShiftSubmission.count', 'ShiftRequest.count'] do
+      post shift_submissions_path(@period), params: @valid_shift_submission_params
+    end
+    assert_redirected_to new_shift_submission_path
+  end
   
   # ------------------------------------------------
   # get show

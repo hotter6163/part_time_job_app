@@ -1,26 +1,46 @@
 class ShiftSubmissionsController < ApplicationController
   before_action :authenticate_user!
   before_action :belong_to
-  before_action :before_deadline, only: [:new_shift, :create_shift]
-  before_action :already_submit_shift, only: [:new_shift, :create_shift]
+  before_action :before_deadline, only: [:new_shift, :check_shift, :create_shift]
+  before_action :already_submit_shift, only: [:new_shift, :check_shift, :create_shift]
+  before_action :have_shift_submission_params, only: [:create_shift]
   before_action :not_submit_shift, only: [:show]
   
   def new_shift
     @error_nums = Set.new
   end
   
-  def create_shift
+  def check_shift
     @shift_submission = @period.shift_submissions.build(user: current_user)
     @error_nums = Set.new
     
     verify_params
     
     if @error_nums.empty?
-      @shift_submission.save
-      render "shift_submissions/success"
+      add_sessions(shift_requests: shift_submission_params)
+      render "shift_submissions/check"
     else
       flash.now[:danger] = "登録できないシフトがあります。"
       render "shift_submissions/new_shift"
+    end
+  end
+  
+  def create_shift
+    @shift_submission = current_user.shift_submissions.build(period: @period)
+    shift_requests = []
+    shift_submission_params.values.each do |shift_request| 
+      next if shift_request.values.all?(&:blank?)
+      shift_requests << @shift_submission.shift_requests.build(shift_request_params(shift_request))
+    end
+    
+    if @shift_submission.valid?
+      @shift_submission.save
+      flash[:success] = "シフトの登録が完了しました。"
+      delete_sessions(:shift_requests)
+      redirect_to shift_submission_path(@period)
+    else
+      flash[:danger] = "シフトの登録に失敗しました。"
+      redirect_to new_shift_submission_path(@period)
     end
   end
   
@@ -47,6 +67,12 @@ class ShiftSubmissionsController < ApplicationController
     def not_submit_shift
       @shift_submission = @current_user.shift_submissions.find_by(period: @period)
       unless !!@shift_submission
+        redirect_to new_shift_submission_path(@period)
+      end
+    end
+    
+    def have_shift_submission_params
+      unless !!session[:shift_requests]
         redirect_to new_shift_submission_path(@period)
       end
     end

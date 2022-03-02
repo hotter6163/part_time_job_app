@@ -9,7 +9,7 @@ module ShiftSubmissionsHelper
       }
     end
     
-    params[:shift_request] || session[:shift_request] || blank_params
+    params[:shift_request] || session[:shift_requests] || blank_params
   end
   
   def num_of_displays
