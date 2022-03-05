@@ -11,20 +11,11 @@ class LineBotsController < ApplicationController
   
   private
     def validate_signature
-      CHANNEL_SECRET = ENV["LINE_CHANNEL_SECRET"]
-      http_request_body = request.raw_post # Request body string
-      hash = OpenSSL::HMAC::digest(OpenSSL::Digest::SHA256.new, CHANNEL_SECRET, http_request_body)
-      signature = Base64.strict_encode64(hash)
-      x_line_signature = request.env['HTTP_X_LINE_SIGNATURE']
-      unless signature == x_line_signature
-        raise RuntimeError
+      body = request.body.read
+      signature = request.env['HTTP_X_LINE_SIGNATURE']
+      unless client.validate_signature(body, signature)
+        halt 400, {'Content-Type' => 'text/plain'}, 'Bad Request'
       end
-      
-      # body = request.body.read
-      # signature = request.env['HTTP_X_LINE_SIGNATURE']
-      # unless client.validate_signature(body, signature)
-      #   error 400 do 'Bad Request' end
-      # end
     end
     
     def client
