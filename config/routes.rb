@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # line bot のwebhook
-  post 'line_webhook', to: 'line_bots#webhook', as: :line_webhook 
+  post 'callback', to: 'line_bots#callback', as: :callback 
   
   # 企業登録のためのルーティング
   get   'company_registrations/new_company',  to: 'company_registrations#new',            as: :new_company_registration
