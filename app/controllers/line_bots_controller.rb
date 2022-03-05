@@ -3,6 +3,7 @@ require 'line/bot'  # gem 'line-bot-api'
 
 class LineBotsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :validate_signature
   
   def callback
     "OK"
