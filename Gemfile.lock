@@ -112,6 +112,8 @@ GEM
     guard-minitest (2.4.6)
       guard-compat (~> 1.2)
       minitest (>= 3.0)
+    halt (1.0.0)
+      actionpack
     i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     image_processing (1.12.1)
@@ -289,6 +291,7 @@ DEPENDENCIES
   devise
   guard (~> 2.0)
   guard-minitest (= 2.4.6)
+  halt
   image_processing (~> 1.2)
   jbuilder (~> 2.7)
   line-bot-api
