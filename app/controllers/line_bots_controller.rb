@@ -1,14 +1,8 @@
 class LineBotsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :validate_signature
   
   def callback
-    body = request.body.read
-
-    signature = request.env['HTTP_X_LINE_SIGNATURE']
-    unless client.validate_signature(body, signature)
-      halt 401
-    end
-    
     "OK"
   end
   
@@ -17,7 +11,7 @@ class LineBotsController < ApplicationController
       body = request.body.read
       signature = request.env['HTTP_X_LINE_SIGNATURE']
       unless client.validate_signature(body, signature)
-        halt 400, {'Content-Type' => 'text/plain'}, 'Bad Request'
+        halt :bad_request
       end
     end
     
