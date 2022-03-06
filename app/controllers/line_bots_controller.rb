@@ -6,7 +6,7 @@ class LineBotsController < ApplicationController
 
     signature = request.env['HTTP_X_LINE_SIGNATURE']
     unless client.validate_signature(body, signature)
-      halt 400, {'Content-Type' => 'text/plain'}, 'Bad Request'
+      halt 401
     end
     
     "OK"
