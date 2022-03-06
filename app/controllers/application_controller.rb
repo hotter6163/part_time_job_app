@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
 
   include ApplicationHelper
   include Devise::Controllers::SignInOut
+  include Halt
   
   private
     # 新規登録時のストロングパラメータに「last_name, first_name」を追加
