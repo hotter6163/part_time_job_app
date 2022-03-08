@@ -40,4 +40,4 @@ yarn-debug.log*
 .yarn-integrity
 
 /ngrok
-/app/helpers/environment_variable.rb 
+/lib/line/environment_variable.rb
