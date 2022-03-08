@@ -26,5 +26,7 @@ module PartTimeJobApp
     # config.eager_load_paths << Rails.root.join("extras")
     
     config.autoload_paths += %W(#{config.root}/lib)
+    
+    config.enable_dependency_loading = true
   end
 end
