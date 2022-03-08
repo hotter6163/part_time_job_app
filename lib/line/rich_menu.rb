@@ -1,7 +1,9 @@
 module Line
-  module RichMenu
-    extend self
+  class RichMenu
+    include Line::Client
     
-    
+    class << self
+      
+    end
   end
 end

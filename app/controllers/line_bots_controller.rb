@@ -1,4 +1,6 @@
 class LineBotsController < ApplicationController
+  include Line::Client
+  
   skip_before_action :verify_authenticity_token
   before_action :validate_signature
   
@@ -29,12 +31,5 @@ class LineBotsController < ApplicationController
       unless client.validate_signature(@body, signature)
         halt :bad_request
       end
-    end
-    
-    def client
-      @client ||= Line::Bot::Client.new { |config|
-        config.channel_secret = Rails.env.production? ? ENV["LINE_CHANNEL_SECRET"] : Line::EnvironmentVariable::LINE_CHANNEL_SECRET
-        config.channel_token = Rails.env.production? ? ENV["LINE_CHANNEL_TOKEN"] : Line::EnvironmentVariable::LINE_CHANNEL_TOKEN
-      }
     end
 end
