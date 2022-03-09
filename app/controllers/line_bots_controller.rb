@@ -25,33 +25,9 @@ class LineBotsController < ApplicationController
         when :link
           case data[:user]
           when :exist
-            res = client.create_link_token(event["source"]["userId"])
-            link_token = JSON.parse(res.body)["linkToken"]
-            messages = [
-              {
-                type: 'text',
-                text: '以下のリンクからアプリにログインしてください。'
-              },
-              {
-                type: 'text',
-                text: new_user_session_url(linkToken: link_token)
-              }
-            ]
-            client.reply_message(event["replyToken"], messages)
+            reply_sign_in_message(event)
           when :new
-            res = client.create_link_token(event["source"]["userId"])
-            link_token = JSON.parse(res.body)["linkToken"]
-            messages = [
-              {
-                type: 'text',
-                text: '以下のリンクからユーザー登録を行ってください。'
-              },
-              {
-                type: 'text',
-                text: new_user_registration_url(linkToken: link_token)
-              }
-            ]
-            client.reply_message(event["replyToken"], messages)
+            reply_sign_up_message(event)
           end
         end
       end
@@ -61,6 +37,10 @@ class LineBotsController < ApplicationController
   end
   
   private
+    def nonce(token)
+      ActionController::HttpAuthentication::Digest.nonce(token)
+    end
+    
     def validate_signature
       @body = request.body.read
       signature = request.env['HTTP_X_LINE_SIGNATURE']
@@ -76,5 +56,47 @@ class LineBotsController < ApplicationController
         result[key.to_sym] = value.to_sym
       end
       result
+    end
+    
+    def reply_sign_in_message(event)
+      res = client.create_link_token(event["source"]["userId"])
+      link_token = JSON.parse(res.body)["linkToken"]
+      messages = [
+        type: 'template',
+        altText: '連携するためにアプリにログインしてください。',
+        template: {
+          type: 'buttons',
+          text: 'シフト管理アプリにアプリにログインしてください。',
+          defaultAction: {
+            type: 'uri',
+            label: "ログイン",
+            uri: link_sign_in_url(linkToken: link_token)
+          },
+          actions: [
+            {
+              type: 'uri',
+              label: "ログイン",
+              uri: link_sign_up_url(linkToken: link_token)
+            }
+          ]
+        }
+      ]
+      client.reply_message(event["replyToken"], messages)
+    end
+    
+    def reply_sign_up_message(event)
+      res = client.create_link_token(event["source"]["userId"])
+      link_token = JSON.parse(res.body)["linkToken"]
+      messages = [
+        {
+          type: 'text',
+          text: 'ユーザー登録を行ってください。'
+        },
+        {
+          type: 'text',
+          text: new_user_registration_url(linkToken: link_token)
+        }
+      ]
+      client.reply_message(event["replyToken"], messages)
     end
 end
