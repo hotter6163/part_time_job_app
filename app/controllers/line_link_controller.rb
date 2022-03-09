@@ -4,4 +4,7 @@ class LineLinkController < ApplicationController
 
   def sign_in
   end
+  
+  def create
+  end
 end

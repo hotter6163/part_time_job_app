@@ -62,23 +62,25 @@ class LineBotsController < ApplicationController
       res = client.create_link_token(event["source"]["userId"])
       link_token = JSON.parse(res.body)["linkToken"]
       messages = [
-        type: 'template',
-        altText: '連携するためにアプリにログインしてください。',
-        template: {
-          type: 'buttons',
-          text: 'シフト管理アプリにアプリにログインしてください。',
-          defaultAction: {
-            type: 'uri',
-            label: "ログイン",
-            uri: link_sign_in_url(linkToken: link_token)
-          },
-          actions: [
-            {
+        {
+          type: 'template',
+          altText: '連携するためにアプリにログインしてください。',
+          template: {
+            type: 'buttons',
+            text: 'シフト管理アプリにログインしてください。',
+            defaultAction: {
               type: 'uri',
               label: "ログイン",
-              uri: link_sign_up_url(linkToken: link_token)
-            }
-          ]
+              uri: link_sign_in_url(linkToken: link_token)
+            },
+            actions: [
+              {
+                type: 'uri',
+                label: "ログイン",
+                uri: link_sign_in_url(linkToken: link_token)
+              }
+            ]
+          }
         }
       ]
       client.reply_message(event["replyToken"], messages)
@@ -89,12 +91,24 @@ class LineBotsController < ApplicationController
       link_token = JSON.parse(res.body)["linkToken"]
       messages = [
         {
-          type: 'text',
-          text: 'ユーザー登録を行ってください。'
-        },
-        {
-          type: 'text',
-          text: new_user_registration_url(linkToken: link_token)
+          type: 'template',
+          altText: '連携するためのユーザーを登録してください。',
+          template: {
+            type: 'buttons',
+            text: 'シフト管理アプリに新規登録してください。',
+            defaultAction: {
+              type: 'uri',
+              label: "新規登録",
+              uri: link_sign_up_url(linkToken: link_token)
+            },
+            actions: [
+              {
+                type: 'uri',
+                label: "新規登録",
+                uri: link_sign_up_url(linkToken: link_token)
+              }
+            ]
+          }
         }
       ]
       client.reply_message(event["replyToken"], messages)
