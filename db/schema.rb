@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_20_020249) do
+ActiveRecord::Schema.define(version: 2022_03_10_233541) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -31,6 +31,24 @@ ActiveRecord::Schema.define(version: 2022_02_20_020249) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name"], name: "index_companies_on_name", unique: true
+  end
+
+  create_table "line_line_nonces", force: :cascade do |t|
+    t.string "nonce"
+    t.integer "user_id"
+    t.boolean "validity", default: true
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["nonce"], name: "index_line_line_nonces_on_nonce"
+  end
+
+  create_table "line_links", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "line_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["line_id"], name: "index_line_links_on_line_id"
+    t.index ["user_id"], name: "index_line_links_on_user_id"
   end
 
   create_table "monthlies", force: :cascade do |t|
@@ -143,6 +161,7 @@ ActiveRecord::Schema.define(version: 2022_02_20_020249) do
   end
 
   add_foreign_key "branches", "companies"
+  add_foreign_key "line_links", "users"
   add_foreign_key "monthlies", "branches"
   add_foreign_key "monthlies", "periods"
   add_foreign_key "monthly_periods", "monthlies"

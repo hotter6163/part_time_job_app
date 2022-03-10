@@ -25,8 +25,9 @@ class LineLinkController < ApplicationController
     end
     
     sign_in(:user, @user)
+    non = nonce(@user.id)
     
-      
+    LineLinkNonce.create(nonce: non, user_id: @user.id)
   end
   
   private

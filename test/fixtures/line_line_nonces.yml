@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nonce: MyString
+  user_id: 1
+  validity: false
+
+two:
+  nonce: MyString
+  user_id: 1
+  validity: false
