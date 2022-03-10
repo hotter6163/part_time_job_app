@@ -56,7 +56,7 @@ class CompanyRegistrationsController < ApplicationController
       end
     elsif session[:user] == "exist"
       @user = User.find_by(email: params[:user][:email].downcase)
-      unless @user && @user.valid_password?(params[:user][:password])
+      unless @user&.valid_password?(params[:user][:password])
         flash.now[:denger] = "メールアドレスかパスワードが間違っています。"
         render 'company_registrations/exist_user' and return
       end

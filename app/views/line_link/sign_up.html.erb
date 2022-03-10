@@ -1,2 +1,15 @@
-<h1>LineLink#sign_up</h1>
-<p>Find me in app/views/line_link/sign_up.html.erb</p>
+<h2>ユーザー登録</h2>
+<p>LINEアカウントと連携するユーザーを登録してください。</p>
+
+<%= form_with(url: create_link_path, scope: :user, local: true) do |f| %>
+  <%= render "devise/shared/error_messages", resource: @user %>
+  
+  <%= render "shared/new_user_registration_form", form: f %>
+  
+  <%= hidden_field_tag :link_token, params[:link_token] %>
+  <%= hidden_field_tag :user, "new" %>
+  
+  <div class="actions">
+    <%= f.submit "登録する", class: "btn btn-primary" %>
+  </div>
+<% end %>

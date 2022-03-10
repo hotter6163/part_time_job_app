@@ -1,2 +1,13 @@
-<h1>LineLink#sign_in</h1>
-<p>Find me in app/views/line_link/sign_in.html.erb</p>
+<h2>ログイン</h2>
+<p>LINEアカウントと連携するユーザーでログインしてください。</p>
+
+<%= form_with(url: create_link_path, scope: :user, local: true) do |f| %>
+  <%= render 'shared/new_sessions_form', form: f %>
+  
+  <%= hidden_field_tag :link_token, params[:link_token] %>
+  <%= hidden_field_tag :user, "exist" %>
+  
+  <div class="actions">
+    <%= f.submit "ログイン", class: "btn btn-primary" %>
+  </div>
+<% end %>

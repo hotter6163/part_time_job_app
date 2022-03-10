@@ -71,13 +71,13 @@ class LineBotsController < ApplicationController
             defaultAction: {
               type: 'uri',
               label: "ログイン",
-              uri: link_sign_in_url(linkToken: link_token)
+              uri: link_sign_in_url(link_token: link_token)
             },
             actions: [
               {
                 type: 'uri',
                 label: "ログイン",
-                uri: link_sign_in_url(linkToken: link_token)
+                uri: link_sign_in_url(link_token: link_token)
               }
             ]
           }
@@ -99,13 +99,13 @@ class LineBotsController < ApplicationController
             defaultAction: {
               type: 'uri',
               label: "新規登録",
-              uri: link_sign_up_url(linkToken: link_token)
+              uri: link_sign_up_url(link_token: link_token)
             },
             actions: [
               {
                 type: 'uri',
                 label: "新規登録",
-                uri: link_sign_up_url(linkToken: link_token)
+                uri: link_sign_up_url(link_token: link_token)
               }
             ]
           }
