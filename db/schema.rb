@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_10_233541) do
+ActiveRecord::Schema.define(version: 2022_03_11_002006) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -33,13 +33,13 @@ ActiveRecord::Schema.define(version: 2022_03_10_233541) do
     t.index ["name"], name: "index_companies_on_name", unique: true
   end
 
-  create_table "line_line_nonces", force: :cascade do |t|
+  create_table "line_link_nonces", force: :cascade do |t|
     t.string "nonce"
     t.integer "user_id"
     t.boolean "validity", default: true
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["nonce"], name: "index_line_line_nonces_on_nonce"
+    t.index ["nonce"], name: "index_line_link_nonces_on_nonce"
   end
 
   create_table "line_links", force: :cascade do |t|

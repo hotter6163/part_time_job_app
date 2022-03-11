@@ -25,9 +25,15 @@ class LineBotsController < ApplicationController
         when :link
           case data[:user]
           when :exist
-            reply_sign_in_message(event)
+            reply_log_in_message(event)
           when :new
             reply_sign_up_message(event)
+          end
+        end
+      when Line::Bot::Event::AccountLink
+        if event["link"]["result"] == "ok"
+          if line_link_nonce = LineLinkNonce.find_by(nonce: event["link"]["nonce"])
+            LineLink.create(user_id: line_link_nonce.user_id, line_id: event["source"]["userId"])
           end
         end
       end
@@ -37,10 +43,6 @@ class LineBotsController < ApplicationController
   end
   
   private
-    def nonce(token)
-      ActionController::HttpAuthentication::Digest.nonce(token)
-    end
-    
     def validate_signature
       @body = request.body.read
       signature = request.env['HTTP_X_LINE_SIGNATURE']
@@ -58,7 +60,7 @@ class LineBotsController < ApplicationController
       result
     end
     
-    def reply_sign_in_message(event)
+    def reply_log_in_message(event)
       res = client.create_link_token(event["source"]["userId"])
       link_token = JSON.parse(res.body)["linkToken"]
       messages = [
@@ -71,13 +73,13 @@ class LineBotsController < ApplicationController
             defaultAction: {
               type: 'uri',
               label: "ログイン",
-              uri: link_sign_in_url(link_token: link_token)
+              uri: link_log_in_url(link_token: link_token)
             },
             actions: [
               {
                 type: 'uri',
                 label: "ログイン",
-                uri: link_sign_in_url(link_token: link_token)
+                uri: link_log_in_url(link_token: link_token)
               }
             ]
           }

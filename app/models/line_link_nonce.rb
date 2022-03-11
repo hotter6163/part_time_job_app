@@ -1,0 +1,2 @@
+class LineLinkNonce < ApplicationRecord
+end

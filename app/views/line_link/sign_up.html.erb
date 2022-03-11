@@ -7,7 +7,7 @@
   <%= render "shared/new_user_registration_form", form: f %>
   
   <%= hidden_field_tag :link_token, params[:link_token] %>
-  <%= hidden_field_tag :user, "new" %>
+  <%= hidden_field_tag :status, "new" %>
   
   <div class="actions">
     <%= f.submit "登録する", class: "btn btn-primary" %>

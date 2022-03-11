@@ -1,7 +1,7 @@
 class LineLinkController < ApplicationController
   before_action :has_link_token
   
-  def sign_in
+  def log_in
   end
   
   def sign_up
@@ -9,12 +9,12 @@ class LineLinkController < ApplicationController
   end
   
   def create
-    if params[:user] == "new"
+    if params[:status] == "new"
       @user = User.new(new_user_params)
       unless @user.save
         render 'line_link/sign_up' and return
       end
-    elsif params[:user] == "exist"
+    elsif params[:status] == "exist"
       @user = User.find_by(email: params[:user][:email].downcase)
       unless @user&.valid_password?(params[:user][:password])
         flash.now[:denger] = "メールアドレスかパスワードが間違っています。"
@@ -25,9 +25,10 @@ class LineLinkController < ApplicationController
     end
     
     sign_in(:user, @user)
-    non = nonce(@user.id)
+    nonce = create_nonce(current_user.id)
+    @line_api_link = "https://access.line.me/dialog/bot/accountLink?linkToken=#{params[:link_token]}&nonce=#{nonce}"
     
-    LineLinkNonce.create(nonce: non, user_id: @user.id)
+    LineLinkNonce.create(nonce: nonce, user_id: current_user.id)
   end
   
   private

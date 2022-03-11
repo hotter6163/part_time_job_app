@@ -1,0 +1,13 @@
+<h2>LINE連携</h2>
+<p>
+  <% if params[:status] == "new" %>
+    新規ユーザーの登録に完了しました。
+  <% elsif params[:status] == "exist" %>
+    ログインが完了しました。
+  <% end %>
+</p>
+<p>以下のボタンからLINEアカウントとの連携を完了してください。</p>
+
+<div class="text-center">
+  <%= link_to "LINEアカウントと連携", {}, {href: @line_api_link, class: "btn btn-primary"} %>
+</div>

@@ -50,4 +50,8 @@ class ApplicationController < ActionController::Base
       result[:end_time] + 1.day if result[:start_time] > result[:end_time]
       result
     end
+    
+    def create_nonce(token)
+      ActionController::HttpAuthentication::Digest.nonce(token)
+    end
 end

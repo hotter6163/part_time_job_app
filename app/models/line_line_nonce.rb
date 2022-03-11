@@ -1,2 +1,0 @@
-class LineLineNonce < ApplicationRecord
-end

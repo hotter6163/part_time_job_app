@@ -5,7 +5,7 @@
   <%= render 'shared/new_sessions_form', form: f %>
   
   <%= hidden_field_tag :link_token, params[:link_token] %>
-  <%= hidden_field_tag :user, "exist" %>
+  <%= hidden_field_tag :status, "exist" %>
   
   <div class="actions">
     <%= f.submit "ログイン", class: "btn btn-primary" %>
