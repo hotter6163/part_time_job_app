@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 2022_03_11_002006) do
     t.string "line_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["line_id"], name: "index_line_links_on_line_id"
+    t.index ["line_id"], name: "index_line_links_on_line_id", unique: true
     t.index ["user_id"], name: "index_line_links_on_user_id"
   end
 

@@ -1,5 +1,5 @@
 class LineLinkController < ApplicationController
-  before_action :has_link_token
+  before_action :has_link_token, only: [:log_in, :sign_in, :create]
   
   def log_in
   end
@@ -15,11 +15,7 @@ class LineLinkController < ApplicationController
         render 'line_link/sign_up' and return
       end
     elsif params[:status] == "exist"
-      @user = User.find_by(email: params[:user][:email].downcase)
-      unless @user&.valid_password?(params[:user][:password])
-        flash.now[:denger] = "メールアドレスかパスワードが間違っています。"
-        render 'line_link/sign_in' and return
-      end
+      return unless login(params[:user], render_template: 'line_link/sign_in', log_in: false)
     else # 未テスト
       redirect_to root_url and return
     end

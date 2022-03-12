@@ -54,4 +54,17 @@ class ApplicationController < ActionController::Base
     def create_nonce(token)
       ActionController::HttpAuthentication::Digest.nonce(token)
     end
+    
+    def login(parameter, render_template: "devise/sessions/new", log_in: true)
+      @user = User.find_by(email: parameter[:email].downcase)
+      if @user&.valid_password?(parameter[:password])
+        sign_in(:user, @user) if log_in
+        true
+      else
+        flash.now[:denger] = "メールアドレスかパスワードが間違っています。"
+        render render_template
+        false
+      end
+      
+    end
 end

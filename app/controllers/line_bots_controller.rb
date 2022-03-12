@@ -10,15 +10,6 @@ class LineBotsController < ApplicationController
     
     events.each do |event|
       case event
-      when Line::Bot::Event::Message
-        case event.type
-        when Line::Bot::Event::MessageType::Text
-          message = {
-            type: 'text',
-            text: "test\ntest"
-          }
-          client.reply_message(event['replyToken'], message)
-        end
       when Line::Bot::Event::Postback
         data = parse(event["postback"]["data"])
         case data[:action]
@@ -29,6 +20,12 @@ class LineBotsController < ApplicationController
           when :new
             reply_sign_up_message(event)
           end
+        when :destroy_link
+          
+        when :shift_submission
+          
+        when :show_submitted_shift
+          
         end
       when Line::Bot::Event::AccountLink
         account_link(event)

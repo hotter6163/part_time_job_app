@@ -44,9 +44,9 @@ module Line
         res = client.create_rich_menu(rich_menu)
         rich_menu_id = JSON.parse(res.body)["richMenuId"]
         
-        File.new('./lib/assets/rich_menu_before_link.png') do |file|
-          client.create_rich_menu_image(rich_menu_id, file)
-        end
+        file = File.new('./lib/assets/rich_menu_before_link.png')
+        client.create_rich_menu_image(rich_menu_id, file)
+        file.close
         
         client.set_default_rich_menu(rich_menu_id)
       end
@@ -105,8 +105,9 @@ module Line
         file_path = Rails.root.to_s + "/lib/assets/rich_menu_for_linked_user.png"
         
         file = File.new(file_path)
-        
         client.create_rich_menu_image(rich_menu_id, file)
+        file.close
+        
         client.link_user_rich_menu(line_id, rich_menu_id)
       end
     end
