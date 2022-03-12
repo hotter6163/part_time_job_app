@@ -21,7 +21,7 @@ class LineBotsController < ApplicationController
             reply_sign_up_message(event)
           end
         when :destroy_link
-          
+          reply_destroy_link_message(event)
         when :shift_submission
           
         when :show_submitted_shift
@@ -127,7 +127,41 @@ class LineBotsController < ApplicationController
           text: "アカウント連携が完了しました。\nアカウント連携を解除する場合は、下のメニューの「連携を解除する」から行ってください。"
         }
       ]
-      
       client.reply_message(reply_token, messages)
+    end
+    
+    def reply_destroy_link_message(event)
+      if line_link = LineLink.find_by(line_id: event["source"]["userId"])
+        messages = [
+          {
+            type: 'template',
+            altText: 'アカウントの連携を解除する場合は、リンクにアクセスしてください。',
+            template: {
+              type: 'buttons',
+              text: "アカウントの連携を解除する場合は、以下のボタンを押してください。",
+              defaultAction: {
+                type: 'uri',
+                label: "アカウントの連携を解除",
+                uri: check_delete_link_url(line_link, delete_token: line_link.delete_token)
+              },
+              actions: [
+                {
+                  type: 'uri',
+                  label: "アカウントの連携を解除",
+                  uri: check_delete_link_url(line_link, delete_token: line_link.delete_token)
+                }
+              ]
+            }
+          }
+        ]
+      else
+        messages = [
+          {
+            type: "text",
+            text: "このLINEアカウントは、アカウント連携が行われていません。"
+          }
+        ]
+      end
+      client.reply_message(event["replyToken"], messages)
     end
 end

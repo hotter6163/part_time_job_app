@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_03_11_002006) do
+ActiveRecord::Schema.define(version: 2022_03_12_035749) do
 
   create_table "branches", force: :cascade do |t|
     t.integer "company_id"
@@ -47,6 +47,8 @@ ActiveRecord::Schema.define(version: 2022_03_11_002006) do
     t.string "line_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "delete_digest"
+    t.datetime "delete_sent_at"
     t.index ["line_id"], name: "index_line_links_on_line_id", unique: true
     t.index ["user_id"], name: "index_line_links_on_user_id"
   end

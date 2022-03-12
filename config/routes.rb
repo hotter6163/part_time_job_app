@@ -1,9 +1,13 @@
 Rails.application.routes.draw do
   # line bot のwebhook
   post  'callback',           to: 'line_bots#callback', as: :callback
-  get   'line_link/sign_in',  to: 'line_link#log_in',   as: :link_log_in
-  get   'line_link/sign_up',  to: 'line_link#sign_up',  as: :link_sign_up
-  post  'line_link',          to: 'line_link#create',   as: :create_link
+  
+  # ライン連携・連携解除用URL
+  get   'line_link/sign_in',          to: 'line_link#log_in',       as: :link_log_in
+  get   'line_link/sign_up',          to: 'line_link#sign_up',      as: :link_sign_up
+  post  'line_link',                  to: 'line_link#create',       as: :create_link
+  get   'line_link/:id/check_delete', to: 'line_link#check_delete', as: :check_delete_link
+  delete 'line_link/:id',             to: 'line_link#delete',       as: :delete_link
   
   # 企業登録のためのルーティング
   get   'company_registrations/new_company',  to: 'company_registrations#new',            as: :new_company_registration

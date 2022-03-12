@@ -1,5 +1,6 @@
 class LineLinkController < ApplicationController
   before_action :has_link_token, only: [:log_in, :sign_in, :create]
+  before_action :authenticate_user!, only: [:check_delete, :delete]
   
   def log_in
   end
@@ -25,6 +26,14 @@ class LineLinkController < ApplicationController
     @line_api_link = "https://access.line.me/dialog/bot/accountLink?linkToken=#{params[:link_token]}&nonce=#{nonce}"
     
     LineLinkNonce.create(nonce: nonce, user_id: current_user.id)
+  end
+  
+  def check_delete
+    
+  end
+  
+  def delete
+    
   end
   
   private
