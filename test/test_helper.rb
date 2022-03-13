@@ -25,12 +25,12 @@ class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
   MAX_NUM = 100000
   
-  def invalid_id
-    relationship_ids = Relationship.all.map(&:id)
+  def invalid_id(model)
+    ids = model.all.map(&:id)
     result = 0
     (0..MAX_NUM).reverse_each do |i|
       result = i
-      if !relationship_ids.include?(result)
+      if !ids.include?(result)
         break
       end
     end

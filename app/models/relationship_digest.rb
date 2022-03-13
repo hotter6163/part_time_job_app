@@ -5,10 +5,6 @@ class RelationshipDigest < ApplicationRecord
     !used? && Time.zone.now <= created_at + 3.day
   end
   
-  def valid_token?(token)
-    BCrypt::Password.new(digest).is_password?(token)
-  end
-  
   class << self
     def digest(string)
       cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :

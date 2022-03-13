@@ -132,23 +132,24 @@ class LineBotsController < ApplicationController
     
     def reply_destroy_link_message(event)
       if line_link = LineLink.find_by(line_id: event["source"]["userId"])
+        delete_token = line_link.create_delete_token
         messages = [
           {
             type: 'template',
             altText: 'アカウントの連携を解除する場合は、リンクにアクセスしてください。',
             template: {
               type: 'buttons',
-              text: "アカウントの連携を解除する場合は、以下のボタンを押してください。",
+              text: "アカウントの連携を解除する場合は、以下のボタンを押してください。\n有効期限は30分です。",
               defaultAction: {
                 type: 'uri',
                 label: "アカウントの連携を解除",
-                uri: check_delete_link_url(line_link, delete_token: line_link.delete_token)
+                uri: check_delete_link_url(line_link, delete_token: delete_token)
               },
               actions: [
                 {
                   type: 'uri',
                   label: "アカウントの連携を解除",
-                  uri: check_delete_link_url(line_link, delete_token: line_link.delete_token)
+                  uri: check_delete_link_url(line_link, delete_token: delete_token)
                 }
               ]
             }

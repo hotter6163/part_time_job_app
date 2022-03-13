@@ -4,13 +4,22 @@ class LineLink < ApplicationRecord
   validates :user_id, presence: true, uniqueness: true
   validates :line_id, presence: true, uniqueness: true
   
-  def delete_token
-    unless @delete_token
-      @delete_token = LineLink.new_token
-      update_attribute(:delete_digest,  LineLink.digest(@delete_token))
-      update_attribute(:delete_sent_at, Time.zone.now)
-    end
-    @delete_digest
+  def create_delete_token
+    delete_token = LineLink.new_token
+    update(delete_digest: LineLink.digest(delete_token), delete_sent_at: Time.zone.now)
+    delete_token
+  end
+  
+  def valid_digest?
+    Time.zone.now <= delete_sent_at + 30.minutes 
+  end
+  
+  def can_delete?(current_user, token)
+    valid_token?(:delete_digest, token) && valid_digest? && valid_user?(current_user)
+  end
+  
+  def valid_user?(current_user)
+    user == current_user
   end
   
   class << self

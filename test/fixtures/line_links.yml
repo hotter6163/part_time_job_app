@@ -1,1 +1,10 @@
+before_deadline:
+  user: user
+  delete_digest: <%= LineLink.digest('delete_token') %>
+  delete_sent_at: <%= Time.zone.now %>
 
+
+after_deadline:
+  user: user
+  delete_digest: <%= LineLink.digest('delete_token') %>
+  delete_sent_at: <%= Time.zone.now - 31.minutes %>

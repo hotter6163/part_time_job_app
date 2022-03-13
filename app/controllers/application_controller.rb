@@ -16,7 +16,7 @@ class ApplicationController < ActionController::Base
     def valid_relationship_token
       if @branch = Branch.find_by(id: params[:branch_id])
         @branch.relationship_digests.where(email: params[:email]).each do |relationship_digest|
-          if relationship_digest.available? && relationship_digest.valid_token?(params[:token])
+          if relationship_digest.available? && relationship_digest.valid_token?(:digest, params[:token])
             @relationship_digest = relationship_digest
           end
         end
