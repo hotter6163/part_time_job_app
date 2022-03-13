@@ -16,16 +16,16 @@ class LineBotsController < ApplicationController
         when :link
           case data[:user]
           when :exist
-            reply_log_in_message(event)
+            postback_link_exist_user(event)
           when :new
-            reply_sign_up_message(event)
+            postback_link_new_user(event)
           end
         when :destroy_link
-          reply_destroy_link_message(event)
+          postback_destroy_link(event)
         when :shift_submission
-          
+          postback_shift_submission(event)
         when :show_submitted_shift
-          
+          postback_show_submitted_shift(event)
         end
       when Line::Bot::Event::AccountLink
         account_link(event)
@@ -53,7 +53,7 @@ class LineBotsController < ApplicationController
       result
     end
     
-    def reply_log_in_message(event)
+    def postback_link_exist_user(event)
       res = client.create_link_token(event["source"]["userId"])
       link_token = JSON.parse(res.body)["linkToken"]
       messages = [
@@ -81,7 +81,7 @@ class LineBotsController < ApplicationController
       client.reply_message(event["replyToken"], messages)
     end
     
-    def reply_sign_up_message(event)
+    def postback_link_new_user(event)
       res = client.create_link_token(event["source"]["userId"])
       link_token = JSON.parse(res.body)["linkToken"]
       messages = [
@@ -130,7 +130,7 @@ class LineBotsController < ApplicationController
       client.reply_message(reply_token, messages)
     end
     
-    def reply_destroy_link_message(event)
+    def postback_destroy_link(event)
       if line_link = LineLink.find_by(line_id: event["source"]["userId"])
         delete_token = line_link.create_delete_token
         messages = [
@@ -153,6 +153,41 @@ class LineBotsController < ApplicationController
                 }
               ]
             }
+          }
+        ]
+      else
+        messages = [
+          {
+            type: "text",
+            text: "このLINEアカウントは、アカウント連携が行われていません。"
+          }
+        ]
+      end
+      client.reply_message(event["replyToken"], messages)
+    end
+    
+    def postback_shift_submission(event)
+      if line_link = LineLink.find_by(line_id: event["source"]["userId"])
+        periods = line_link.user.not_submitted_periods_near_deadline
+        messages = periods.sort[0...5].map { |period| period.line_button_message(new_shift_submission_url(period)) }
+      else
+        messages = [
+          {
+            type: "text",
+            text: "このLINEアカウントは、アカウント連携が行われていません。"
+          }
+        ]
+      end
+      client.reply_message(event["replyToken"], messages)
+    end
+    
+    def postback_show_submitted_shift(event)
+      if line_link = LineLink.find_by(line_id: event["source"]["userId"])
+        text = line_link.user.postback_show_submitted_shift_message
+        messages = [
+          {
+            type: "text",
+            text: text
           }
         ]
       else

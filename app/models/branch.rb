@@ -51,6 +51,10 @@ class Branch < ApplicationRecord
     periods.where('end_date >= ?', (Time.zone.now - 1.day).to_s)
   end
   
+  def periods_before_start_date
+    periods.where('start_date >= ?', (Time.zone.now - 1.day).to_s)
+  end
+  
   def maximum_periods_num
     case subtype
     when Weekly
@@ -116,5 +120,35 @@ class Branch < ApplicationRecord
   
   def period_including(date)
     periods.find_by("start_date <= ? and end_date >= ?", date, date)
+  end
+  
+  def not_submitted_period_near_deadline(user)
+    result = nil
+    periods_before_deadline.order(:deadline).each do |period| 
+      unless user.shift_submissions.find_by(period: period)
+        result = period
+        break
+      end
+    end
+    result
+  end
+  
+  def postback_show_submitted_shift_message(user)
+    result = "#{company_name}"
+    shift_submissions = periods_before_start_date.map { |period| period.shift_submissions.find_by(user: user) }.compact
+    if shift_submissions.present?
+      shift_submissions.each_with_index do |shift_submission|
+        result += "\n#{shift_submission.period.start_to_end}"
+        shift_requests = shift_submission.shift_requests.all
+        if shift_requests.present?
+          shift_requests.each { |shift_request| result += "\n　#{shift_request.date.strftime("%m/%d")}：#{shift_request.start_to_end}" }
+        else
+          result += "\n　シフト希望がありません。"
+        end
+      end
+    else
+      result += "\nシフトは提出されていません"
+    end
+    result
   end
 end

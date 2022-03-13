@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   post  'callback',           to: 'line_bots#callback', as: :callback
   
   # ライン連携・連携解除用URL
-  get   'line_link/sign_in',          to: 'line_link#log_in',       as: :link_log_in
+  get   'line_link/log_in',          to: 'line_link#log_in',       as: :link_log_in
   get   'line_link/sign_up',          to: 'line_link#sign_up',      as: :link_sign_up
   post  'line_link',                  to: 'line_link#create',       as: :create_link
   get   'line_link/:id/check_delete', to: 'line_link#check_delete', as: :check_delete_link

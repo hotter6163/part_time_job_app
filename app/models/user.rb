@@ -56,6 +56,20 @@ class User < ApplicationRecord
     relationships.where(admin: true).map(&:branch)
   end
   
+  # 従業員登録しているそれぞれの企業の自分が提出していない一番締め切りが近い期間をまとめて返す
+  def not_submitted_periods_near_deadline
+    branches.map { |branch| branch.not_submitted_period_near_deadline(self) }.compact
+  end
+  
+  def postback_show_submitted_shift_message
+    result = ""
+    branches.each_with_index do |branch, index|
+      result += "\n\n" unless index == 0
+      result += branch.postback_show_submitted_shift_message(self)
+    end
+    result
+  end
+  
   # 特異メソッド
   class << self
     # メールアドレスの形式が正しいかの判定

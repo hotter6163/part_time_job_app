@@ -3,7 +3,7 @@ class LineLinkController < ApplicationController
   
   before_action :has_link_token, only: [:log_in, :sign_in, :create]
   before_action :authenticate_user!, only: [:check_delete, :delete]
-  before_action :can_delete, onlu: [:check_delete, :delete]
+  before_action :can_delete, only: [:check_delete, :delete]
   
   def log_in
   end
