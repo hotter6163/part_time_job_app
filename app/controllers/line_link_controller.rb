@@ -1,4 +1,6 @@
 class LineLinkController < ApplicationController
+  include Line::Client
+  
   before_action :has_link_token, only: [:log_in, :sign_in, :create]
   before_action :authenticate_user!, only: [:check_delete, :delete]
   before_action :can_delete, onlu: [:check_delete, :delete]
@@ -33,7 +35,8 @@ class LineLinkController < ApplicationController
   end
   
   def delete
-    
+    client.unlink_user_rich_menu(@line_link.line_id)
+    @line_link.destroy
   end
   
   private

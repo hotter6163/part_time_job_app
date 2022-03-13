@@ -54,4 +54,13 @@ class LineLinkControllerTest < ActionDispatch::IntegrationTest
     get check_delete_link_path(@line_link_after_deadline, delete_token: "invalid_token")
     assert_redirected_to root_url
   end
+  
+  # LINEとのリンクを削除
+  test "delete line_link" do 
+    get check_delete_link_path(@line_link_before_deadline, delete_token: @delete_token)
+    assert_difference 'LineLink.count', -1 do
+      delete delete_link_path(@line_link_before_deadline), params: { delete_token: @delete_token } 
+    end
+    assert_response :success
+  end
 end
