@@ -83,7 +83,7 @@ class User < ApplicationRecord
       type: 'template',
       altText: '従業員登録用のメッセージを送信しました。',
       template: {
-        type: 'button',
+        type: 'buttons',
         text: "従業員登録を行ってください。",
         actions: [
           {
