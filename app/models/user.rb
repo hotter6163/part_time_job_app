@@ -76,12 +76,23 @@ class User < ApplicationRecord
     return line_link && line_link.line_id
   end
   
-  def send_quickReply_msg(items)
+  def send_quickReply_msg(url)
     return unless line_link?
     
     msg = {
-      type: 'quickReply',
-      items: items
+      type: 'template',
+      altText: '従業員登録用のメッセージを送信しました。',
+      template: {
+        type: 'button',
+        text: "従業員登録を行ってください。",
+        actions: [
+          {
+            type: 'uri',
+            label: "従業員登録を行ってください。",
+            uri: url
+          }
+        ]
+      }
     }
     
     res = client.push_message(line_link.line_id, msg)
