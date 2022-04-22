@@ -2,6 +2,8 @@ class User < ApplicationRecord
   # 保存前に実行するもの
   before_save :downcase_email
   
+  include Line::Client
+  
   # モデルの関係性
   has_many :relationships, dependent: :destroy
   has_many :shift_submissions, dependent: :destroy
@@ -68,6 +70,17 @@ class User < ApplicationRecord
       result += branch.postback_show_submitted_shift_message(self)
     end
     result
+  end
+  
+  def send_push_msg
+    return unless line_link&.line_id
+    
+    msg = {
+      type: 'text',
+      text: 'よろしく'
+    }
+    
+    client.push_message(line_link.line_id, msg)
   end
   
   # 特異メソッド
