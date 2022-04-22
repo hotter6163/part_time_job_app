@@ -26,8 +26,24 @@ class BranchesController < ApplicationController
         flash.now[:warning] = "#{@user.full_name}さんは既に従業員として登録されています。"
         render 'branches/add_employee' and return
       else
-        @branch.send_email_to_existing_user(@user)
-        flash.now[:success] = "#{@user.full_name}さんに従業員登録用のメールを送信しました。"
+        if @user.line_link?
+          @branch.create_relationship_token(@user.email)
+          items = [
+            {
+              type: 'action',
+              action: {
+                "type": "uri",
+                "label": "従業員登録を行う。",
+                "uri": new_relationship_url(token: @branch.relationship_token, email: @user.email, branch_id: @branch.id)
+              }
+            }
+          ]
+          @user.send_quickReply_msg(items)
+          flash.now[:success] = "#{@user.full_name}さんに従業員登録用のメッセージを送信しました。"
+        else
+          @branch.send_email_to_existing_user(@user)
+          flash.now[:success] = "#{@user.full_name}さんに従業員登録用のメールを送信しました。"
+        end
       end
     else
       @branch.send_email_to_new_user(params[:email])

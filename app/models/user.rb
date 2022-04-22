@@ -72,12 +72,16 @@ class User < ApplicationRecord
     result
   end
   
-  def send_push_msg
-    return unless line_link&.line_id
+  def line_link?
+    return line_link && line_link.line_id
+  end
+  
+  def send_quickReply_msg(items)
+    return unless line_link?
     
     msg = {
-      type: 'text',
-      text: 'よろしく'
+      type: 'quickReply',
+      items: items
     }
     
     client.push_message(line_link.line_id, msg)
