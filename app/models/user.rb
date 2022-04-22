@@ -84,7 +84,8 @@ class User < ApplicationRecord
       items: items
     }
     
-    client.push_message(line_link.line_id, msg)
+    res = client.push_message(line_link.line_id, msg)
+    logger.info(res)
   end
   
   # 特異メソッド

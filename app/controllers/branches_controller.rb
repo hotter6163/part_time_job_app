@@ -32,9 +32,9 @@ class BranchesController < ApplicationController
             {
               type: 'action',
               action: {
-                "type": "uri",
-                "label": "従業員登録を行う。",
-                "uri": new_relationship_url(token: @branch.relationship_token, email: @user.email, branch_id: @branch.id)
+                type: "uri",
+                label: "従業員登録を行う。",
+                uri: new_relationship_url(token: @branch.relationship_token, email: @user.email, branch_id: @branch.id)
               }
             }
           ]
